@@ -8,20 +8,20 @@ createApp({
             selectedLanguage: 'zh',
             projects: [
                 {
-                    id: 'style-demos',
-                    name: '18 Visual Styles Portfolio Studio (Emory Jan)',
-                    nameZh: '🎨 18 大頂級視覺風格展示庫 (Emory Jan Edition)',
-                    badge: 'Flagship Showcase',
-                    badgeZh: '旗艦級展示庫',
+                    id: 'personal-18-styles',
+                    name: '18 Personal Page Styles Matrix (Emory Jan)',
+                    nameZh: '💎 18 款個人風格矩陣 (Emory Jan)',
+                    badge: 'New Flagship',
+                    badgeZh: '最新旗艦',
                     description: 'A comprehensive 18-style portfolio matrix featuring live device simulators (Desktop/Tablet/Mobile), instant theme switching, 6 render engines, and Emory Jan developer branding.',
-                    descriptionZh: '專為 Emory Jan 開發者作品集打造的 18 種當代頂級視覺風格旗艦展示庫。支援即時響應式模擬舞台（桌機/平板/手機視角）、6 大渲染模式、底色色相盤、全站一鍵換裝與 18 款獨立單頁展示。',
-                    icon: 'fa-palette',
+                    descriptionZh: '專為 Emory Jan 打造的 18 種獨立個人首頁視覺風格矩陣。支援即時響應式模擬舞台（桌機/平板/手機視角）、6 大渲染模式、底色色相盤與全站一鍵換裝。',
+                    icon: 'fa-cubes-stacked',
                     link: './personal_page_18_styles/index.html',
                     demo: './personal_page_18_styles/index.html',
                     github: 'https://github.com/lilujj03-oss/lilujj03-oss.github.io/tree/main/personal_page_18_styles',
-                    color: '#ec4899',
+                    color: '#8b5cf6',
                     bgStyle: {
-                        background: 'linear-gradient(135deg, #a855f7 0%, #06b6d4 50%, #0f172a 100%)'
+                        background: 'linear-gradient(135deg, #7c3aed 0%, #06b6d4 60%, #0f172a 100%)'
                     }
                 },
                 {
@@ -39,6 +39,23 @@ createApp({
                     color: '#d97706',
                     bgStyle: {
                         background: 'linear-gradient(135deg, #b45309 0%, #78350f 50%, #0f172a 100%)'
+                    }
+                },
+                {
+                    id: 'style-demos',
+                    name: '18 Visual Design Styles Library',
+                    nameZh: '🎨 18 大頂級視覺風格展示庫',
+                    badge: 'Interactive Tool',
+                    badgeZh: '互動設計工具庫',
+                    description: 'An interactive design showcase featuring 18 distinctive UI aesthetics including Apple Minimal, Cyberpunk, Neo-Brutalism, Neumorphism, Retro 8-Bit, and Vaporwave.',
+                    descriptionZh: '收錄了 18 種當代頂級網頁視覺設計流派的即時切換展示庫。涵蓋極簡蘋果風、黑白極客、賽博霓虹、包浩斯、新粗獷、新擬物、水墨、多巴胺與重工金屬等多元風格。',
+                    icon: 'fa-palette',
+                    link: './style-demos.html',
+                    demo: './style-demos.html',
+                    github: 'https://github.com/lilujj03-oss/lilujj03-oss.github.io/blob/main/style-demos.html',
+                    color: '#ec4899',
+                    bgStyle: {
+                        background: 'linear-gradient(135deg, #be185d 0%, #7c3aed 50%, #0f172a 100%)'
                     }
                 },
                 {
