@@ -1,0 +1,75 @@
+:root { --red:#e31837; --blue:#006491; --cream:#fff8ed; --ink:#141414; --line:#d9d2c7; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; color:var(--ink); background:var(--cream); font-family:"Noto Sans TC",sans-serif; }
+body::before { content:""; position:fixed; inset:0; z-index:-1; opacity:.32; background-image:radial-gradient(#d9cdbb 1px,transparent 1px); background-size:18px 18px; }
+a { color:inherit; text-decoration:none; }
+header { height:76px; display:flex; align-items:center; justify-content:space-between; width:min(1180px,calc(100% - 40px)); margin:auto; border-bottom:2px solid var(--ink); }
+.logo { font-family:"Archivo Black",sans-serif; letter-spacing:-.04em; font-size:21px; }
+.logo span { display:inline-grid; place-items:center; width:38px; height:38px; margin-right:8px; background:var(--red); border-radius:50%; }
+.menu-link { padding:9px 16px; color:white; background:var(--blue); font-weight:700; font-size:13px; transform:rotate(-1deg); box-shadow:3px 3px 0 var(--ink); }
+main { width:min(1080px,calc(100% - 40px)); margin:auto; padding:78px 0 100px; }
+.intro { display:grid; grid-template-columns:1.3fr .7fr; align-items:end; gap:50px; margin-bottom:55px; }
+.label { margin:0 0 9px; color:var(--red); font:700 11px/1 "Noto Sans TC"; letter-spacing:.2em; }
+.intro .label { grid-column:1/-1; margin-bottom:-35px; }
+h1 { margin:0; font-family:"Archivo Black","Noto Sans TC"; font-size:clamp(54px,9vw,105px); line-height:.9; letter-spacing:-.07em; }
+h1 em { color:var(--red); font-style:normal; text-shadow:4px 4px 0 var(--ink); -webkit-text-stroke:2px var(--ink); }
+.intro > p:last-child { margin:0; padding:22px 0 6px; border-top:2px solid var(--ink); font-size:17px; line-height:1.8; }
+.bot-card { overflow:hidden; background:#fff; border:2px solid var(--ink); border-radius:18px; box-shadow:10px 10px 0 var(--ink); }
+.bot-head { display:flex; align-items:center; gap:16px; padding:20px 26px; color:#fff; background:var(--blue); border-bottom:2px solid var(--ink); }
+.bot-face { display:grid; place-items:center; width:52px; height:52px; background:white; color:var(--blue); border:2px solid var(--ink); border-radius:50%; font-weight:900; }
+.bot-head span { color:#8dff9a; font-size:10px; font-weight:900; letter-spacing:.18em; }
+.bot-head h2 { margin:2px 0 0; font-size:20px; }
+form { padding:12px 34px 34px; }
+fieldset { margin:0; padding:27px 0; border:0; border-bottom:1px solid var(--line); }
+legend { width:100%; margin-bottom:16px; font-size:17px; font-weight:800; }
+legend b { display:inline-grid; place-items:center; width:34px; height:34px; margin-right:10px; color:white; background:var(--red); border-radius:50%; font-size:12px; }
+.options { display:flex; flex-wrap:wrap; gap:10px; }
+.options label { cursor:pointer; }
+.options input { position:absolute; opacity:0; pointer-events:none; }
+.options span { display:block; min-width:130px; padding:12px 16px; border:2px solid #ddd7ce; border-radius:10px; background:#faf8f4; font-weight:700; text-align:center; transition:.18s; }
+.options small { color:#867e73; font-weight:400; }
+.options input:checked + span { color:#fff; background:var(--red); border-color:var(--ink); box-shadow:3px 3px 0 var(--ink); transform:translate(-2px,-2px); }
+.options input:checked + span small { color:#fff; }
+.form-actions { display:flex; align-items:center; gap:18px; margin-top:30px; }
+button { font:inherit; cursor:pointer; }
+.recommend { display:inline-flex; gap:35px; align-items:center; padding:15px 22px; border:2px solid var(--ink); border-radius:8px; color:white; background:var(--red); box-shadow:5px 5px 0 var(--ink); font-weight:900; }
+.recommend:hover { transform:translate(2px,2px); box-shadow:3px 3px 0 var(--ink); }
+.random,#again-button { border:0; background:none; color:var(--blue); font-weight:800; }
+.results { margin-top:90px; scroll-margin-top:30px; }
+.result-heading { text-align:center; }
+.result-heading h2 { margin:5px 0; font-family:"Archivo Black","Noto Sans TC"; font-size:clamp(34px,6vw,56px); }
+.result-heading > p:last-child { color:#746d63; }
+.result-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:35px; }
+.result-card { position:relative; padding:26px; background:#fff; border:2px solid var(--ink); border-radius:14px; box-shadow:6px 6px 0 var(--ink); }
+.result-card:first-child { transform:translateY(-10px); border-color:var(--red); }
+.rank { display:inline-grid; place-items:center; width:35px; height:35px; color:#fff; background:var(--blue); border-radius:50%; font:900 12px "Archivo Black"; }
+.result-card:first-child .rank { background:var(--red); }
+.result-card h3 { margin:22px 0 9px; font-size:21px; }
+.result-card p { min-height:70px; margin:0; color:#756e65; line-height:1.7; font-size:14px; }
+.tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:18px; }
+.tags span { padding:4px 9px; color:var(--blue); background:#e9f5fb; border-radius:99px; font-size:11px; font-weight:700; }
+.order-actions { display:flex; justify-content:center; align-items:center; gap:25px; margin-top:38px; }
+.order-button { padding:14px 23px; color:white; background:var(--blue); border:2px solid var(--ink); border-radius:8px; box-shadow:4px 4px 0 var(--ink); font-weight:900; }
+footer { padding:30px 20px; color:#777067; background:#ece4d8; border-top:1px solid #d0c7ba; text-align:center; font-size:12px; }
+footer p { max-width:720px; margin:0 auto 8px; }
+footer a { color:var(--blue); font-weight:700; }
+@media(max-width:720px){
+  header { height:66px; }
+  .logo { font-size:16px; }
+  .logo span { width:32px;height:32px; }
+  .menu-link { padding:7px 10px; }
+  main { padding-top:55px; }
+  .intro { grid-template-columns:1fr; gap:25px; }
+  .intro .label { grid-column:auto; margin-bottom:-10px; }
+  h1 { font-size:58px; }
+  form { padding:8px 20px 26px; }
+  .options label { flex:1 1 135px; }
+  .options span { min-width:0; }
+  .form-actions { align-items:stretch; flex-direction:column; }
+  .recommend { justify-content:center; }
+  .result-grid { grid-template-columns:1fr; }
+  .result-card:first-child { transform:none; }
+  .order-actions { flex-direction:column; }
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}

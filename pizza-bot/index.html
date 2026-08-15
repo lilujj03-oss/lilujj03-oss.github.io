@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="幫助選擇達美樂披薩的個人推薦工具">
+  <title>Pizza Picker｜披薩選擇困難救星</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <a class="logo" href="../index.html"><span>🍕</span> PIZZA PICKER</a>
+    <a class="menu-link" href="https://www.dominos.com.tw/menu/" target="_blank" rel="noreferrer">官方菜單 ↗</a>
+  </header>
+
+  <main>
+    <section class="intro">
+      <p class="label">DECISION-MAKING BOT</p>
+      <h1>今晚吃哪款<br><em>披薩？</em></h1>
+      <p>不用再盯著菜單選半小時。回答四個問題，讓機器人幫你縮小選擇。</p>
+    </section>
+
+    <section class="bot-card" aria-labelledby="bot-title">
+      <div class="bot-head">
+        <div class="bot-face" aria-hidden="true">◉‿◉</div>
+        <div><span>ONLINE</span><h2 id="bot-title">你的披薩顧問</h2></div>
+      </div>
+
+      <form id="picker-form">
+        <fieldset>
+          <legend><b>01</b> 今天有幾個人吃？</legend>
+          <div class="options people">
+            <label><input type="radio" name="people" value="solo"><span>1 人<br><small>獨享時光</small></span></label>
+            <label><input type="radio" name="people" value="pair" checked><span>2–3 人<br><small>小聚一下</small></span></label>
+            <label><input type="radio" name="people" value="party"><span>4 人以上<br><small>開趴啦</small></span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><b>02</b> 今天想吃哪一派？</legend>
+          <div class="options">
+            <label><input type="radio" name="flavor" value="meat" checked><span>🥩 肉肉派</span></label>
+            <label><input type="radio" name="flavor" value="seafood"><span>🦐 海鮮派</span></label>
+            <label><input type="radio" name="flavor" value="fresh"><span>🍅 清爽派</span></label>
+            <label><input type="radio" name="flavor" value="surprise"><span>✨ 都可以</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><b>03</b> 辣度接受度？</legend>
+          <div class="options">
+            <label><input type="radio" name="spicy" value="no" checked><span>不辣</span></label>
+            <label><input type="radio" name="spicy" value="yes"><span>可以來點辣</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><b>04</b> 今天想走什麼路線？</legend>
+          <div class="options">
+            <label><input type="radio" name="mood" value="classic" checked><span>經典安全牌</span></label>
+            <label><input type="radio" name="mood" value="special"><span>想試特別的</span></label>
+            <label><input type="radio" name="mood" value="cheese"><span>起司越多越好</span></label>
+          </div>
+        </fieldset>
+
+        <div class="form-actions">
+          <button class="recommend" type="submit">幫我選披薩 <span>→</span></button>
+          <button class="random" type="button" id="random-button">🎲 今天交給命運</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="results" id="results" aria-live="polite" hidden>
+      <div class="result-heading"><p class="label">BOT'S CHOICE</p><h2>就決定是這些了！</h2><p id="serving-tip"></p></div>
+      <div class="result-grid" id="result-grid"></div>
+      <div class="order-actions">
+        <a class="order-button" href="https://www.dominos.com.tw/menu/" target="_blank" rel="noreferrer">前往官方菜單訂購 ↗</a>
+        <button type="button" id="again-button">重新選一次</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>此為個人製作的選餐推薦工具，與達美樂官方無關。品項、供應情況與價格請以官方網站結帳頁為準。</p>
+    <a href="../index.html">返回 lilujj03-oss 首頁</a>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
