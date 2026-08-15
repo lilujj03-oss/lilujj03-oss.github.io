@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark" data-render="glass" data-active-style="01">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emory Jan | 18 大頂級網頁視覺風格展示庫 (18-Style Visuals Studio)</title>
+  <meta name="description" content="Emory Jan 的 18 種網頁視覺風格全景展示庫，支援即時響應式裝置預覽、全站換裝引擎、6 大渲染模式、底色調色盤與 3D 視差微動效。">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Chakra+Petch:wght@500;600;700&family=Cinzel:wght@600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Fredoka:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;600;700;900&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Press+Start+2P&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ========================================================
+       1. 核心設計體系與 CSS TOKENS
+    ======================================================== */
+    :root {
+      --font-heading: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Montserrat', 'Noto Sans TC', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --hue: 260;
+      --bg-grad-start: hsl(var(--hue), 65%, 12%);
+      --bg-grad-end: #070d22;
+      --bg-solid: #090b14;
+      --grid-line: rgba(255, 255, 255, 0.08);
+
+      --orb-purple: #a855f7;
+      --orb-cyan: #06b6d4;
+      --orb-pink: #ec4899;
+      --orb-opacity: 0.35;
+      --orb-blur: 80px;
+
+      --glass-bg: linear-gradient(160deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.025) 100%);
+      --glass-bg-hover: linear-gradient(160deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+      --glass-inset: inset 0 1px 0 rgba(255, 255, 255, 0.25), inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.16);
+      --glass-border-hover: rgba(103, 232, 249, 0.55);
+      --glass-radius: 20px;
+      --glass-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+      --glass-shadow-hover: 0 20px 50px rgba(168, 85, 247, 0.3);
+      --glass-blur: 16px;
+
+      --accent-gradient: linear-gradient(135deg, #a855f7 0%, #06b6d4 100%);
+      --accent-solid: #a855f7;
+      --accent-cyan: #06b6d4;
+      --accent-glow: 0 0 25px rgba(168, 85, 247, 0.5);
+
+      --text-primary: rgba(255, 255, 255, 0.95);
+      --text-secondary: rgba(255, 255, 255, 0.72);
+      --text-muted: rgba(255, 255, 255, 0.45);
+
+      --max-width: 1280px;
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Light Theme */
+    [data-theme="light"] {
+      --bg-grad-start: #f3effe;
+      --bg-grad-end: #e0f2fe;
+      --bg-solid: #f8fafc;
+      --grid-line: rgba(30, 20, 60, 0.06);
+      --orb-opacity: 0.22;
+      --glass-bg: linear-gradient(160deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.55) 100%);
+      --glass-bg-hover: linear-gradient(160deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.75) 100%);
+      --glass-inset: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+      --glass-border: rgba(255, 255, 255, 0.8);
+      --glass-border-hover: rgba(168, 85, 247, 0.5);
+      --glass-shadow: 0 10px 30px rgba(90, 70, 140, 0.12);
+      --glass-shadow-hover: 0 18px 45px rgba(120, 80, 200, 0.2);
+      --text-primary: #150d38;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: radial-gradient(circle at 80% 20%, var(--bg-grad-start), var(--bg-grad-end) 80%);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      line-height: 1.65;
+      overflow-x: hidden;
+      position: relative;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    /* Ambient Background */
+    .ambient-background {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none; z-index: 0; overflow: hidden;
+      transition: opacity 0.5s ease;
+    }
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(var(--orb-blur)); opacity: var(--orb-opacity);
+      transition: all 0.6s ease;
+      animation: floatOrb 20s ease-in-out infinite alternate;
+    }
+    .orb-1 { top: 5%; right: 10%; width: 450px; height: 450px; background: var(--orb-purple); }
+    .orb-2 { top: 45%; left: 5%; width: 400px; height: 400px; background: var(--orb-cyan); animation-duration: 24s; animation-delay: -5s; }
+    .orb-3 { bottom: 5%; right: 25%; width: 500px; height: 500px; background: var(--orb-pink); animation-duration: 28s; animation-delay: -10s; }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(60px, -40px) scale(1.12); }
+      100% { transform: translate(-40px, 50px) scale(0.95); }
+    }
+
+    .grid-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: 
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none; z-index: 0; opacity: 0.65;
+    }
+
+    .scanline-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      background-size: 100% 4px, 6px 100%;
+      pointer-events: none; z-index: 999;
+    }
+    [data-render="scanline"] .scanline-overlay { display: block; }
+
+    /* Toast Notification */
+    .toast-notify {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 9999;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid var(--accent-cyan);
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(6, 182, 212, 0.3);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: none;
+    }
+    .toast-notify.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* ========================================================
+       2. 頂部即時控制器 (VISUAL FX STUDIO)
+    ======================================================== */
+    .style-picker-bar {
+      position: sticky;
+      top: 0;
+      z-index: 2000;
+      background: rgba(9, 11, 20, 0.94);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 12px 20px;
+      box-shadow: 0 6px 30px rgba(0, 0, 0, 0.45);
+    }
+    .picker-container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .picker-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .picker-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+    }
+    .picker-brand .badge {
+      background: var(--accent-gradient);
+      color: #fff;
+      font-size: 11px;
+      padding: 3px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      box-shadow: 0 2px 10px rgba(168, 85, 247, 0.4);
+    }
+    
+    .fx-controls-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .fx-control-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+    .fx-select {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid var(--glass-border);
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: var(--transition);
+    }
+    .fx-select option {
+      background: #110d24;
+      color: #ffffff;
+    }
+    .fx-toggle-btn {
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+    .fx-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: var(--accent-cyan);
+      transform: translateY(-1px);
+    }
+
+    /* 18 Style Switcher Tabs */
+    .style-nav-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: thin;
+    }
+    .style-nav-tabs::-webkit-scrollbar { height: 4px; }
+    .style-nav-tabs::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+
+    .style-tab-btn {
+      padding: 6px 13px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      color: #94a3b8;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .style-tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    .style-tab-btn.active {
+      color: #fff;
+      background: var(--accent-gradient);
+      border-color: #38bdf8;
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+    }
+
+    /* ========================================================
+       3. 主內容排版與導覽
+    ======================================================== */
+    .site-header {
+      max-width: var(--max-width);
+      margin: 16px auto 0 auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+    .nav-glass-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 24px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      box-shadow: var(--glass-shadow);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-heading);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-primary);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .logo .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 12px var(--accent-cyan);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 600;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-links a:hover {
+      color: #fff;
+    }
+    .nav-btn-highlight {
+      padding: 8px 18px;
+      background: var(--accent-gradient);
+      color: #fff !important;
+      border-radius: 999px;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+    }
+
+    .main-content {
+      max-width: var(--max-width);
+      margin: 30px auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ========================================================
+       4. HERO SECTION & PROFILE CARD
+    ======================================================== */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      align-items: center;
+      margin-bottom: 50px;
+      padding: 30px 0;
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      color: #38bdf8;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+    .pulse-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #38bdf8;
+      box-shadow: 0 0 10px #38bdf8;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.75); }
+    }
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: clamp(38px, 5.5vw, 62px);
+      font-weight: 800;
+      line-height: 1.12;
+      margin-bottom: 18px;
+      letter-spacing: -0.03em;
+    }
+    .gradient-text {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 28px;
+      max-width: 620px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      padding: 13px 28px;
+      background: var(--accent-gradient);
+      color: #fff;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 25px rgba(168, 85, 247, 0.4);
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(168, 85, 247, 0.6);
+    }
+    .btn-secondary {
+      padding: 13px 24px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--glass-border);
+      color: var(--text-primary);
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* 3D Glass Profile Card */
+    .glass-profile-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 36px 30px;
+      text-align: center;
+      box-shadow: var(--glass-shadow);
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .glass-profile-card:hover {
+      border-color: var(--glass-border-hover);
+      box-shadow: var(--glass-shadow-hover);
+    }
+    .avatar-wrapper {
+      position: relative; width: 120px; height: 120px;
+      margin: 0 auto 18px auto;
+    }
+    .avatar-circle {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 42px; font-weight: 900; color: #fff;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      letter-spacing: 2px;
+    }
+    .avatar-ring {
+      position: absolute; top: -6px; left: -6px; right: -6px; bottom: -6px;
+      border-radius: 50%; border: 2px dashed var(--accent-cyan);
+      animation: spin 20s linear infinite; opacity: 0.75;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    .card-name {
+      font-family: var(--font-heading);
+      font-size: 26px; font-weight: 800; margin-bottom: 4px;
+    }
+    .card-role {
+      font-size: 13.5px; color: var(--accent-cyan);
+      font-weight: 600; margin-bottom: 14px;
+    }
+    .floating-skill-tags {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 8px; margin-top: 14px;
+    }
+    .floating-skill-tag {
+      padding: 4px 12px; background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--glass-border); border-radius: 999px;
+      font-size: 11.5px; font-weight: 600; color: var(--text-secondary);
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px; margin-bottom: 50px;
+    }
+    .stat-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--glass-radius);
+      padding: 22px 18px; text-align: center;
+      transition: var(--transition);
+    }
+    .stat-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--glass-border-hover);
+    }
+    .stat-num {
+      font-family: var(--font-heading);
+      font-size: 36px; font-weight: 800;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 12.5px; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+    }
+
+    /* ========================================================
+       5. 互動預覽舞台 (LIVE PREVIEW STAGE & SIMULATOR)
+    ======================================================== */
+    .stage-section {
+      margin-bottom: 70px;
+    }
+    .stage-container {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: var(--glass-shadow);
+    }
+    .stage-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .stage-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .stage-badge {
+      padding: 4px 10px;
+      background: #3b82f6;
+      color: #fff;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .stage-active-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .stage-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .device-btn {
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+    .device-btn:hover, .device-btn.active {
+      background: var(--accent-gradient);
+      color: #fff;
+      border-color: #38bdf8;
+    }
+    .stage-action-link {
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: #38bdf8;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+    .stage-action-link:hover {
+      background: #38bdf8;
+      color: #0b0d14;
+    }
+
+    .stage-viewport-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #06080e;
+      border-radius: 16px;
+      padding: 16px;
+      min-height: 640px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      position: relative;
+    }
+    .stage-iframe-frame {
+      width: 100%;
+      height: 620px;
+      border: none;
+      border-radius: 12px;
+      background: #ffffff;
+      transition: width 0.35s ease, height 0.35s ease;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    }
+    .stage-iframe-frame.tablet {
+      width: 768px;
+    }
+    .stage-iframe-frame.mobile {
+      width: 375px;
+    }
+
+    /* ========================================================
+       6. 18 大風格全景預覽矩陣 (18-STYLE GALLERY MATRIX)
+    ======================================================== */
+    .section-header { margin-bottom: 36px; text-align: center; }
+    .section-eyebrow {
+      font-size: 12px; font-weight: 700; color: var(--accent-cyan);
+      letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 36px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 12px;
+    }
+    .section-subtitle {
+      font-size: 15px; color: var(--text-secondary);
+      max-width: 720px; margin: 0 auto;
+    }
+
+    .gallery-18-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 24px; margin-bottom: 80px;
+    }
+    .style-card-preview {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .style-card-preview:hover {
+      transform: translateY(-6px);
+      border-color: var(--glass-border-hover);
+      box-shadow: var(--glass-shadow-hover);
+    }
+    .style-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .style-num-badge {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--accent-cyan);
+      border: 1px solid var(--glass-border);
+    }
+    .style-card-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .style-card-desc {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .style-palette-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .color-dot {
+      width: 22px; height: 22px; border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .style-card-specs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .spec-tag {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+    }
+    .style-card-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .btn-card-preview {
+      padding: 9px 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+    .btn-card-preview:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: var(--accent-cyan);
+    }
+    .btn-card-open {
+      padding: 9px 12px;
+      background: var(--accent-gradient);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+    .btn-card-open:hover {
+      box-shadow: 0 4px 15px rgba(168, 85, 247, 0.5);
+      transform: translateY(-1px);
+    }
+
+    /* ========================================================
+       7. 精選作品 & 技能體系
+    ======================================================== */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 70px;
+    }
+    .project-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 26px;
+      transition: var(--transition);
+    }
+    .project-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--glass-border-hover);
+      box-shadow: var(--glass-shadow-hover);
+    }
+    .project-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: var(--accent-gradient);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; color: #fff; margin-bottom: 18px;
+    }
+    .project-title {
+      font-size: 19px; font-weight: 700; color: #fff; margin-bottom: 8px;
+    }
+    .project-desc {
+      font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 16px;
+    }
+    .project-tags {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .project-tag {
+      font-size: 11px; padding: 3px 10px; border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08); border: 1px solid var(--glass-border);
+      color: var(--text-muted);
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--glass-border);
+      padding: 40px 20px 60px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13.5px;
+      position: relative;
+      z-index: 10;
+    }
+    .site-footer a {
+      color: var(--accent-cyan);
+      text-decoration: none;
+    }
+
+    /* RWD */
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .gallery-18-grid { grid-template-columns: 1fr; }
+      .stage-iframe-frame { height: 480px; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Light Orbs -->
+  <div class="ambient-background">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <div class="scanline-overlay"></div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notify" id="toastNotify">
+    <i class="fa-solid fa-circle-check" style="color: #38bdf8; font-size: 18px;"></i>
+    <span id="toastMsg">風格已切換</span>
+  </div>
+
+  <!-- Top Sticky Style Switcher Bar -->
+  <aside class="style-picker-bar">
+    <div class="picker-container">
+      <div class="picker-top-row">
+        <div class="picker-brand">
+          <i class="fa-solid fa-cubes-stacked"></i>
+          <span>Emory Jan · 18 Style Visual Matrix</span>
+          <span class="badge">18 STYLES</span>
+        </div>
+
+        <div class="fx-controls-group">
+          <!-- Render Engine Select -->
+          <div class="fx-control-item">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <select class="fx-select" id="renderSelect" onchange="changeRender(this.value)">
+              <option value="glass">Glassmorphism 玻璃擬態</option>
+              <option value="scanline">CRT Scanline 賽博掃描線</option>
+              <option value="flat">Clean Flat 純淨扁平</option>
+            </select>
+          </div>
+
+          <!-- Color Hue Slider -->
+          <div class="fx-control-item">
+            <i class="fa-solid fa-palette"></i>
+            <input type="range" min="0" max="360" value="260" id="hueRange" style="width: 80px; cursor: pointer;" oninput="updateHue(this.value)" title="調整底色色相">
+          </div>
+
+          <!-- Theme Toggle -->
+          <button class="fx-toggle-btn" onclick="toggleTheme()" id="themeBtn">
+            <i class="fa-solid fa-moon"></i> <span>深色</span>
+          </button>
+
+          <!-- Random Style Dice -->
+          <button class="fx-toggle-btn" onclick="pickRandomStyle()" title="隨機探索風格">
+            <i class="fa-solid fa-dice"></i> <span>隨機風格</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 18 Style Buttons Tabs -->
+      <div class="style-nav-tabs" id="styleNavTabs">
+        <!-- Injected via JavaScript for clean code -->
+      </div>
+    </div>
+  </aside>
+
+  <!-- Site Nav Header -->
+  <header class="site-header">
+    <nav class="nav-glass-bar">
+      <a href="#about" class="logo">
+        <span class="dot"></span>
+        <span>EMORY.JAN</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#about"><i class="fa-regular fa-user"></i> 關於我</a></li>
+        <li><a href="#stage"><i class="fa-solid fa-tv"></i> 即時模擬舞台</a></li>
+        <li><a href="#gallery-18"><i class="fa-solid fa-palette"></i> 18 大風格矩陣</a></li>
+        <li><a href="#projects"><i class="fa-solid fa-code"></i> 精選作品</a></li>
+        <li><a href="01-midnight-glass.html" target="_blank" class="nav-btn-highlight">進入單頁展示 ↗</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+
+    <!-- Hero Section -->
+    <section class="hero-grid" id="about">
+      <div class="hero-info">
+        <div class="status-pill">
+          <span class="pulse-dot"></span>
+          <span>AVAILABLE FOR CREATIVE DEV &amp; DESIGN</span>
+        </div>
+        <h1 class="hero-title">
+          Hi, I'm <span class="gradient-text">Emory Jan</span>.<br>
+          Visual Design Explorer
+        </h1>
+        <p class="hero-subtitle">
+          熱衷於將全端程式架構、前端工程與當代視覺美學融合。此展示庫依據個人首頁結構打造了 18 種截然不同的視覺風格，支援即時響應式模擬、獨立頁面開展與全站樣式換裝。
+        </p>
+        <div class="hero-actions">
+          <a href="#stage" class="btn-primary">
+            <i class="fa-solid fa-circle-play"></i> 立即體驗即時模擬器
+          </a>
+          <a href="#gallery-18" class="btn-secondary">
+            <i class="fa-solid fa-grid-2"></i> 瀏覽 18 種風格矩陣
+          </a>
+        </div>
+      </div>
+
+      <!-- Profile Card -->
+      <div class="hero-card-wrapper">
+        <div class="glass-profile-card">
+          <div class="avatar-wrapper">
+            <div class="avatar-ring"></div>
+            <div class="avatar-circle">EJ</div>
+          </div>
+          <h2 class="card-name">Emory Jan</h2>
+          <p class="card-role">Full-Stack Engineer &amp; UI Architect</p>
+          <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 16px;">
+            「以代碼構建邏輯，以美學賦予靈魂。」
+          </p>
+          <div class="floating-skill-tags">
+            <span class="floating-skill-tag">Vue 3 / React</span>
+            <span class="floating-skill-tag">TypeScript</span>
+            <span class="floating-skill-tag">CSS Architecture</span>
+            <span class="floating-skill-tag">AI Tools &amp; LLM</span>
+            <span class="floating-skill-tag">UI/UX Design</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Highlights -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">18</div>
+        <div class="stat-label">Independent Style Demos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">6+</div>
+        <div class="stat-label">Render &amp; FX Modes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">RWD Responsive Ready</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">Zero</div>
+        <div class="stat-label">Dependency Frameworks</div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+       LIVE SIMULATOR STAGE
+    ======================================================== -->
+    <section class="stage-section" id="stage">
+      <div class="section-header">
+        <div class="section-eyebrow">LIVE INTERACTIVE SIMULATOR</div>
+        <h2 class="section-title">即時響應式模擬舞台</h2>
+        <p class="section-subtitle">
+          點擊上方或下方的風格按鈕，即可在下方模擬器中即時載入對應的完整風格頁面，並可自由切換桌面、平板與手機視角。
+        </p>
+      </div>
+
+      <div class="stage-container">
+        <div class="stage-header">
+          <div class="stage-title-group">
+            <span class="stage-badge" id="stageBadge">STYLE 01</span>
+            <span class="stage-active-name" id="stageTitle">01 Midnight Glass (深色玻璃擬態)</span>
+          </div>
+
+          <div class="stage-controls">
+            <!-- Device Toggle -->
+            <button class="device-btn active" onclick="setDevice('desktop')" id="devBtn-desktop">
+              <i class="fa-solid fa-desktop"></i> 桌機視圖
+            </button>
+            <button class="device-btn" onclick="setDevice('tablet')" id="devBtn-tablet">
+              <i class="fa-solid fa-tablet-screen-button"></i> 平板 (768px)
+            </button>
+            <button class="device-btn" onclick="setDevice('mobile')" id="devBtn-mobile">
+              <i class="fa-solid fa-mobile-screen"></i> 手機 (375px)
+            </button>
+
+            <!-- Reload -->
+            <button class="device-btn" onclick="reloadIframe()" title="重新整理">
+              <i class="fa-solid fa-rotate-right"></i>
+            </button>
+
+            <!-- Open in New Tab -->
+            <a href="01-midnight-glass.html" target="_blank" class="stage-action-link" id="stageOpenLink">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> 全尺寸獨立開啟
+            </a>
+          </div>
+        </div>
+
+        <div class="stage-viewport-wrapper">
+          <iframe src="01-midnight-glass.html" class="stage-iframe-frame" id="stageIframe" title="Emory Jan Style Demo"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+       18-STYLE GALLERY MATRIX
+    ======================================================== -->
+    <section class="matrix-section" id="gallery-18">
+      <div class="section-header">
+        <div class="section-eyebrow">18 VISUAL MATRIX</div>
+        <h2 class="section-title">18 大風格全景預覽矩陣</h2>
+        <p class="section-subtitle">
+          全套 18 種當代網頁視覺流派，專為 Emory Jan 開發者作品集精心打磨。點擊即可在上方舞台即時預覽或直接開啟完整頁面。
+        </p>
+      </div>
+
+      <div class="gallery-18-grid" id="matrixGrid">
+        <!-- Injected via JavaScript for consistent data -->
+      </div>
+    </section>
+
+    <!-- ========================================================
+       PROJECTS & TECH ECOSYSTEM
+    ======================================================== -->
+    <section class="projects-section" id="projects">
+      <div class="section-header">
+        <div class="section-eyebrow">FEATURED CREATIONS</div>
+        <h2 class="section-title">精選專案與技術探索</h2>
+        <p class="section-subtitle">
+          結合前端美學與後端運算的代表性作品
+        </p>
+      </div>
+
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-icon"><i class="fa-solid fa-brain"></i></div>
+          <h3 class="project-title">AI Knowledge Agent</h3>
+          <p class="project-desc">結合大型語言模型與即時檢索系統，為複雜技術文檔建立智慧問答與知識圖譜導覽。</p>
+          <div class="project-tags">
+            <span class="project-tag">Python</span>
+            <span class="project-tag">LLM / RAG</span>
+            <span class="project-tag">FastAPI</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-icon"><i class="fa-solid fa-palette"></i></div>
+          <h3 class="project-title">18-Style Design System</h3>
+          <p class="project-desc">純原生 Vanilla CSS 與極致排版架構，打造 18 種零依賴、現代流暢的視覺體驗庫。</p>
+          <div class="project-tags">
+            <span class="project-tag">CSS Tokens</span>
+            <span class="project-tag">Glassmorphism</span>
+            <span class="project-tag">JavaScript</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-icon"><i class="fa-solid fa-pizza-slice"></i></div>
+          <h3 class="project-title">Interactive Pizza Bot</h3>
+          <p class="project-desc">趣味互動式點餐與披薩推薦機器人，具備直覺的對話流程與視覺化配料選擇器。</p>
+          <div class="project-tags">
+            <span class="project-tag">Interactive UI</span>
+            <span class="project-tag">Web Audio</span>
+            <span class="project-tag">State Machine</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <p>© 2026 Emory Jan. All Rights Reserved. Crafted with Passion &amp; Precision.</p>
+    <p style="margin-top: 8px; font-size: 12px;">
+      18 Styles Gallery · <a href="#about">回到頂部 ↑</a>
+    </p>
+  </footer>
+
+  <script>
+    // 18 Styles Metadata
+    const STYLES_DATA = [
+      { id: "01", file: "01-midnight-glass.html", name: "Midnight Glass", nameZh: "深色玻璃擬態", desc: "深藍黑背景、柔和光暈、毛玻璃層次卡片，充滿現代科技感。", palette: ["#08111f", "#173c67", "#492b6e", "#eaf7ff"], specFont: "Inter", specRender: "Glassmorphism", specVibe: "科技沉浸" },
+      { id: "02", file: "02-aurora-gradient.html", name: "Aurora Gradient", nameZh: "極光漸層", desc: "夢幻漸變極光底色、柔和高光與漂浮半透明卡片。", palette: ["#0b0d1b", "#6366f1", "#ec4899", "#38bdf8"], specFont: "Inter", specRender: "Aurora Mesh", specVibe: "柔美光暈" },
+      { id: "03", file: "03-minimal-white.html", name: "Minimal White", nameZh: "極簡純白", desc: "俐落留白、精細邊框、黑白分明的現代高階履歷排版。", palette: ["#ffffff", "#f8fafc", "#0f172a", "#64748b"], specFont: "Inter", specRender: "Clean Minimal", specVibe: "極簡典雅" },
+      { id: "04", file: "04-editorial-serif.html", name: "Editorial Serif", nameZh: "雜誌編輯", desc: "古典襯線大標、報刊式分欄、富有文化底蘊的作品敘事。", palette: ["#fcfbf7", "#1c1917", "#78716c", "#d97706"], specFont: "Playfair Display", specRender: "Editorial", specVibe: "藝文質感" },
+      { id: "05", file: "05-terminal-dev.html", name: "Terminal Dev", nameZh: "開發者終端", desc: "經典命令列風格、等寬代碼字體、終端機提示符與黑魂底色。", palette: ["#0a0e14", "#00ff66", "#38bdf8", "#475569"], specFont: "JetBrains Mono", specRender: "CLI Terminal", specVibe: "極客硬核" },
+      { id: "06", file: "06-neo-brutal.html", name: "Neo Brutal", nameZh: "新粗獷主義", desc: "粗黑邊框、高飽和色塊、硬直角陰影，潮流態度鮮明突出。", palette: ["#fffdf0", "#ff5c5c", "#ffe600", "#121212"], specFont: "Plus Jakarta", specRender: "Hard Shadow", specVibe: "街頭復古" },
+      { id: "07", file: "07-bento-portfolio.html", name: "Bento Portfolio", nameZh: "Bento 便當盒格狀", desc: "高密度模組化格狀排版，現代 Apple 風 Bento 佈局。", palette: ["#09090b", "#18181b", "#27272a", "#3b82f6"], specFont: "Outfit", specRender: "Bento Grid", specVibe: "高效直觀" },
+      { id: "08", file: "08-soft-pastel.html", name: "Soft Pastel", nameZh: "柔和粉彩", desc: "低飽和馬卡龍配色、圓角卡片、溫暖親切的友善氛圍。", palette: ["#faf5ff", "#e0e7ff", "#fce7f3", "#374151"], specFont: "Fredoka", specRender: "Soft Pill", specVibe: "溫馨親和" },
+      { id: "09", file: "09-cyber-neon.html", name: "Cyber Neon", nameZh: "賽博霓虹", desc: "暗夜霓虹青紫高光、掃描線濾鏡、未來科技視覺張力。", palette: ["#05050d", "#00f0ff", "#ff007f", "#7928ca"], specFont: "Chakra Petch", specRender: "Neon Glow", specVibe: "未來賽博" },
+      { id: "10", file: "10-nordic-calm.html", name: "Nordic Calm", nameZh: "北歐冷靜", desc: "低彩度灰調、冷調石板藍、克制理性的幾何空間排版。", palette: ["#0f172a", "#1e293b", "#334155", "#94a3b8"], specFont: "Inter", specRender: "Slate Calm", specVibe: "理智沉著" },
+      { id: "11", file: "11-monochrome-pro.html", name: "Monochrome Pro", nameZh: "黑白專業", desc: "極致灰階黑白，強烈的字體層級，如攝影藝術集般的純粹。", palette: ["#000000", "#121212", "#262626", "#ffffff"], specFont: "Space Grotesk", specRender: "Mono Contrast", specVibe: "高奢純粹" },
+      { id: "12", file: "12-blueprint.html", name: "Blueprint", nameZh: "工程藍圖", desc: "工程坐標網格線、技術標註、精準嚴謹的工匠作品集。", palette: ["#0a192f", "#172a45", "#64ffda", "#8892b0"], specFont: "JetBrains Mono", specRender: "Tech Grid", specVibe: "工程嚴謹" },
+      { id: "13", file: "13-card-stack.html", name: "Card Stack", nameZh: "卡片堆疊", desc: "層次分明的立體卡片階層、深度陰影、節奏鮮明的滑動體驗。", palette: ["#0f111a", "#1a1d2d", "#6366f1", "#ffffff"], specFont: "Outfit", specRender: "Depth Shadow", specVibe: "立體立現" },
+      { id: "14", file: "14-split-hero.html", name: "Split Hero", nameZh: "左右分割", desc: "左側強烈自我介紹定位，右側瀑布式作品展示，結構明晰。", palette: ["#0d1117", "#161b22", "#58a6ff", "#f0f6fc"], specFont: "Inter", specRender: "Split Pane", specVibe: "主次分明" },
+      { id: "15", file: "15-timeline-cv.html", name: "Timeline CV", nameZh: "時間軸履歷", desc: "以年份與成就為主的經歷時間軸，清晰串連職涯與專案成果。", palette: ["#111827", "#1f2937", "#10b981", "#e5e7eb"], specFont: "Inter", specRender: "Timeline", specVibe: "歷程脈絡" },
+      { id: "16", file: "16-gradient-mesh.html", name: "Gradient Mesh", nameZh: "Mesh 漸層微霧", desc: "動態多色 Mesh 柔霧漸層底色，搭配極致輕透的資訊容器。", palette: ["#130a2a", "#8b5cf6", "#ec4899", "#06b6d4"], specFont: "Montserrat", specRender: "Mesh Glow", specVibe: "色彩幻境" },
+      { id: "17", file: "17-dark-editorial.html", name: "Dark Editorial", nameZh: "暗色雜誌", desc: "暗底搭配襯線大字與燙金點綴，精品級的沉穩奢華出版物感。", palette: ["#0a0a0a", "#1a1a1a", "#d4af37", "#f5f5f5"], specFont: "Cormorant", specRender: "Luxury Gold", specVibe: "低調奢華" },
+      { id: "18", file: "18-interactive-tiles.html", name: "Interactive Tiles", nameZh: "互動磁磚", desc: "大型磁磚方塊、流暢 Hover 縮放與活潑的多維度資訊呈現。", palette: ["#0b0f19", "#111827", "#3b82f6", "#f3f4f6"], specFont: "Inter", specRender: "Tile Bento", specVibe: "生動互動" }
+    ];
+
+    let currentStyleId = "01";
+
+    // Initialize UI
+    function initUI() {
+      renderNavTabs();
+      renderMatrixGrid();
+      loadStyle("01", false);
+    }
+
+    // Render Nav Tabs
+    function renderNavTabs() {
+      const container = document.getElementById("styleNavTabs");
+      container.innerHTML = STYLES_DATA.map(s => `
+        <button class="style-tab-btn ${s.id === currentStyleId ? 'active' : ''}" 
+                id="tabBtn-${s.id}" 
+                onclick="loadStyle('${s.id}')">
+          <i class="fa-solid fa-palette"></i>
+          <span>${s.id} ${s.name}</span>
+        </button>
+      `).join("");
+    }
+
+    // Render Matrix Grid
+    function renderMatrixGrid() {
+      const grid = document.getElementById("matrixGrid");
+      grid.innerHTML = STYLES_DATA.map(s => `
+        <div class="style-card-preview" id="card-${s.id}">
+          <div>
+            <div class="style-card-header">
+              <span class="style-num-badge">STYLE ${s.id}</span>
+              <span style="font-size: 13px; color: var(--accent-cyan); font-weight: 700;">${s.nameZh}</span>
+            </div>
+            <h3 class="style-card-name">${s.name}</h3>
+            <p class="style-card-desc">${s.desc}</p>
+            <div class="style-palette-row">
+              ${s.palette.map(c => `<div class="color-dot" style="background: ${c};" title="${c}"></div>`).join("")}
+            </div>
+            <div class="style-card-specs">
+              <span class="spec-tag"><i class="fa-solid fa-font"></i> ${s.specFont}</span>
+              <span class="spec-tag"><i class="fa-solid fa-layer-group"></i> ${s.specRender}</span>
+              <span class="spec-tag"><i class="fa-solid fa-sparkles"></i> ${s.specVibe}</span>
+            </div>
+          </div>
+          <div class="style-card-actions">
+            <button class="btn-card-preview" onclick="loadStyle('${s.id}', true)">
+              <i class="fa-solid fa-tv"></i> 在舞台預覽
+            </button>
+            <a href="${s.file}" target="_blank" class="btn-card-open">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> 全尺寸開啟
+            </a>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    // Load Style into Simulator Stage
+    function loadStyle(id, scrollToStage = false) {
+      currentStyleId = id;
+      const s = STYLES_DATA.find(item => item.id === id);
+      if (!s) return;
+
+      // Update Nav Tabs Active Class
+      document.querySelectorAll(".style-tab-btn").forEach(btn => btn.classList.remove("active"));
+      const activeBtn = document.getElementById(`tabBtn-${id}`);
+      if (activeBtn) {
+        activeBtn.classList.add("active");
+        activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+
+      // Update Stage Info
+      document.getElementById("stageBadge").innerText = `STYLE ${s.id}`;
+      document.getElementById("stageTitle").innerText = `${s.id} ${s.name} (${s.nameZh})`;
+      document.getElementById("stageOpenLink").href = s.file;
+
+      // Update Iframe
+      const iframe = document.getElementById("stageIframe");
+      iframe.src = s.file;
+
+      document.documentElement.setAttribute("data-active-style", s.id);
+
+      showToast(`已載入風格：${s.id} · ${s.name} (${s.nameZh})`);
+
+      if (scrollToStage) {
+        const stageEl = document.getElementById("stage");
+        if (stageEl) {
+          stageEl.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    }
+
+    // Device View Toggle
+    function setDevice(type) {
+      const iframe = document.getElementById("stageIframe");
+      iframe.className = `stage-iframe-frame ${type}`;
+
+      document.querySelectorAll(".device-btn").forEach(b => b.classList.remove("active"));
+      const targetBtn = document.getElementById(`devBtn-${type}`);
+      if (targetBtn) targetBtn.classList.add("active");
+
+      showToast(`切換預覽視圖：${type.toUpperCase()}`);
+    }
+
+    function reloadIframe() {
+      const iframe = document.getElementById("stageIframe");
+      iframe.src = iframe.src;
+      showToast("已重新載入模擬舞台");
+    }
+
+    // Theme Toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute("data-theme") || "dark";
+      const next = current === "dark" ? "light" : "dark";
+      html.setAttribute("data-theme", next);
+
+      const btn = document.getElementById("themeBtn");
+      btn.innerHTML = next === "dark" ? '<i class="fa-solid fa-moon"></i> <span>深色</span>' : '<i class="fa-solid fa-sun"></i> <span>淺色</span>';
+      showToast(`主題已切換為：${next === "dark" ? "深色模式" : "淺色模式"}`);
+    }
+
+    // Render Mode Change
+    function changeRender(mode) {
+      document.documentElement.setAttribute("data-render", mode);
+      showToast(`渲染特效模式：${mode.toUpperCase()}`);
+    }
+
+    // Hue Slider
+    function updateHue(val) {
+      document.documentElement.style.setProperty("--hue", val);
+    }
+
+    // Pick Random Style
+    function pickRandomStyle() {
+      const randomIndex = Math.floor(Math.random() * STYLES_DATA.length);
+      const randomStyle = STYLES_DATA[randomIndex];
+      loadStyle(randomStyle.id, true);
+    }
+
+    // Toast Function
+    function showToast(msg) {
+      const toast = document.getElementById("toastNotify");
+      document.getElementById("toastMsg").innerText = msg;
+      toast.classList.add("show");
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2600);
+    }
+
+    // Keyboard Navigation
+    window.addEventListener("keydown", (e) => {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+      const curIdx = STYLES_DATA.findIndex(s => s.id === currentStyleId);
+      if (e.key === "ArrowRight") {
+        const nextIdx = (curIdx + 1) % STYLES_DATA.length;
+        loadStyle(STYLES_DATA[nextIdx].id);
+      } else if (e.key === "ArrowLeft") {
+        const prevIdx = (curIdx - 1 + STYLES_DATA.length) % STYLES_DATA.length;
+        loadStyle(STYLES_DATA[prevIdx].id);
+      }
+    });
+
+    // Start
+    initUI();
+  </script>
+</body>
+</html>
