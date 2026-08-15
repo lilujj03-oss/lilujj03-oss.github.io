@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>視覺風格範例展示庫 | 5 種核心設計風格實例</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', 'Noto Sans TC', sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Demo Navigation Bar */
+    .style-picker-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 14px 20px;
+    }
+    .picker-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .picker-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .style-nav-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .style-tab-btn {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+    }
+    .style-tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .style-tab-btn.active {
+      color: #fff;
+      background: #3b82f6;
+      border-color: #60a5fa;
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+    }
+
+    /* Style Stage */
+    .demo-stage {
+      flex: 1;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.4s ease;
+    }
+
+    /* ========================================================
+       STYLE 1: 極簡純白／蘋果風 (Apple Minimalist White)
+    ======================================================== */
+    .preview-box.style-apple {
+      background: #ffffff;
+      color: #1d1d1f;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+      max-width: 900px;
+      width: 100%;
+      padding: 48px;
+      border: 1px solid #f0f0f2;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+    }
+    .style-apple .badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #86868b;
+      margin-bottom: 12px;
+    }
+    .style-apple h1 {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #1d1d1f;
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+    .style-apple p.desc {
+      font-size: 17px;
+      color: #6e6e73;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      max-width: 680px;
+    }
+    .style-apple .grid-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+    .style-apple .card {
+      background: #f5f5f7;
+      border-radius: 16px;
+      padding: 24px;
+      transition: transform 0.25s ease;
+    }
+    .style-apple .card:hover {
+      transform: translateY(-3px);
+    }
+    .style-apple .card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #1d1d1f;
+    }
+    .style-apple .card p {
+      font-size: 13px;
+      color: #86868b;
+      line-height: 1.5;
+    }
+    .style-apple .btn-group {
+      display: flex;
+      gap: 12px;
+    }
+    .style-apple .btn-main {
+      padding: 12px 24px;
+      background: #0071e3;
+      color: #ffffff;
+      border-radius: 980px;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .style-apple .btn-main:hover { background: #0077ed; }
+    .style-apple .btn-sub {
+      padding: 12px 24px;
+      background: #f5f5f7;
+      color: #0071e3;
+      border-radius: 980px;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* ========================================================
+       STYLE 2: 俐落黑白極客風 (Monochrome Dark Geek)
+    ======================================================== */
+    .preview-box.style-geek {
+      background: #09090b;
+      color: #fafafa;
+      border-radius: 16px;
+      box-shadow: 0 0 0 1px #27272a, 0 20px 40px rgba(0, 0, 0, 0.8);
+      max-width: 900px;
+      width: 100%;
+      padding: 40px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .style-geek .terminal-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #27272a;
+    }
+    .style-geek .t-dot { width: 10px; height: 10px; border-radius: 50%; background: #3f3f46; }
+    .style-geek h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+    .style-geek h1 span { color: #a1a1aa; }
+    .style-geek p.desc {
+      font-size: 14px;
+      color: #a1a1aa;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .style-geek .code-block {
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 10px;
+      padding: 16px;
+      font-size: 13px;
+      color: #e4e4e7;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    .style-geek .code-block .tag { color: #a1a1aa; }
+    .style-geek .code-block .str { color: #ffffff; font-weight: 600; }
+    .style-geek .btn-group { display: flex; gap: 12px; }
+    .style-geek .btn-main {
+      padding: 10px 20px;
+      background: #ffffff;
+      color: #09090b;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .style-geek .btn-sub {
+      padding: 10px 20px;
+      background: transparent;
+      color: #a1a1aa;
+      border: 1px solid #27272a;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .style-geek .btn-sub:hover { color: #fff; border-color: #71717a; }
+
+    /* ========================================================
+       STYLE 3: 賽博霓虹科技風 (Cyber Neon & Dark Tech)
+    ======================================================== */
+    .preview-box.style-cyber {
+      background: rgba(13, 17, 34, 0.85);
+      color: #f1f5f9;
+      border-radius: 24px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      box-shadow: 0 0 40px rgba(56, 189, 248, 0.15), 0 20px 50px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(16px);
+      max-width: 900px;
+      width: 100%;
+      padding: 44px;
+      position: relative;
+      overflow: hidden;
+    }
+    .style-cyber::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.25), transparent 70%);
+      pointer-events: none;
+    }
+    .style-cyber .glow-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    .style-cyber h1 {
+      font-size: 38px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #38bdf8 0%, #a855f7 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .style-cyber p.desc {
+      font-size: 16px;
+      color: #cbd5e1;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+    .style-cyber .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .style-cyber .tech-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 20px;
+      transition: all 0.3s;
+    }
+    .style-cyber .tech-card:hover {
+      border-color: #38bdf8;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+      transform: translateY(-3px);
+    }
+    .style-cyber .tech-card i { font-size: 22px; color: #38bdf8; margin-bottom: 8px; }
+    .style-cyber .tech-card h4 { font-size: 15px; margin-bottom: 4px; }
+    .style-cyber .tech-card span { font-size: 12px; color: #94a3b8; }
+    .style-cyber .btn-group { display: flex; gap: 14px; }
+    .style-cyber .btn-main {
+      padding: 12px 26px;
+      background: linear-gradient(135deg, #0284c7, #7c3aed);
+      color: #fff;
+      border-radius: 10px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+      transition: transform 0.2s;
+    }
+    .style-cyber .btn-main:hover { transform: scale(1.03); }
+
+    /* ========================================================
+       STYLE 4: 日系簡約清新／大地生活風 (Japanese Clean & Earthy)
+    ======================================================== */
+    .preview-box.style-zen {
+      background: #faf8f5;
+      color: #3d3b38;
+      border-radius: 20px;
+      box-shadow: 0 15px 45px rgba(90, 80, 70, 0.08);
+      max-width: 900px;
+      width: 100%;
+      padding: 50px 48px;
+      border: 1px solid #eee8e0;
+      font-family: 'Noto Sans TC', sans-serif;
+    }
+    .style-zen .kicker {
+      font-size: 13px;
+      font-weight: 600;
+      color: #78716c;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .style-zen .kicker::before {
+      content: '';
+      width: 16px;
+      height: 2px;
+      background: #a8a29e;
+    }
+    .style-zen h1 {
+      font-size: 34px;
+      font-weight: 700;
+      color: #292524;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+    .style-zen p.desc {
+      font-size: 15px;
+      color: #57534e;
+      line-height: 1.85;
+      margin-bottom: 30px;
+    }
+    .style-zen .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .style-zen .item {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #e7e5e4;
+    }
+    .style-zen .item h4 {
+      font-size: 15px;
+      color: #44403c;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .style-zen .item p {
+      font-size: 13px;
+      color: #78716c;
+      line-height: 1.6;
+    }
+    .style-zen .btn-group { display: flex; gap: 12px; }
+    .style-zen .btn-main {
+      padding: 11px 24px;
+      background: #44403c;
+      color: #fafaf9;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .style-zen .btn-main:hover { background: #292524; }
+    .style-zen .btn-sub {
+      padding: 11px 24px;
+      background: #ffffff;
+      color: #57534e;
+      border: 1px solid #d6d3d1;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ========================================================
+       STYLE 5: 典雅文藝雜誌／金色襯線風 (Editorial Serif & Luxury Gold)
+    ======================================================== */
+    .preview-box.style-editorial {
+      background: #fdfcf9;
+      color: #2b2621;
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+      max-width: 900px;
+      width: 100%;
+      padding: 52px;
+      border: 1px solid #eee8db;
+      font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+    }
+    .style-editorial .subhead {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #d97706;
+      margin-bottom: 12px;
+    }
+    .style-editorial h1 {
+      font-size: 44px;
+      font-weight: 700;
+      color: #1a252f;
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+    .style-editorial .gold-line {
+      width: 50px;
+      height: 3px;
+      background: #d97706;
+      border-radius: 2px;
+      margin-bottom: 22px;
+    }
+    .style-editorial p.desc {
+      font-family: 'Inter', 'Noto Sans TC', sans-serif;
+      font-size: 15px;
+      color: #475569;
+      line-height: 1.85;
+      margin-bottom: 30px;
+    }
+    .style-editorial .quote-card {
+      background: #ffffff;
+      border-left: 3px solid #d97706;
+      padding: 20px 24px;
+      border-radius: 0 12px 12px 0;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+      margin-bottom: 32px;
+    }
+    .style-editorial .quote-card h4 {
+      font-size: 19px;
+      font-weight: 700;
+      color: #1a252f;
+      margin-bottom: 4px;
+    }
+    .style-editorial .quote-card p {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #64748b;
+    }
+    .style-editorial .btn-group { display: flex; gap: 14px; }
+    .style-editorial .btn-main {
+      font-family: 'Inter', sans-serif;
+      padding: 12px 28px;
+      background: #1a252f;
+      color: #ffffff;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+    .style-editorial .btn-main:hover { background: #d97706; }
+    .style-editorial .btn-sub {
+      font-family: 'Inter', sans-serif;
+      padding: 12px 24px;
+      background: transparent;
+      color: #1a252f;
+      border: 1px solid rgba(26, 37, 47, 0.2);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Style Guide Summary Box below stage */
+    .style-info-panel {
+      max-width: 900px;
+      margin: 0 auto 50px auto;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .style-info-panel h3 {
+      font-size: 17px;
+      color: #38bdf8;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .style-info-panel ul {
+      margin-left: 20px;
+      color: #cbd5e1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Selector Bar -->
+  <header class="style-picker-bar">
+    <div class="picker-container">
+      <div class="picker-title">
+        <i class="fa-solid fa-palette"></i>
+        <span>視覺設計風格即時展示切換器</span>
+      </div>
+      <div class="style-nav-tabs">
+        <button class="style-tab-btn active" onclick="switchStyle('apple')">
+          <i class="fa-brands fa-apple"></i> 1. 極簡純白風
+        </button>
+        <button class="style-tab-btn" onclick="switchStyle('geek')">
+          <i class="fa-solid fa-terminal"></i> 2. 俐落黑白極客風
+        </button>
+        <button class="style-tab-btn" onclick="switchStyle('cyber')">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> 3. 賽博霓虹科技風
+        </button>
+        <button class="style-tab-btn" onclick="switchStyle('zen')">
+          <i class="fa-solid fa-seedling"></i> 4. 日系清新大地風
+        </button>
+        <button class="style-tab-btn" onclick="switchStyle('editorial')">
+          <i class="fa-solid fa-feather-pointed"></i> 5. 典雅金色雜誌風
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Interactive Stage -->
+  <main class="demo-stage" id="stage">
+
+    <!-- 1. Apple Minimalist White -->
+    <div class="preview-box style-apple" id="demo-apple">
+      <span class="badge">Style 01 · Minimalist White</span>
+      <h1>極簡純白 · 專注本質與呼吸感</h1>
+      <p class="desc">
+        源自現代 Apple 與 Swiss Design 美學。大量通透留白、精細排版字距、低彩度灰階底襯，突顯最純粹的內容與沉浸式閱讀體驗。
+      </p>
+      <div class="grid-row">
+        <div class="card">
+          <h3>精緻克制</h3>
+          <p>不使用過度花俏的裝飾，以最高品質的間距與字體展現專業質感。</p>
+        </div>
+        <div class="card">
+          <h3>流暢微互動</h3>
+          <p>按鈕與卡片具備細緻的 Hover 動態反饋與圓角曲線。</p>
+        </div>
+        <div class="card">
+          <h3>極致易讀性</h3>
+          <p>灰階層次對比分明，適合作品集、文檔與產品展示頁面。</p>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn-main">探索專案體驗</button>
+        <button class="btn-sub">了解更多細節</button>
+      </div>
+    </div>
+
+    <!-- 2. Monochrome Dark Geek (Hidden by default) -->
+    <div class="preview-box style-geek" id="demo-geek" style="display: none;">
+      <div class="terminal-bar">
+        <span class="t-dot"></span>
+        <span class="t-dot"></span>
+        <span class="t-dot"></span>
+        <span style="color: #52525b; font-size: 12px; margin-left: 8px;">user@developer-workspace: ~</span>
+      </div>
+      <h1>&gt; MONOCHROME_<span>GEEK</span></h1>
+      <p class="desc">
+        純粹的黑灰白工程師極客美學。極高對比、終端機等寬字體、清晰俐落的 1px 邊框，展現專注於程式碼、演算法與邏輯的純粹力量。
+      </p>
+      <div class="code-block">
+        <p><span class="tag">const</span> developer = {</p>
+        <p>&nbsp;&nbsp;name: <span class="str">"lilujj03-oss"</span>,</p>
+        <p>&nbsp;&nbsp;skills: [<span class="str">"JavaScript"</span>, <span class="str">"Web Dev"</span>, <span class="str">"Smart Recommendation"</span>],</p>
+        <p>&nbsp;&nbsp;aesthetic: <span class="str">"Minimalist Dark &amp; High Contrast"</span></p>
+        <p>};</p>
+      </div>
+      <div class="btn-group">
+        <button class="btn-main">$ run_build</button>
+        <button class="btn-sub">$ view_github_repo</button>
+      </div>
+    </div>
+
+    <!-- 3. Cyber Neon & Dark Tech (Hidden by default) -->
+    <div class="preview-box style-cyber" id="demo-cyber" style="display: none;">
+      <span class="glow-tag"><i class="fa-solid fa-bolt"></i> STYLE 03 · CYBER NEON TECH</span>
+      <h1>賽博霓虹 · 現代科技毛玻璃</h1>
+      <p class="desc">
+        深邃暗黑夜幕搭配青藍（Cyan）與紫羅蘭（Violet）發光漸層，搭配 Glassmorphism 毛玻璃多層次光影，呈現極具未來感與動態張力的科技視覺。
+      </p>
+      <div class="tech-grid">
+        <div class="tech-card">
+          <i class="fa-solid fa-cube"></i>
+          <h4>毛玻璃動態</h4>
+          <span>Backdrop Filter 深度光澤</span>
+        </div>
+        <div class="tech-card">
+          <i class="fa-solid fa-chart-line"></i>
+          <h4>智能演算法</h4>
+          <span>披薩推薦與數據決策</span>
+        </div>
+        <div class="tech-card">
+          <i class="fa-solid fa-atom"></i>
+          <h4>流暢微動效</h4>
+          <span>GSAP & 懸停光暈回饋</span>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn-main"><i class="fa-solid fa-rocket"></i> 啟動線上展示</button>
+      </div>
+    </div>
+
+    <!-- 4. Japanese Clean & Earthy (Hidden by default) -->
+    <div class="preview-box style-zen" id="demo-zen" style="display: none;">
+      <div class="kicker">STYLE 04 · JAPANESE EARTHY</div>
+      <h1>日系簡約 · 溫潤大地與自然沉靜</h1>
+      <p class="desc">
+        以和紙米白、暖灰、亞麻與大地木質色調為基底。溫暖親切、不刺眼、充滿自然呼吸感的視覺節奏，營造令人感到平靜安心的閱讀氛圍。
+      </p>
+      <div class="feature-list">
+        <div class="item">
+          <h4><i class="fa-solid fa-leaf" style="color: #78716c;"></i> 溫和舒適配色</h4>
+          <p>米白與暖灰調和，長時間觀看依然舒適自在。</p>
+        </div>
+        <div class="item">
+          <h4><i class="fa-solid fa-circle-notch" style="color: #78716c;"></i> 簡樸俐落排版</h4>
+          <p>捨棄繁複陰影與強烈漸層，回歸純粹圖文韻律。</p>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn-main">閱讀個人故事</button>
+        <button class="btn-sub">瀏覽作品目錄</button>
+      </div>
+    </div>
+
+    <!-- 5. Editorial Serif & Luxury Gold (Hidden by default) -->
+    <div class="preview-box style-editorial" id="demo-editorial" style="display: none;">
+      <div class="subhead">Style 05 · Editorial &amp; Gold Serif</div>
+      <h1>典雅雜誌 · 襯線字體與經典金琥珀</h1>
+      <div class="gold-line"></div>
+      <p class="desc">
+        採用經典 Cormorant Garamond 襯線字體，搭配琥珀金（Amber Gold）與深海軍藍（Deep Navy）。呈現如精品雜誌般的雙欄卡片、典雅風範與尊貴質感。
+      </p>
+      <div class="quote-card">
+        <h4>「將每一次實作，都打磨成一件值得品味的作品。」</h4>
+        <p>結合人文情懷與現代程式編碼，在細節處展現美學追求。</p>
+      </div>
+      <div class="btn-group">
+        <button class="btn-main">瀏覽典雅專案 <span>→</span></button>
+        <button class="btn-sub">探索關於我</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Style Info Panel -->
+  <section class="style-info-panel">
+    <h3 id="info-title"><i class="fa-solid fa-circle-info"></i> 當前風格特性分析</h3>
+    <p id="info-desc" style="margin-bottom: 10px; color: #94a3b8;">
+      點擊上方 5 個按鈕可即時切換預覽不同風格的配色、字體與按鈕互動效果。
+    </p>
+    <ul id="info-list">
+      <li><strong>代表色系</strong>：#ffffff（純白）/ #f5f5f7（淡灰）/ #0071e3（Apple 藍）</li>
+      <li><strong>字體搭配</strong>：Inter / SF Pro 無襯線現代字體</li>
+      <li><strong>適合場景</strong>：注重乾淨清晰、極致留白、現代科技產品展示。</li>
+    </ul>
+  </section>
+
+  <script>
+    const styleData = {
+      apple: {
+        title: "1. 極簡純白／蘋果風 (Minimalist Apple White)",
+        desc: "以極致留白、細緻無襯線字體與微光澤灰階底色為特色，散發俐落高雅的現代科技感。",
+        items: [
+          "<strong>代表色彩</strong>：純白背景 (#ffffff)、柔灰卡片 (#f5f5f7)、蘋果藍焦點色 (#0071e3)。",
+          "<strong>字體排版</strong>：現代無襯線體（Inter / SF Pro），字距緊湊、層次分明。",
+          "<strong>適用對象</strong>：喜歡乾淨純粹、無雜訊、如 Apple / Notion 般現代質感的版面。"
+        ]
+      },
+      geek: {
+        title: "2. 俐落黑白極客風 (Monochrome Dark Geek)",
+        desc: "專注於代碼本質的單色黑白風格，以純黑背景、終端機 monospace 字體與硬朗線條展現純粹開發者力量。",
+        items: [
+          "<strong>代表色彩</strong>：純黑 (#09090b)、深灰邊框 (#27272a)、純白字體 (#ffffff)。",
+          "<strong>字體排版</strong>：JetBrains Mono / Consolas 等寬代碼字體，搭配終端機符號（> / $）。",
+          "<strong>適用對象</strong>：熱愛工程師硬核風格、純粹代碼質感、極高對比無干擾體驗。"
+        ]
+      },
+      cyber: {
+        title: "3. 現代暗色科技／賽博霓虹風 (Cyber Neon Tech)",
+        desc: "深邃暗夜底色融合青藍、紫羅蘭發光漸層（Glow）與 Glassmorphism 毛玻璃卡片，極具未來感與視覺張力。",
+        items: [
+          "<strong>代表色彩</strong>：深海軍黑 (#0a0f1d)、霓虹青藍 (#38bdf8)、賽博紫羅蘭 (#a855f7)。",
+          "<strong>字體排版</strong>：Montserrat + 漸層標題 + 發光徽章標籤。",
+          "<strong>適用對象</strong>：希望作品集具有強烈第一眼視覺震撼（Wow factor）、動態感十足。"
+        ]
+      },
+      zen: {
+        title: "4. 日系簡約清新／大地生活風 (Japanese Clean & Earthy)",
+        desc: "以溫暖和紙米白、暖灰、亞麻色調為主，溫潤沉靜、低刺激性、極具生活與自然氣息。",
+        items: [
+          "<strong>代表色彩</strong>：暖米白 (#faf8f5)、石板暖灰 (#78716c)、深木炭褐 (#292524)。",
+          "<strong>字體排版</strong>：Noto Sans TC / 溫和排版，行距寬鬆舒適。",
+          "<strong>適用對象</strong>：追求溫暖親切、人文氣息、不刺眼的舒適自然閱讀體驗。"
+        ]
+      },
+      editorial: {
+        title: "5. 典雅文藝雜誌／金色襯線風 (Editorial Serif & Luxury Gold)",
+        desc: "採用典雅襯線字體、琥珀金裝飾線與雙欄卡片佈局，呈現歐洲精品與設計雜誌般的典雅氣質。",
+        items: [
+          "<strong>代表色彩</strong>：羊皮紙淺底 (#fdfcf9)、深墨藍 (#1a252f)、琥珀金 (#d97706)。",
+          "<strong>字體排版</strong>：Cormorant Garamond 襯線字體 + Noto Serif TC。",
+          "<strong>適用對象</strong>：目前作品集與 AboutMe 採用的風格，適合注重文藝品味與精緻排版。"
+        ]
+      }
+    };
+
+    function switchStyle(styleKey) {
+      // Update Tab Buttons
+      const buttons = document.querySelectorAll('.style-tab-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      // Update Preview Boxes
+      const boxes = document.querySelectorAll('.preview-box');
+      boxes.forEach(box => box.style.display = 'none');
+
+      const targetBox = document.getElementById(`demo-${styleKey}`);
+      if (targetBox) {
+        targetBox.style.display = 'block';
+      }
+
+      // Update Info Panel
+      const info = styleData[styleKey];
+      if (info) {
+        document.getElementById('info-title').innerHTML = `<i class="fa-solid fa-circle-info"></i> ${info.title}`;
+        document.getElementById('info-desc').innerText = info.desc;
+        const listEl = document.getElementById('info-list');
+        listEl.innerHTML = info.items.map(item => `<li>${item}</li>`).join('');
+      }
+    }
+  </script>
+</body>
+</html>
