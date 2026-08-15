@@ -25,6 +25,23 @@ createApp({
                     }
                 },
                 {
+                    id: 'style-demos',
+                    name: '18 Visual Design Styles Library',
+                    nameZh: '🎨 18 大頂級視覺風格展示庫',
+                    badge: 'Interactive Tool',
+                    badgeZh: '互動設計工具庫',
+                    description: 'An interactive design showcase featuring 18 distinctive UI aesthetics including Apple Minimal, Cyberpunk, Neo-Brutalism, Neumorphism, Retro 8-Bit, and Vaporwave.',
+                    descriptionZh: '收錄了 18 種當代頂級網頁視覺設計流派的即時切換展示庫。涵蓋極簡蘋果風、黑白極客、賽博霓虹、包浩斯、新粗獷、新擬物、水墨、多巴胺與重工金屬等多元風格。',
+                    icon: 'fa-palette',
+                    link: './style-demos.html',
+                    demo: './style-demos.html',
+                    github: 'https://github.com/lilujj03-oss/lilujj03-oss.github.io/blob/main/style-demos.html',
+                    color: '#ec4899',
+                    bgStyle: {
+                        background: 'linear-gradient(135deg, #be185d 0%, #7c3aed 50%, #0f172a 100%)'
+                    }
+                },
+                {
                     id: 'profile-v1',
                     name: 'Developer Profile v1 (Minimalist Dark)',
                     nameZh: '💻 個人自介 v1 · 極簡暗色風',
