@@ -1236,7 +1236,17 @@
       const s = STYLES_DATA.find(item => item.id === id);
       if (!s) return;
 
-      // 1. Update Nav Tabs Active Class
+      // 1. Dynamic Atmosphere & Palette Shift (Instant Visual Feedback Everywhere)
+      if (s.palette && s.palette.length >= 2) {
+        document.documentElement.style.setProperty("--bg-grad-start", s.palette[0]);
+        document.documentElement.style.setProperty("--orb-purple", s.palette[1]);
+        if (s.palette[2]) {
+          document.documentElement.style.setProperty("--orb-cyan", s.palette[2]);
+          document.documentElement.style.setProperty("--accent-cyan", s.palette[2]);
+        }
+      }
+
+      // 2. Update Nav Tabs Active Class & Horizontal Scroll
       document.querySelectorAll(".style-tab-btn").forEach(btn => btn.classList.remove("active"));
       const activeBtn = document.getElementById(`tabBtn-${id}`);
       if (activeBtn) {
@@ -1244,19 +1254,22 @@
         activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       }
 
-      // 2. Update Matrix Card Active Glow Class
+      // 3. Update Matrix Card Active Glow Class
       document.querySelectorAll(".style-card-preview").forEach(card => card.classList.remove("active"));
       const activeCard = document.getElementById(`card-${id}`);
       if (activeCard) {
         activeCard.classList.add("active");
       }
 
-      // 3. Update Stage Info
-      document.getElementById("stageBadge").innerText = `STYLE ${s.id}`;
-      document.getElementById("stageTitle").innerText = `${s.id} ${s.name} (${s.nameZh})`;
-      document.getElementById("stageOpenLink").href = s.file;
+      // 4. Update Stage Info
+      const stageBadge = document.getElementById("stageBadge");
+      const stageTitle = document.getElementById("stageTitle");
+      const stageOpenLink = document.getElementById("stageOpenLink");
+      if (stageBadge) stageBadge.innerText = `STYLE ${s.id}`;
+      if (stageTitle) stageTitle.innerText = `${s.id} ${s.name} (${s.nameZh})`;
+      if (stageOpenLink) stageOpenLink.href = s.file;
 
-      // 4. Update Iframe
+      // 5. Update Iframe
       const iframe = document.getElementById("stageIframe");
       if (iframe) {
         iframe.src = s.file;
@@ -1264,18 +1277,14 @@
 
       document.documentElement.setAttribute("data-active-style", s.id);
 
-      showToast(`已載入風格：${s.id} · ${s.name} (${s.nameZh})`);
+      // 6. Show Toast
+      showToast(`已切換風格：${s.id} · ${s.name} (${s.nameZh})`);
 
+      // 7. Scroll smoothly to Stage Simulator if requested
       if (scrollToStage) {
         const stageEl = document.getElementById("stage");
         if (stageEl) {
-          const headerOffset = 80;
-          const elementPosition = stageEl.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: "smooth"
-          });
+          stageEl.scrollIntoView({ behavior: "smooth", block: "center" });
         }
       }
     }
