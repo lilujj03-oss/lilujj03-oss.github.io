@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="lilujj03-oss 個人科技與互動自介網頁 v3">
+  <title>lilujj03-oss | 科技互動個人自介 v3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="v3-header">
+    <nav class="v3-nav">
+      <a href="../index.html" class="v3-logo">
+        <i class="fa-solid fa-cube"></i>
+        <span>lilujj03-oss</span>
+      </a>
+      <div class="v3-nav-links">
+        <a href="../index.html"><i class="fa-solid fa-arrow-left"></i> 回到作品集</a>
+        <a href="https://github.com/lilujj03-oss" target="_blank" class="v3-nav-btn">
+          <i class="fa-brands fa-github"></i> GitHub
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Container -->
+  <main class="v3-container">
+    <!-- Hero Profile Card -->
+    <section class="v3-hero">
+      <div class="v3-profile-card">
+        <div class="v3-avatar-box">
+          <img src="https://github.com/lilujj03-oss.png" alt="lilujj03-oss" class="v3-avatar">
+          <div class="v3-status-tag">
+            <span class="v3-status-dot"></span>
+            <span>開放交流與學習中</span>
+          </div>
+        </div>
+
+        <div class="v3-info">
+          <p class="v3-eyebrow">DEVELOPER & CREATIVE EXPLORER</p>
+          <h1 class="v3-name">lilujj03-oss</h1>
+          <p class="v3-title">前端開發探索者 · 喜歡動手實作與構思各類數位小工具</p>
+          <p class="v3-bio">
+            熱衷於將生活中的點子轉化為具體可用的互動式網頁與推薦系統。透過持續自學、開源社群與版本控制，逐步累積開發與問題解決經驗。
+          </p>
+
+          <div class="v3-actions">
+            <a href="https://github.com/lilujj03-oss?tab=repositories" target="_blank" class="v3-btn-primary">
+              <i class="fa-solid fa-code-fork"></i> 探索 GitHub 專案
+            </a>
+            <a href="../pizza-bot/index.html" class="v3-btn-secondary">
+              <i class="fa-solid fa-pizza-slice"></i> 玩玩披薩推薦機器人
+            </a>
+            <a href="../index.html#portfolio" class="v3-btn-secondary">
+              <i class="fa-solid fa-layer-group"></i> 瀏覽全部作品
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Tabs -->
+    <section class="v3-tabs-section">
+      <div class="v3-tab-buttons">
+        <button class="v3-tab-btn active" data-tab="skills">
+          <i class="fa-solid fa-laptop-code"></i> 技術棧與工具
+        </button>
+        <button class="v3-tab-btn" data-tab="terminal">
+          <i class="fa-solid fa-terminal"></i> 終端資訊 (Terminal)
+        </button>
+        <button class="v3-tab-btn" data-tab="philosophy">
+          <i class="fa-solid fa-lightbulb"></i> 學習理念
+        </button>
+      </div>
+
+      <!-- Tab 1: Skills -->
+      <div class="v3-tab-pane active" id="tab-skills">
+        <div class="v3-skills-grid">
+          <div class="v3-skill-card">
+            <div class="v3-skill-header">
+              <i class="fa-brands fa-html5 v3-skill-icon"></i>
+              <span class="v3-skill-name">HTML5 & 語意化</span>
+            </div>
+            <p class="v3-skill-desc">掌握標準結構、無障礙設計規範與乾淨的 DOM 架構組織。</p>
+          </div>
+
+          <div class="v3-skill-card">
+            <div class="v3-skill-header">
+              <i class="fa-brands fa-css3-alt v3-skill-icon"></i>
+              <span class="v3-skill-name">現代 CSS & RWD</span>
+            </div>
+            <p class="v3-skill-desc">熟練 Flexbox、Grid、動態漸層、Glassmorphism 毛玻璃與響應式適配。</p>
+          </div>
+
+          <div class="v3-skill-card">
+            <div class="v3-skill-header">
+              <i class="fa-brands fa-js v3-skill-icon"></i>
+              <span class="v3-skill-name">JavaScript & DOM</span>
+            </div>
+            <p class="v3-skill-desc">非同步 Fetch API、動態狀態過濾、事件驅動與前端模組邏輯實作。</p>
+          </div>
+
+          <div class="v3-skill-card">
+            <div class="v3-skill-header">
+              <i class="fa-brands fa-git-alt v3-skill-icon"></i>
+              <span class="v3-skill-name">Git & GitHub</span>
+            </div>
+            <p class="v3-skill-desc">版本控制分支管理、GitHub Pages 自動化部署與多版本作品管理。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Terminal -->
+      <div class="v3-tab-pane" id="tab-terminal">
+        <div class="v3-terminal">
+          <div class="v3-terminal-header">
+            <div class="v3-dot red"></div>
+            <div class="v3-dot yellow"></div>
+            <div class="v3-dot green"></div>
+            <span style="color: #64748b; margin-left: 10px; font-size: 12px;">lilujj03-oss@workspace: ~</span>
+          </div>
+          <p class="v3-terminal-line"><span class="cmd">$ whoami</span></p>
+          <p class="v3-terminal-line"><span class="val">&gt; "lilujj03-oss" | Frontend Developer &amp; Lifelong Learner</span></p>
+          <p class="v3-terminal-line" style="margin-top: 8px;"><span class="cmd">$ cat current_status.json</span></p>
+          <p class="v3-terminal-line"><span class="val">{</span></p>
+          <p class="v3-terminal-line">&nbsp;&nbsp;<span class="cmd">"interests"</span>: [<span class="val">"Web Dev"</span>, <span class="val">"Smart Recommendation"</span>, <span class="val">"UI/UX"</span>],</p>
+          <p class="v3-terminal-line">&nbsp;&nbsp;<span class="cmd">"latest_project"</span>: <span class="val">"Pizza Recommendation Bot 🍕"</span>,</p>
+          <p class="v3-terminal-line">&nbsp;&nbsp;<span class="cmd">"goal"</span>: <span class="val">"Build useful, elegant and joyful web tools"</span></p>
+          <p class="v3-terminal-line"><span class="val">}</span></p>
+          <p class="v3-terminal-line" style="margin-top: 8px;"><span class="comment">// Continuous exploration in progress...</span></p>
+        </div>
+      </div>
+
+      <!-- Tab 3: Philosophy -->
+      <div class="v3-tab-pane" id="tab-philosophy">
+        <div style="background: rgba(255,255,255,0.03); padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); line-height: 1.8;">
+          <h3 style="color: var(--accent-cyan); margin-bottom: 12px;"><i class="fa-solid fa-compass"></i> 持續實作與探究本質</h3>
+          <p style="color: #cbd5e1; margin-bottom: 16px;">
+            每一行代碼都是思考與解決問題的具體實踐。不滿足於複製貼上，而是深入探究背後的原理、使用者體驗以及效能表現。
+          </p>
+          <h3 style="color: var(--accent-violet); margin-bottom: 12px;"><i class="fa-solid fa-shapes"></i> 追求視覺質感與互動細節</h3>
+          <p style="color: #cbd5e1;">
+            優秀的前端作品不僅需要強健的邏輯，更需要舒適直覺的視覺引導。透過動態微動畫、毛玻璃光影與排版美學，讓每次互動都充滿樂趣。
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="v3-footer">
+    <p>© <span id="v3-year"></span> lilujj03-oss. Built with passion &amp; modern web technologies.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
