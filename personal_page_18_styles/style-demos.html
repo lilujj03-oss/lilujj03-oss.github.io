@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-TW" data-theme="dark" data-render="glass" data-active-style="01">
 <head>
   <meta charset="UTF-8">
@@ -710,6 +710,11 @@
       border-color: var(--glass-border-hover);
       box-shadow: var(--glass-shadow-hover);
     }
+    .style-card-preview.active {
+      border-color: #38bdf8 !important;
+      box-shadow: 0 0 35px rgba(56, 189, 248, 0.4), inset 0 0 15px rgba(56, 189, 248, 0.15) !important;
+      transform: translateY(-4px) scale(1.02);
+    }
     .style-card-header {
       display: flex;
       justify-content: space-between;
@@ -1025,7 +1030,7 @@
 
     <!-- ========================================================
        LIVE SIMULATOR STAGE
-    ======================================================== -->
+    ======================================================== */
     <section class="stage-section" id="stage">
       <div class="section-header">
         <div class="section-eyebrow">LIVE INTERACTIVE SIMULATOR</div>
@@ -1185,7 +1190,7 @@
       container.innerHTML = STYLES_DATA.map(s => `
         <button class="style-tab-btn ${s.id === currentStyleId ? 'active' : ''}" 
                 id="tabBtn-${s.id}" 
-                onclick="loadStyle('${s.id}')">
+                onclick="loadStyle('${s.id}', true)">
           <i class="fa-solid fa-palette"></i>
           <span>${s.id} ${s.name}</span>
         </button>
@@ -1196,7 +1201,7 @@
     function renderMatrixGrid() {
       const grid = document.getElementById("matrixGrid");
       grid.innerHTML = STYLES_DATA.map(s => `
-        <div class="style-card-preview" id="card-${s.id}">
+        <div class="style-card-preview ${s.id === currentStyleId ? 'active' : ''}" id="card-${s.id}">
           <div>
             <div class="style-card-header">
               <span class="style-num-badge">STYLE ${s.id}</span>
@@ -1226,12 +1231,12 @@
     }
 
     // Load Style into Simulator Stage
-    function loadStyle(id, scrollToStage = false) {
+    function loadStyle(id, scrollToStage = true) {
       currentStyleId = id;
       const s = STYLES_DATA.find(item => item.id === id);
       if (!s) return;
 
-      // Update Nav Tabs Active Class
+      // 1. Update Nav Tabs Active Class
       document.querySelectorAll(".style-tab-btn").forEach(btn => btn.classList.remove("active"));
       const activeBtn = document.getElementById(`tabBtn-${id}`);
       if (activeBtn) {
@@ -1239,14 +1244,23 @@
         activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       }
 
-      // Update Stage Info
+      // 2. Update Matrix Card Active Glow Class
+      document.querySelectorAll(".style-card-preview").forEach(card => card.classList.remove("active"));
+      const activeCard = document.getElementById(`card-${id}`);
+      if (activeCard) {
+        activeCard.classList.add("active");
+      }
+
+      // 3. Update Stage Info
       document.getElementById("stageBadge").innerText = `STYLE ${s.id}`;
       document.getElementById("stageTitle").innerText = `${s.id} ${s.name} (${s.nameZh})`;
       document.getElementById("stageOpenLink").href = s.file;
 
-      // Update Iframe
+      // 4. Update Iframe
       const iframe = document.getElementById("stageIframe");
-      iframe.src = s.file;
+      if (iframe) {
+        iframe.src = s.file;
+      }
 
       document.documentElement.setAttribute("data-active-style", s.id);
 
@@ -1255,7 +1269,13 @@
       if (scrollToStage) {
         const stageEl = document.getElementById("stage");
         if (stageEl) {
-          stageEl.scrollIntoView({ behavior: "smooth" });
+          const headerOffset = 80;
+          const elementPosition = stageEl.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
         }
       }
     }
