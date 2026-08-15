@@ -1,32 +1,47 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>18 大頂級網頁視覺設計風格展示庫 | 18 Design Aesthetics Showcase</title>
+  <title>18 大頂級網頁視覺風格展示庫 | Visual Design Style System</title>
+  <meta name="description" content="依據頂級個人首頁結構打造的 18 種網頁視覺風格即時切換展示庫。">
+  
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Chakra+Petch:wght@600;700&family=Cinzel:wght@600;700;800&family=Cormorant+Garamond:wght@600;700&family=Fredoka:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;600;700&family=Press+Start+2P&family=Plus+Jakarta+Sans:wght@500;700;800&family=Outfit:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Chakra+Petch:wght@600;700&family=Cinzel:wght@600;700;800&family=Cormorant+Garamond:wght@600;700&family=Fredoka:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;600;700&family=Outfit:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=Press+Start+2P&family=Plus+Jakarta+Sans:wght@500;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --font-body: 'Inter', 'Noto Sans TC', sans-serif;
+      --font-heading: 'Playfair Display', 'Cormorant Garamond', serif;
+    }
+
     body {
-      font-family: 'Inter', 'Noto Sans TC', sans-serif;
-      background: #070a12;
+      background: #080c16;
       color: #f8fafc;
+      font-family: var(--font-body);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
-    /* Top Demo Navigation Bar */
+    /* Top Navigation Switcher Bar */
     .style-picker-bar {
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: rgba(7, 10, 18, 0.96);
+      background: rgba(8, 12, 22, 0.94);
       backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       padding: 12px 20px;
     }
     .picker-container {
@@ -41,7 +56,7 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
     }
     .picker-title {
       font-size: 15px;
@@ -50,6 +65,14 @@
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+    .picker-title span.tag {
+      background: linear-gradient(135deg, #a855f7, #06b6d4);
+      color: #fff;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 700;
     }
     .style-nav-tabs {
       display: flex;
@@ -76,99 +99,122 @@
     }
     .style-tab-btn:hover {
       color: #fff;
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
     }
     .style-tab-btn.active {
       color: #fff;
-      background: #3b82f6;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
       border-color: #60a5fa;
-      box-shadow: 0 0 15px rgba(59, 130, 246, 0.45);
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
     }
 
-    /* Style Stage */
+    /* Demo Stage Area */
     .demo-stage {
       flex: 1;
-      padding: 40px 20px;
+      padding: 30px 20px;
       display: flex;
       justify-content: center;
       align-items: center;
-      transition: all 0.4s ease;
     }
 
-    /* Common Box Base */
     .preview-box {
-      max-width: 980px;
+      max-width: 1040px;
       width: 100%;
       animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      from { opacity: 0; transform: translateY(14px) scale(0.98); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* 01: Apple Minimalist White */
+    /* ========================================================
+       STYLE 1: 極簡純白蘋果風 (Apple Minimalist White)
+    ======================================================== */
     .preview-box.style-apple {
       background: #ffffff;
       color: #1d1d1f;
-      border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
-      padding: 48px;
+      border-radius: 28px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.06);
+      padding: 50px;
       border: 1px solid #f0f0f2;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
     }
-    .style-apple .badge { font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: #86868b; margin-bottom: 12px; display: inline-block; }
-    .style-apple h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.02em; color: #1d1d1f; margin-bottom: 14px; line-height: 1.2; }
-    .style-apple p.desc { font-size: 16px; color: #6e6e73; line-height: 1.6; margin-bottom: 30px; }
-    .style-apple .grid-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 32px; }
-    .style-apple .card { background: #f5f5f7; border-radius: 16px; padding: 24px; }
-    .style-apple .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: #1d1d1f; }
-    .style-apple .card p { font-size: 13px; color: #86868b; line-height: 1.5; }
-    .style-apple .btn-group { display: flex; gap: 12px; }
-    .style-apple .btn-main { padding: 12px 24px; background: #0071e3; color: #ffffff; border-radius: 980px; font-size: 14px; font-weight: 500; border: none; cursor: pointer; }
-    .style-apple .btn-sub { padding: 12px 24px; background: #f5f5f7; color: #0071e3; border-radius: 980px; font-size: 14px; font-weight: 500; border: none; cursor: pointer; }
+    .style-apple .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: #f5f5f7; border-radius: 999px; font-size: 12px; font-weight: 600; color: #86868b; margin-bottom: 16px; }
+    .style-apple h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.03em; color: #1d1d1f; margin-bottom: 14px; line-height: 1.15; }
+    .style-apple p.desc { font-size: 16.5px; color: #6e6e73; line-height: 1.65; margin-bottom: 32px; max-width: 760px; }
+    .style-apple .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-bottom: 32px; }
+    .style-apple .project-card { background: #f5f5f7; border-radius: 18px; padding: 24px; transition: transform 0.25s ease; border: 1px solid #ebebf0; }
+    .style-apple .project-card:hover { transform: translateY(-4px); }
+    .style-apple .project-card i { font-size: 24px; color: #0071e3; margin-bottom: 12px; }
+    .style-apple .project-card h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; color: #1d1d1f; }
+    .style-apple .project-card p { font-size: 13px; color: #86868b; line-height: 1.5; }
+    .style-apple .btn-main { padding: 13px 28px; background: #0071e3; color: #ffffff; border-radius: 980px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; }
 
-    /* 02: Monochrome Dark Geek */
+    /* ========================================================
+       STYLE 2: 俐落黑白極客風 (Monochrome Dark Geek)
+    ======================================================== */
     .preview-box.style-geek {
       background: #09090b;
       color: #fafafa;
       border-radius: 16px;
-      box-shadow: 0 0 0 1px #27272a, 0 20px 40px rgba(0, 0, 0, 0.8);
-      padding: 40px;
+      box-shadow: 0 0 0 1px #27272a, 0 25px 50px rgba(0, 0, 0, 0.85);
+      padding: 44px;
       font-family: 'JetBrains Mono', monospace;
     }
-    .style-geek .terminal-bar { display: flex; gap: 6px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid #27272a; }
-    .style-geek .t-dot { width: 10px; height: 10px; border-radius: 50%; background: #3f3f46; }
-    .style-geek h1 { font-size: 30px; font-weight: 700; color: #ffffff; margin-bottom: 12px; }
+    .style-geek .term-bar { display: flex; gap: 6px; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid #27272a; }
+    .style-geek .dot { width: 10px; height: 10px; border-radius: 50%; background: #3f3f46; }
+    .style-geek h1 { font-size: 32px; font-weight: 700; color: #ffffff; margin-bottom: 12px; }
     .style-geek h1 span { color: #a1a1aa; }
-    .style-geek p.desc { font-size: 14px; color: #a1a1aa; line-height: 1.7; margin-bottom: 24px; }
-    .style-geek .code-block { background: #18181b; border: 1px solid #27272a; border-radius: 10px; padding: 16px; font-size: 13px; color: #e4e4e7; margin-bottom: 24px; line-height: 1.6; }
-    .style-geek .btn-group { display: flex; gap: 12px; }
-    .style-geek .btn-main { padding: 10px 20px; background: #ffffff; color: #09090b; border-radius: 6px; font-size: 13px; font-weight: 700; border: none; cursor: pointer; }
-    .style-geek .btn-sub { padding: 10px 20px; background: transparent; color: #a1a1aa; border: 1px solid #27272a; border-radius: 6px; font-size: 13px; cursor: pointer; }
+    .style-geek p.desc { font-size: 14px; color: #a1a1aa; line-height: 1.7; margin-bottom: 26px; }
+    .style-geek .code-box { background: #18181b; border: 1px solid #27272a; border-radius: 10px; padding: 18px; font-size: 13px; color: #e4e4e7; margin-bottom: 28px; line-height: 1.6; }
+    .style-geek .btn-main { padding: 11px 24px; background: #ffffff; color: #09090b; border-radius: 6px; font-size: 13px; font-weight: 700; border: none; cursor: pointer; }
 
-    /* 03: Cyber Neon Tech */
+    /* ========================================================
+       STYLE 3: 賽博霓虹紫青毛玻璃風 (Cyber Neon & Deep Violet) (ChenYu Reference)
+    ======================================================== */
     .preview-box.style-cyber {
-      background: rgba(13, 17, 34, 0.85);
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.025) 100%), #0f0a28;
       color: #f1f5f9;
-      border-radius: 24px;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      box-shadow: 0 0 40px rgba(56, 189, 248, 0.15), 0 20px 50px rgba(0, 0, 0, 0.6);
+      border-radius: 26px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 50px rgba(168, 85, 247, 0.25), 0 25px 60px rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(16px);
-      padding: 44px;
+      -webkit-backdrop-filter: blur(16px);
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Montserrat', sans-serif;
     }
-    .style-cyber .glow-tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 999px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; font-size: 12px; font-weight: 700; margin-bottom: 16px; }
-    .style-cyber h1 { font-size: 38px; font-weight: 800; margin-bottom: 14px; background: linear-gradient(135deg, #38bdf8 0%, #a855f7 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-    .style-cyber p.desc { font-size: 15px; color: #cbd5e1; line-height: 1.7; margin-bottom: 28px; }
-    .style-cyber .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
-    .style-cyber .tech-card { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 20px; }
-    .style-cyber .btn-main { padding: 12px 26px; background: linear-gradient(135deg, #0284c7, #7c3aed); color: #fff; border-radius: 10px; font-weight: 700; border: none; cursor: pointer; }
+    .style-cyber::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      right: -80px;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.35), rgba(6, 182, 212, 0.2), transparent 70%);
+      pointer-events: none;
+      filter: blur(40px);
+    }
+    .style-cyber .glow-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 999px; background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.5); color: #c084fc; font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 18px; }
+    .style-cyber h1 { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 800; margin-bottom: 14px; background: linear-gradient(135deg, #a855f7 0%, #06b6d4 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .style-cyber p.desc { font-size: 15.5px; color: rgba(255, 255, 255, 0.75); line-height: 1.75; margin-bottom: 30px; }
+    .style-cyber .glass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 32px; }
+    .style-cyber .glass-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 18px; padding: 22px; transition: all 0.3s; }
+    .style-cyber .glass-card:hover { border-color: rgba(103, 232, 249, 0.6); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2); }
+    .style-cyber .glass-card i { font-size: 26px; color: #38bdf8; margin-bottom: 10px; }
+    .style-cyber .glass-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .style-cyber .glass-card p { font-size: 13px; color: rgba(255, 255, 255, 0.6); }
+    .style-cyber .btn-main { padding: 13px 30px; background: linear-gradient(135deg, #a855f7, #06b6d4); color: #fff; border-radius: 999px; font-weight: 700; font-size: 14px; border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4); }
 
-    /* 04: Japanese Clean & Earthy */
+    /* ========================================================
+       STYLE 4: 日系簡約清新風 (Japanese Clean & Earthy)
+    ======================================================== */
     .preview-box.style-zen {
       background: #faf8f5;
       color: #3d3b38;
-      border-radius: 20px;
+      border-radius: 22px;
       box-shadow: 0 15px 45px rgba(90, 80, 70, 0.08);
       padding: 50px 48px;
       border: 1px solid #eee8e0;
@@ -177,15 +223,15 @@
     .style-zen .kicker { font-size: 13px; font-weight: 600; color: #78716c; letter-spacing: 2px; margin-bottom: 12px; }
     .style-zen h1 { font-size: 34px; font-weight: 700; color: #292524; margin-bottom: 16px; line-height: 1.4; }
     .style-zen p.desc { font-size: 15px; color: #57534e; line-height: 1.85; margin-bottom: 30px; }
-    .style-zen .feature-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
-    .style-zen .item { background: #ffffff; border-radius: 12px; padding: 20px; border: 1px solid #e7e5e4; }
     .style-zen .btn-main { padding: 11px 24px; background: #44403c; color: #fafaf9; border-radius: 8px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; }
 
-    /* 05: Editorial Serif & Luxury Gold */
+    /* ========================================================
+       STYLE 5: 典雅金色雜誌風 (Editorial Serif & Luxury Gold)
+    ======================================================== */
     .preview-box.style-editorial {
       background: #fdfcf9;
       color: #2b2621;
-      border-radius: 20px;
+      border-radius: 22px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
       padding: 52px;
       border: 1px solid #eee8db;
@@ -195,15 +241,16 @@
     .style-editorial h1 { font-size: 42px; font-weight: 700; color: #1a252f; margin-bottom: 14px; line-height: 1.2; }
     .style-editorial .gold-line { width: 50px; height: 3px; background: #d97706; border-radius: 2px; margin-bottom: 22px; }
     .style-editorial p.desc { font-family: 'Inter', sans-serif; font-size: 15px; color: #475569; line-height: 1.85; margin-bottom: 30px; }
-    .style-editorial .quote-card { background: #ffffff; border-left: 3px solid #d97706; padding: 20px 24px; border-radius: 0 12px 12px 0; margin-bottom: 32px; }
     .style-editorial .btn-main { font-family: 'Inter', sans-serif; padding: 12px 28px; background: #1a252f; color: #ffffff; border-radius: 999px; font-size: 13px; font-weight: 700; border: none; cursor: pointer; }
 
-    /* 06: Neo-Brutalism Retro Pop */
+    /* ========================================================
+       STYLE 6: 新粗獷潮流風 (Neo-Brutalism Retro Pop)
+    ======================================================== */
     .preview-box.style-brutalism {
       background: #fffdf0;
       color: #121212;
       border-radius: 16px;
-      border: 3px solid #121212;
+      border: 3.5px solid #121212;
       box-shadow: 8px 8px 0px #121212;
       padding: 44px;
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -211,13 +258,11 @@
     .style-brutalism .sticker { display: inline-block; padding: 6px 14px; background: #fde047; border: 2px solid #121212; box-shadow: 3px 3px 0px #121212; font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 16px; transform: rotate(-2deg); }
     .style-brutalism h1 { font-family: 'Archivo Black', sans-serif; font-size: 38px; color: #121212; line-height: 1.2; margin-bottom: 16px; }
     .style-brutalism p.desc { font-size: 15px; font-weight: 500; color: #27272a; line-height: 1.7; margin-bottom: 28px; }
-    .style-brutalism .pop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 30px; }
-    .style-brutalism .pop-card { background: #ffffff; border: 2.5px solid #121212; box-shadow: 4px 4px 0px #121212; border-radius: 12px; padding: 18px; }
-    .style-brutalism .pop-card.coral { background: #fda4af; }
-    .style-brutalism .pop-card.cyan { background: #bae6fd; }
     .style-brutalism .btn-main { padding: 12px 24px; background: #f43f5e; color: #ffffff; border: 2.5px solid #121212; box-shadow: 4px 4px 0px #121212; border-radius: 10px; font-weight: 800; cursor: pointer; }
 
-    /* 07: Neumorphism 3D */
+    /* ========================================================
+       STYLE 7: 新擬物立體風 (Soft Neumorphism 3D)
+    ======================================================== */
     .preview-box.style-neumorph {
       background: #e6ecf4;
       color: #334155;
@@ -229,10 +274,11 @@
     .style-neumorph .neu-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 50px; background: #e6ecf4; box-shadow: inset 3px 3px 6px #c4c9cf, inset -3px -3px 6px #ffffff; font-size: 12px; font-weight: 700; color: #64748b; margin-bottom: 16px; }
     .style-neumorph h1 { font-size: 36px; font-weight: 800; color: #1e293b; margin-bottom: 14px; }
     .style-neumorph p.desc { font-size: 15px; color: #64748b; line-height: 1.7; margin-bottom: 28px; }
-    .style-neumorph .neu-card { background: #e6ecf4; border-radius: 20px; padding: 22px; box-shadow: 7px 7px 15px #c4c9cf, -7px -7px 15px #ffffff; }
     .style-neumorph .btn-main { padding: 13px 28px; background: #e6ecf4; color: #2563eb; border-radius: 50px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; box-shadow: 6px 6px 14px #c4c9cf, -6px -6px 14px #ffffff; }
 
-    /* 08: Nordic Frost */
+    /* ========================================================
+       STYLE 8: 北歐極簡冷調風 (Nordic Frost & Slate)
+    ======================================================== */
     .preview-box.style-nordic {
       background: #0f172a;
       color: #e2e8f0;
@@ -244,10 +290,11 @@
     .style-nordic .frost-kicker { font-size: 12px; font-weight: 600; color: #94a3b8; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 12px; }
     .style-nordic h1 { font-size: 36px; font-weight: 600; color: #f8fafc; margin-bottom: 14px; }
     .style-nordic p.desc { font-size: 15px; color: #94a3b8; line-height: 1.75; margin-bottom: 30px; }
-    .style-nordic .frost-card { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(148, 163, 184, 0.12); border-radius: 12px; padding: 20px; }
     .style-nordic .btn-main { padding: 11px 24px; background: #38bdf8; color: #0f172a; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; }
 
-    /* 09: Aurora Holographic */
+    /* ========================================================
+       STYLE 9: 夢幻極光炫彩微光風 (Aurora Holographic)
+    ======================================================== */
     .preview-box.style-aurora {
       background: linear-gradient(135deg, rgba(23, 23, 43, 0.95), rgba(15, 23, 42, 0.95));
       color: #ffffff;
@@ -260,7 +307,9 @@
     .style-aurora h1 { font-size: 40px; font-weight: 800; margin-bottom: 14px; background: linear-gradient(135deg, #f472b6 0%, #c084fc 50%, #38bdf8 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
     .style-aurora .btn-main { padding: 13px 28px; background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #ffffff; border-radius: 999px; font-weight: 700; border: none; cursor: pointer; }
 
-    /* 10: Retro 8-Bit Pixel */
+    /* ========================================================
+       STYLE 10: 復古 8-Bit 像素街機風 (Retro 8-Bit Pixel)
+    ======================================================== */
     .preview-box.style-pixel {
       background: #000000;
       color: #22c55e;
@@ -274,7 +323,9 @@
     .style-pixel p.desc { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #86efac; line-height: 1.8; margin-bottom: 24px; }
     .style-pixel .btn-main { font-family: 'Press Start 2P', monospace; padding: 12px 18px; background: #22c55e; color: #000; border: 2px solid #ffffff; font-size: 10px; cursor: pointer; }
 
-    /* 11: Oriental Ink Wash */
+    /* ========================================================
+       STYLE 11: 古典水墨宣紙東方風 (Oriental Ink Wash)
+    ======================================================== */
     .preview-box.style-ink {
       background: #f4efe6;
       color: #2c2926;
@@ -288,11 +339,11 @@
     .style-ink h1 { font-size: 38px; font-weight: 700; color: #1c1917; margin-bottom: 14px; letter-spacing: 1px; }
     .style-ink .ink-line { width: 60px; height: 3px; background: #44403c; border-radius: 2px; margin-bottom: 22px; opacity: 0.7; }
     .style-ink p.desc { font-size: 15.5px; color: #57534e; line-height: 1.9; margin-bottom: 30px; }
-    .style-ink .ink-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
-    .style-ink .ink-card { background: rgba(255, 255, 255, 0.7); border: 1px solid #ded5c5; border-radius: 10px; padding: 20px; }
     .style-ink .btn-main { font-family: inherit; padding: 12px 28px; background: #292524; color: #f5f5f4; border-radius: 8px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; }
 
-    /* 12: Vaporwave 80s Sunset */
+    /* ========================================================
+       STYLE 12: 蒸汽波 80s 浪漫落日風 (Vaporwave Sunset)
+    ======================================================== */
     .preview-box.style-vaporwave {
       background: linear-gradient(180deg, #1b0a33 0%, #2f1354 50%, #4a1c6d 100%);
       color: #fff;
@@ -307,7 +358,9 @@
     .style-vaporwave p.desc { font-size: 15px; color: #e9d5ff; line-height: 1.7; margin-bottom: 28px; }
     .style-vaporwave .btn-main { padding: 12px 26px; background: linear-gradient(90deg, #ff71ce, #01cdfe); color: #000; font-weight: 800; border-radius: 6px; border: none; cursor: pointer; }
 
-    /* 13: Bauhaus Geometric Modern */
+    /* ========================================================
+       STYLE 13: 包浩斯幾何現代風 (Bauhaus Geometric)
+    ======================================================== */
     .preview-box.style-bauhaus {
       background: #f3f0e6;
       color: #111827;
@@ -325,7 +378,9 @@
     .style-bauhaus p.desc { font-size: 15px; color: #374151; line-height: 1.7; margin-bottom: 28px; }
     .style-bauhaus .btn-main { padding: 12px 24px; background: #111827; color: #fff; border-radius: 6px; font-weight: 700; border: none; cursor: pointer; }
 
-    /* 14: Luxury Black & Champagne Gold */
+    /* ========================================================
+       STYLE 14: 曜石黑金頂級奢華風 (Luxury Black & Gold)
+    ======================================================== */
     .preview-box.style-gold {
       background: radial-gradient(circle at top right, #1a1917, #0b0d10 70%);
       color: #f1f5f9;
@@ -340,7 +395,9 @@
     .style-gold p.desc { font-family: 'Inter', sans-serif; font-size: 15px; color: #cbd5e1; line-height: 1.8; margin-bottom: 30px; }
     .style-gold .btn-main { font-family: 'Inter', sans-serif; padding: 12px 28px; background: linear-gradient(135deg, #d4af37, #aa771c); color: #000; border-radius: 50px; font-weight: 700; font-size: 13.5px; border: none; cursor: pointer; }
 
-    /* 15: Warm Botanical & Forest Cozy */
+    /* ========================================================
+       STYLE 15: 溫暖森系植物療癒風 (Warm Botanical & Forest)
+    ======================================================== */
     .preview-box.style-forest {
       background: #f4f7f4;
       color: #2d3e33;
@@ -355,7 +412,9 @@
     .style-forest p.desc { font-size: 15.5px; color: #52796f; line-height: 1.8; margin-bottom: 28px; }
     .style-forest .btn-main { padding: 12px 24px; background: #52796f; color: #fff; border-radius: 12px; font-weight: 600; border: none; cursor: pointer; }
 
-    /* 16: Deep Crystal Glassmorphism */
+    /* ========================================================
+       STYLE 16: 水晶通透極致浮層風 (Deep Crystal Glass)
+    ======================================================== */
     .preview-box.style-crystal {
       background: rgba(255, 255, 255, 0.06);
       color: #ffffff;
@@ -372,7 +431,7 @@
     .style-crystal .btn-main { padding: 13px 28px; background: rgba(255, 255, 255, 0.95); color: #0f172a; border-radius: 999px; font-weight: 700; border: none; cursor: pointer; }
 
     /* ========================================================
-       STYLE 17: 多巴胺多彩糖果風 (Dopamine Y2K Candy Pop) (NEW)
+       STYLE 17: 多巴胺多彩糖果風 (Dopamine Candy Pop)
     ======================================================== */
     .preview-box.style-dopamine {
       background: #fff8fc;
@@ -382,80 +441,14 @@
       box-shadow: 0 25px 60px rgba(255, 73, 219, 0.25), 8px 8px 0px #8b5cf6;
       padding: 48px;
       font-family: 'Fredoka', 'Noto Sans TC', sans-serif;
-      position: relative;
-      overflow: hidden;
     }
-    .style-dopamine .candy-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 20px;
-      background: linear-gradient(135deg, #ff49db, #ff7849);
-      color: #ffffff;
-      border-radius: 50px;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      box-shadow: 0 4px 15px rgba(255, 73, 219, 0.4);
-      margin-bottom: 16px;
-    }
-    .style-dopamine h1 {
-      font-size: 40px;
-      font-weight: 700;
-      color: #86198f;
-      line-height: 1.2;
-      margin-bottom: 14px;
-      letter-spacing: 0.5px;
-    }
-    .style-dopamine p.desc {
-      font-size: 16px;
-      color: #701a75;
-      line-height: 1.7;
-      margin-bottom: 30px;
-      font-weight: 500;
-    }
-    .style-dopamine .candy-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-    .style-dopamine .candy-card {
-      border-radius: 24px;
-      padding: 22px;
-      border: 3px solid #ffffff;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
-      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .style-dopamine .candy-card:hover {
-      transform: translateY(-6px) scale(1.02);
-    }
-    .style-dopamine .candy-card.pink { background: #fce7f3; color: #9d174d; }
-    .style-dopamine .candy-card.mint { background: #ccfbf1; color: #115e59; }
-    .style-dopamine .candy-card.yellow { background: #fef9c3; color: #854d0e; }
-    .style-dopamine .candy-card h4 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
-    .style-dopamine .candy-card p { font-size: 13px; font-weight: 500; opacity: 0.9; }
-    .style-dopamine .btn-group { display: flex; gap: 14px; }
-    .style-dopamine .btn-main {
-      font-family: inherit;
-      padding: 14px 32px;
-      background: linear-gradient(135deg, #ec4899, #8b5cf6);
-      color: #ffffff;
-      border-radius: 999px;
-      font-size: 16px;
-      font-weight: 700;
-      border: 3px solid #ffffff;
-      box-shadow: 0 8px 25px rgba(236, 72, 153, 0.45);
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .style-dopamine .btn-main:hover {
-      transform: scale(1.06) rotate(-1deg);
-      box-shadow: 0 12px 30px rgba(236, 72, 153, 0.6);
-    }
+    .style-dopamine .candy-badge { display: inline-flex; align-items: center; gap: 6px; padding: 8px 20px; background: linear-gradient(135deg, #ff49db, #ff7849); color: #ffffff; border-radius: 50px; font-size: 13px; font-weight: 700; margin-bottom: 16px; }
+    .style-dopamine h1 { font-size: 40px; font-weight: 700; color: #86198f; margin-bottom: 14px; }
+    .style-dopamine p.desc { font-size: 16px; color: #701a75; line-height: 1.7; margin-bottom: 30px; font-weight: 500; }
+    .style-dopamine .btn-main { padding: 14px 32px; background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #ffffff; border-radius: 999px; font-size: 16px; font-weight: 700; border: 3px solid #ffffff; cursor: pointer; box-shadow: 0 8px 25px rgba(236, 72, 153, 0.45); }
 
     /* ========================================================
-       STYLE 18: 工業風水泥金屬風 (Industrial Heavy Concrete) (NEW)
+       STYLE 18: 重工金屬水泥工業風 (Industrial Heavy Concrete)
     ======================================================== */
     .preview-box.style-industrial {
       background: #1e242b;
@@ -465,106 +458,16 @@
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
       padding: 44px;
       font-family: 'Chakra Petch', 'Noto Sans TC', sans-serif;
-      position: relative;
     }
-    .style-industrial .hazard-stripe {
-      height: 8px;
-      width: 100%;
-      background: repeating-linear-gradient(
-        -45deg,
-        #eab308,
-        #eab308 12px,
-        #111827 12px,
-        #111827 24px
-      );
-      border-radius: 4px;
-      margin-bottom: 20px;
-    }
-    .style-industrial .spec-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 12px;
-      background: #374151;
-      border-left: 4px solid #eab308;
-      color: #facc15;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-    .style-industrial h1 {
-      font-size: 36px;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: 1px;
-      margin-bottom: 14px;
-      text-transform: uppercase;
-    }
-    .style-industrial p.desc {
-      font-family: 'Inter', sans-serif;
-      font-size: 14.5px;
-      color: #9ca3af;
-      line-height: 1.7;
-      margin-bottom: 28px;
-    }
-    .style-industrial .plate-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-    .style-industrial .plate-card {
-      background: #111827;
-      border: 1px solid #374151;
-      border-top: 3px solid #eab308;
-      border-radius: 6px;
-      padding: 18px;
-      position: relative;
-    }
-    .style-industrial .plate-card::after {
-      content: '●';
-      position: absolute;
-      top: 6px;
-      right: 8px;
-      font-size: 8px;
-      color: #6b705c;
-    }
-    .style-industrial .plate-card h4 { font-size: 15px; color: #f3f4f6; margin-bottom: 4px; }
-    .style-industrial .plate-card p { font-family: 'Inter', sans-serif; font-size: 12.5px; color: #9ca3af; line-height: 1.5; }
-    .style-industrial .btn-group { display: flex; gap: 14px; }
-    .style-industrial .btn-main {
-      font-family: inherit;
-      padding: 12px 26px;
-      background: #eab308;
-      color: #000000;
-      font-weight: 800;
-      font-size: 14px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      box-shadow: 0 4px 15px rgba(234, 179, 8, 0.3);
-      transition: background 0.2s;
-    }
-    .style-industrial .btn-main:hover { background: #facc15; }
-    .style-industrial .btn-sub {
-      font-family: inherit;
-      padding: 12px 24px;
-      background: transparent;
-      color: #d1d5db;
-      border: 1px solid #4b5563;
-      font-weight: 700;
-      font-size: 14px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+    .style-industrial .hazard-stripe { height: 8px; width: 100%; background: repeating-linear-gradient(-45deg, #eab308, #eab308 12px, #111827 12px, #111827 24px); border-radius: 4px; margin-bottom: 20px; }
+    .style-industrial .spec-tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: #374151; border-left: 4px solid #eab308; color: #facc15; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 14px; }
+    .style-industrial h1 { font-size: 36px; font-weight: 700; color: #ffffff; letter-spacing: 1px; margin-bottom: 14px; }
+    .style-industrial p.desc { font-family: 'Inter', sans-serif; font-size: 14.5px; color: #9ca3af; line-height: 1.7; margin-bottom: 28px; }
+    .style-industrial .btn-main { padding: 12px 26px; background: #eab308; color: #000000; font-weight: 800; font-size: 14px; border: none; border-radius: 4px; cursor: pointer; }
 
     /* Style Info Panel */
     .style-info-panel {
-      max-width: 980px;
+      max-width: 1040px;
       margin: 0 auto 50px auto;
       background: rgba(15, 23, 42, 0.85);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -584,11 +487,12 @@
     <div class="picker-container">
       <div class="picker-header">
         <div class="picker-title">
-          <i class="fa-solid fa-palette"></i>
-          <span>18 大頂級網頁視覺設計風格即時展示庫</span>
+          <i class="fa-solid fa-layer-group"></i>
+          <span>18 大頂級視覺設計風格全覽展示庫</span>
+          <span class="tag">ChenYu 風格體系 · 18 Variations</span>
         </div>
         <div style="font-size: 12px; color: #64748b;">
-          點擊按鈕即時切換 18 種風格範例
+          點擊按鈕即時切換預覽
         </div>
       </div>
       <div class="style-nav-tabs">
@@ -599,7 +503,7 @@
           <i class="fa-solid fa-terminal"></i> 02. 俐落黑白極客風
         </button>
         <button class="style-tab-btn" onclick="switchStyle('cyber')">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> 03. 賽博霓虹科技風
+          <i class="fa-solid fa-wand-magic-sparkles"></i> 03. 賽博霓虹科技風 ⭐
         </button>
         <button class="style-tab-btn" onclick="switchStyle('zen')">
           <i class="fa-solid fa-seedling"></i> 04. 日系清新大地風
@@ -675,17 +579,17 @@
       <div class="btn-group"><button class="btn-main">$ run_build</button><button class="btn-sub">$ view_github_repo</button></div>
     </div>
 
-    <!-- 03. Cyber Neon Tech -->
+    <!-- 03. Cyber Neon Tech (ChenYu Reference) -->
     <div class="preview-box style-cyber" id="demo-cyber" style="display: none;">
-      <span class="glow-tag"><i class="fa-solid fa-bolt"></i> STYLE 03 · CYBER NEON TECH</span>
-      <h1>賽博霓虹 · 現代科技毛玻璃</h1>
-      <p class="desc">深邃暗黑夜幕搭配青藍（Cyan）與紫羅蘭（Violet）發光漸層，搭配 Glassmorphism 毛玻璃多層次光影，呈現極具未來感與動態張力的科技視覺。</p>
-      <div class="tech-grid">
-        <div class="tech-card"><i class="fa-solid fa-cube"></i><h4>毛玻璃動態</h4><span>Backdrop Filter 深度光澤</span></div>
-        <div class="tech-card"><i class="fa-solid fa-chart-line"></i><h4>智能演算法</h4><span>披薩推薦與數據決策</span></div>
-        <div class="tech-card"><i class="fa-solid fa-atom"></i><h4>流暢微動效</h4><span>GSAP & 懸停光暈回饋</span></div>
+      <span class="glow-pill"><i class="fa-solid fa-sparkles"></i> STYLE 03 · CHENYU CYBER GLASS</span>
+      <h1>連結程式編碼 · 數據分析與全端工具</h1>
+      <p class="desc">專注於 AI 工具鏈、全端架構與前端互動設計。深邃夜空紫底色結合青藍與紫羅蘭漸層光暈，多層次毛玻璃卡片折射通透光影，具備強烈科技美感。</p>
+      <div class="glass-grid">
+        <div class="glass-card"><i class="fa-solid fa-pizza-slice"></i><h4>披薩推薦小幫手</h4><p>官方菜單數據決策與智慧推薦</p></div>
+        <div class="glass-card"><i class="fa-solid fa-palette"></i><h4>18 大視覺風格庫</h4><p>現代網頁設計流派即時切換</p></div>
+        <div class="glass-card"><i class="fa-solid fa-wand-magic-sparkles"></i><h4>互動科技自介</h4><p>終端機指令模擬與技能雷達</p></div>
       </div>
-      <div class="btn-group"><button class="btn-main"><i class="fa-solid fa-rocket"></i> 啟動線上展示</button></div>
+      <div class="btn-group"><button class="btn-main"><i class="fa-solid fa-rocket"></i> 立即瀏覽作品集 ↗</button></div>
     </div>
 
     <!-- 04. Japanese Clean & Earthy -->
@@ -693,11 +597,7 @@
       <div class="kicker">STYLE 04 · JAPANESE EARTHY</div>
       <h1>日系簡約 · 溫潤大地與自然沉靜</h1>
       <p class="desc">以和紙米白、暖灰、亞麻與大地木質色調為基底。溫暖親切、不刺眼、充滿自然呼吸感的視覺節奏，營造令人感到平靜安心的閱讀氛圍。</p>
-      <div class="feature-list">
-        <div class="item"><h4><i class="fa-solid fa-leaf" style="color: #78716c;"></i> 溫和舒適配色</h4><p>米白與暖灰調和，長時間觀看依然舒適自在。</p></div>
-        <div class="item"><h4><i class="fa-solid fa-circle-notch" style="color: #78716c;"></i> 簡樸俐落排版</h4><p>捨棄繁複陰影與強烈漸層，回歸純粹圖文韻律。</p></div>
-      </div>
-      <div class="btn-group"><button class="btn-main">閱讀個人故事</button><button class="btn-sub">瀏覽作品目錄</button></div>
+      <div class="btn-group"><button class="btn-main">閱讀個人故事</button></div>
     </div>
 
     <!-- 05. Editorial Serif & Luxury Gold -->
@@ -706,20 +606,15 @@
       <h1>典雅雜誌 · 襯線字體與經典金琥珀</h1>
       <div class="gold-line"></div>
       <p class="desc">採用經典 Cormorant Garamond 襯線字體，搭配琥珀金（Amber Gold）與深海軍藍（Deep Navy）。呈現如精品雜誌般的雙欄卡片、典雅風範與尊貴質感。</p>
-      <div class="quote-card"><h4>「將每一次實作，都打磨成一件值得品味的作品。」</h4><p>結合人文情懷與現代程式編碼，在細節處展現美學追求。</p></div>
-      <div class="btn-group"><button class="btn-main">瀏覽典雅專案 <span>→</span></button><button class="btn-sub">探索關於我</button></div>
+      <div class="btn-group"><button class="btn-main">瀏覽典雅專案 <span>→</span></button></div>
     </div>
 
     <!-- 06. Neo-Brutalism Retro Pop -->
     <div class="preview-box style-brutalism" id="demo-brutalism" style="display: none;">
       <span class="sticker">★ STYLE 06 · POP BRUTALISM ★</span>
       <h1>新粗獷主義 · 大膽高飽和潮流</h1>
-      <p class="desc">近年最流行的視覺流派！強烈的 3px 純黑外框邊界、零羽化硬陰影（Hard Shadow）、高飽和對比色彩與粗曠幾何貼紙標籤，展現充滿活力與記憶點的先鋒美學。</p>
-      <div class="pop-grid">
-        <div class="pop-card coral"><h4>🔥 鮮明對比</h4><p>告別無聊的灰階，用鮮豔色彩抓牢目光。</p></div>
-        <div class="pop-card cyan"><h4>⚡ 硬派投影</h4><p>Zero-blur 實體投影，重現復古印刷質感。</p></div>
-      </div>
-      <div class="btn-group"><button class="btn-main">立即體驗粗獷動態！</button><button class="btn-sub">查看作品庫 ↗</button></div>
+      <p class="desc">近年最流行的視覺流派！強烈的 3.5px 純黑外框邊界、無羽化硬陰影（Hard Shadow）、高飽和對比色彩與粗曠幾何貼紙標籤，展現充滿活力與記憶點的先鋒美學。</p>
+      <div class="btn-group"><button class="btn-main">立即體驗粗獷動態！</button></div>
     </div>
 
     <!-- 07. Neumorphism 3D -->
@@ -735,16 +630,11 @@
       <div class="frost-kicker">STYLE 08 · NORDIC FROST &amp; SLATE</div>
       <h1>北歐冷調 · 冰藍冷冽與極簡理性</h1>
       <p class="desc">汲取斯堪地那維亞建築與北極冰霜色調。深板岩藍灰、冰晶亮藍與半透明冷霧玻璃，傳遞冷靜、專業、高度結構化與極致清爽的現代工程氣質。</p>
-      <div class="frost-grid">
-        <div class="frost-card"><h4>理性架構 (Architecture)</h4><p>清晰的網格比例與 12px 緊密排版邏輯。</p></div>
-        <div class="frost-card"><h4>冰霜微光 (Frost Ambient)</h4><p>深邃石板灰與極地冰藍的冷靜對比。</p></div>
-      </div>
-      <div class="btn-group"><button class="btn-main">檢視系統架構</button><button class="btn-sub">文檔導覽</button></div>
+      <div class="btn-group"><button class="btn-main">檢視系統架構</button></div>
     </div>
 
     <!-- 09. Aurora Holographic -->
     <div class="preview-box style-aurora" id="demo-aurora" style="display: none;">
-      <div class="aurora-tag"><i class="fa-solid fa-sparkles"></i> STYLE 09 · AURORA HOLOGRAPHIC</div>
       <h1>極光炫彩 · 夢幻流體微光漸層</h1>
       <p class="desc">以北極光流體炫彩（Aurora Mesh Gradient）與全息反光為靈感。粉紅、紫羅蘭與極光青藍在深暗背景中柔和流動，兼具奢華、夢幻與高科技感。</p>
       <div class="btn-group"><button class="btn-main"><i class="fa-solid fa-wand-magic-sparkles"></i> 啟動極光探索</button></div>
@@ -755,7 +645,7 @@
       <div class="arcade-badge">★ STYLE 10 · 8-BIT ARCADE ★</div>
       <h1>RETRO 8-BIT // 像素街機情懷</h1>
       <p class="desc">重回 80-90 年代經典街機與 GameBoy 綠幕時代！CRT 掃描線光影、點陣像素字體（Pixel Typography）與霓虹綠螢幕，懷舊 Geek 靈魂拉滿！</p>
-      <div class="btn-group"><button class="btn-main">&gt; START GAME &lt;</button><button class="btn-sub">VIEW CREDITS</button></div>
+      <div class="btn-group"><button class="btn-main">&gt; START GAME &lt;</button></div>
     </div>
 
     <!-- 11. Oriental Ink Wash -->
@@ -764,10 +654,6 @@
       <h1>古典水墨 · 宣紙紋理與松墨意境</h1>
       <div class="ink-line"></div>
       <p class="desc">汲取東方水墨丹青與手工宣紙質感。溫潤米黃底色搭配濃淡相宜的松煙墨黑與點睛朱砂紅印章，散發深邃悠遠的人文詩意與典雅風骨。</p>
-      <div class="ink-grid">
-        <div class="ink-card"><h4>墨分五色 · 虛實相生</h4><p>濃淡墨色構建自然層次，留白處皆成妙境。</p></div>
-        <div class="ink-card"><h4>朱砂印記 · 點睛之筆</h4><p>傳統篆刻印章微標記，強化東方美學標識。</p></div>
-      </div>
       <div class="btn-group"><button class="btn-main">品賞水墨卷軸 <span>→</span></button></div>
     </div>
 
@@ -776,26 +662,14 @@
       <span class="retro-tag">AESTHETIC // 1984</span>
       <h1>蒸汽波 · 80S 復古落日霓虹浪漫</h1>
       <p class="desc">經典 Vaporwave / Synthwave 復古美學！霓虹桃粉、青空天藍與紫幕落日漸層，搭配 80 年代數位透視網格，充滿微醺浪漫與復古未來感。</p>
-      <div class="vapor-grid">
-        <div class="vapor-card"><h4>落日餘暉 (Sunset Glow)</h4><p>桃粉與落日黃金交織的復古漸變。</p></div>
-        <div class="vapor-card"><h4>合成波 (Synthwave)</h4><p>電子合成器浪漫旋律的視覺化呈現。</p></div>
-      </div>
       <div class="btn-group"><button class="btn-main">PLAY SYNTHWAVE ♫</button></div>
     </div>
 
     <!-- 13. Bauhaus Geometric Modern -->
     <div class="preview-box style-bauhaus" id="demo-bauhaus" style="display: none;">
-      <div class="shape-badges">
-        <div class="b-circle" title="紅圓"></div>
-        <div class="b-square" title="藍方"></div>
-        <div class="b-triangle" title="黃三角"></div>
-      </div>
+      <div class="shape-badges"><div class="b-circle"></div><div class="b-square"></div><div class="b-triangle"></div></div>
       <h1>包浩斯現代 · 經典三原色幾何構築</h1>
-      <p class="desc">致敬現代設計起源「包浩斯 (Bauhaus)」！經典紅、黃、藍三原色搭配圓形、方形、三角形純粹幾何形體，強調「形式服從功能」的理性俐落之美。</p>
-      <div class="bau-grid">
-        <div class="bau-card red"><h4>結構純粹</h4><p>去除所有非必要裝飾，以純粹幾何定義空間。</p></div>
-        <div class="bau-card blue"><h4>三原色撞擊</h4><p>大膽紅黃藍三色對話，展現強大視覺張力。</p></div>
-      </div>
+      <p class="desc">致敬現代設計之母包浩斯，紅、黃、藍三原色碰撞圓形、方形、三角形純粹幾何構圖，形式服從功能。</p>
       <div class="btn-group"><button class="btn-main">探索幾何構成</button></div>
     </div>
 
@@ -803,11 +677,7 @@
     <div class="preview-box style-gold" id="demo-gold" style="display: none;">
       <span class="vip-tag">EXCLUSIVE · LUXURY</span>
       <h1>曜石黑金 · 尊榮香檳金與頂級商務</h1>
-      <p class="desc">深邃曜石黑背景結合髮絲紋香檳金漸層線條。以極致細膩的金屬光澤與高貴黑金對比，散發私人訂製與頂級 VIP 尊榮商務風範。</p>
-      <div class="gold-grid">
-        <div class="gold-card"><h4>香檳金輝 (Champagne Glow)</h4><p>多重漸層金屬微光，高貴而不刺眼。</p></div>
-        <div class="gold-card"><h4>尊貴典範 (Prestige Grade)</h4><p>頂級商業金融、私人管家與高階作品集首選。</p></div>
-      </div>
+      <p class="desc">深邃曜石黑背景結合細緻髮絲紋香檳金金屬微光，散發私人銀行、頂級會所般的尊榮商務風範。</p>
       <div class="btn-group"><button class="btn-main">探索尊榮展示 <span>→</span></button></div>
     </div>
 
@@ -815,11 +685,7 @@
     <div class="preview-box style-forest" id="demo-forest" style="display: none;">
       <span class="leaf-tag"><i class="fa-solid fa-leaf"></i> BOTANICAL COZY</span>
       <h1>森系植物 · 溫暖鼠尾草綠與自然手感</h1>
-      <p class="desc">源自北歐森林與植物插畫。以柔和鼠尾草綠、奶油杏白與森林墨綠為核心，搭配圓潤手繪有機卡片，營造如漫步林間般的溫暖、療癒與親切感。</p>
-      <div class="forest-grid">
-        <div class="forest-card"><h4>自然綠意 (Organic Forest)</h4><p>降低眼睛疲勞的植物色系，親切舒服。</p></div>
-        <div class="forest-card"><h4>手感圓角 (Cozy Soft)</h4><p>溫潤圓滑邊角與柔軟陰影，散發生活溫度。</p></div>
-      </div>
+      <p class="desc">源自北歐森林與植物插畫。以柔和鼠尾草綠、奶油杏白與森林墨綠為核心，搭配圓潤手繪有機卡片，帶來如沐春風般的療癒放鬆感。</p>
       <div class="btn-group"><button class="btn-main">走進森林工坊</button></div>
     </div>
 
@@ -828,65 +694,24 @@
       <span class="crystal-tag"><i class="fa-solid fa-gem"></i> CRYSTAL GLASS UI</span>
       <h1>水晶通透 · 多層極致毛玻璃浮層</h1>
       <p class="desc">採用 24px 超高模糊度水晶毛玻璃（Ultra-blur Crystal Glass），搭配細白光澤邊緣與浮動光球背景，呈現純淨、空靈、宛若懸浮於虛空中的頂級透光質感。</p>
-      <div class="crystal-grid">
-        <div class="crystal-card"><h4>超高通透 (Ultra Blur)</h4><p>24px Backdrop Blur 帶來如真水晶般的深度折射。</p></div>
-        <div class="crystal-card"><h4>光感邊框 (Edge Light)</h4><p>1px 純白光澤邊界，精準勾勒卡片輪廓。</p></div>
-      </div>
       <div class="btn-group"><button class="btn-main">體驗水晶浮層</button></div>
     </div>
 
-    <!-- 17. Dopamine Y2K Candy Pop (NEW) -->
+    <!-- 17. Dopamine Y2K Candy Pop -->
     <div class="preview-box style-dopamine" id="demo-dopamine" style="display: none;">
-      <span class="candy-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> STYLE 17 · DOPAMINE CANDY POP</span>
+      <span class="candy-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> STYLE 17 · DOPAMINE CANDY</span>
       <h1>多巴胺多彩 · 甜蜜糖果色與高能量快樂</h1>
-      <p class="desc">
-        注入滿滿多巴胺快樂能量！鮮豔飽滿的草莓粉、薄荷綠與檸檬黃撞色，搭配澎澎立體氣泡感（Puffy 3D Bubble）與圓滾滾圓角，帶來活潑甜美、令人心情大好的療癒視覺體驗。
-      </p>
-      <div class="candy-grid">
-        <div class="candy-card pink">
-          <h4>🍓 草莓泡泡糖</h4>
-          <p>高能量飽和粉色，瞬間點燃愉悅心情。</p>
-        </div>
-        <div class="candy-card mint">
-          <h4>🍃 清爽薄荷汽水</h4>
-          <p>沁涼薄荷綠平衡視覺，甜而不膩。</p>
-        </div>
-        <div class="candy-card yellow">
-          <h4>🍋 檸檬糖霜</h4>
-          <p>明亮陽光黃，充滿歡樂與活潑感。</p>
-        </div>
-      </div>
-      <div class="btn-group">
-        <button class="btn-main">🍭 領取多巴胺能量！</button>
-      </div>
+      <p class="desc">注入滿滿多巴胺快樂能量！鮮豔飽滿的草莓粉、薄荷綠與檸檬黃撞色，搭配澎澎立體氣泡感（Puffy 3D Bubble）與圓滾滾圓角，帶來活潑甜美、令人心情大好的療癒視覺體驗。</p>
+      <div class="btn-group"><button class="btn-main">🍭 領取多巴胺能量！</button></div>
     </div>
 
-    <!-- 18. Industrial Heavy Concrete (NEW) -->
+    <!-- 18. Industrial Heavy Concrete -->
     <div class="preview-box style-industrial" id="demo-industrial" style="display: none;">
       <div class="hazard-stripe"></div>
       <span class="spec-tag"><i class="fa-solid fa-triangle-exclamation"></i> SPEC 18 // INDUSTRIAL CONCRETE</span>
       <h1>重工金屬 · 清水模混凝土與警戒斜紋</h1>
-      <p class="desc">
-        硬派重工業美學！粗礪清水模混凝土灰深底，結合高辨識度黃黑警戒斜紋（Hazard Stripes）、鋼印刻度、金屬鉚釘板塊與機械工程字體，展現強大、穩固與高抗壓的工程力量。
-      </p>
-      <div class="plate-grid">
-        <div class="plate-card">
-          <h4>[01] 鋼構強化</h4>
-          <p>厚實幾何框架，承受高負載資訊展示。</p>
-        </div>
-        <div class="plate-card">
-          <h4>[02] 警戒識別</h4>
-          <p>工業黃高對比引導，精準鎖定核心指標。</p>
-        </div>
-        <div class="plate-card">
-          <h4>[03] 清水模質感</h4>
-          <p>冷冽粗礪底色，彰顯扎實硬派工程實力。</p>
-        </div>
-      </div>
-      <div class="btn-group">
-        <button class="btn-main">啟動工業控制台</button>
-        <button class="btn-sub">系統診斷 // SPEC</button>
-      </div>
+      <p class="desc">硬派重工業美學！粗礪清水模混凝土灰深底，結合高辨識度黃黑警戒斜紋（Hazard Stripes）、鋼印刻度、金屬鉚釘板塊與機械工程字體，展現強大、穩固與高抗壓的工程力量。</p>
+      <div class="btn-group"><button class="btn-main">啟動工業控制台</button></div>
     </div>
 
   </main>
@@ -925,12 +750,12 @@
         ]
       },
       cyber: {
-        title: "03. 賽博霓虹科技風 (Cyber Neon Tech)",
-        desc: "深邃暗夜底色融合青藍、紫羅蘭發光漸層（Glow）與 Glassmorphism 毛玻璃卡片，極具未來感與視覺張力。",
+        title: "03. 賽博霓虹紫青毛玻璃風 (Cyber Neon & Deep Violet) ⭐ ChenYu 代表風格",
+        desc: "深邃紫黑夜幕底色融合紫羅蘭與青藍發光光暈，多層次毛玻璃折射通透光影，具備強烈未來科技與工程美感。",
         items: [
-          "<strong>代表色彩</strong>：深海軍黑 (#0a0f1d)、霓虹青藍 (#38bdf8)、賽博紫羅蘭 (#a855f7)。",
-          "<strong>字體排版</strong>：Montserrat + 漸層標題 + 發光徽章標籤。",
-          "<strong>適用對象</strong>：希望作品集具有強烈第一眼視覺震撼（Wow factor）、動態感十足。"
+          "<strong>代表色彩</strong>：深夜色紫黑 (#0f0a28)、賽博紫 (#a855f7)、青藍 (#06b6d4)、光澤白邊。",
+          "<strong>字體排版</strong>：Playfair Display 襯線大標題 + Montserrat 現代內文。",
+          "<strong>適用對象</strong>：全端工程師、AI 工具開發者、希望作品集具備極高質感與未來科技感的首選。"
         ]
       },
       zen: {
@@ -943,7 +768,7 @@
         ]
       },
       editorial: {
-        title: "05. 典雅文藝雜誌／金色襯線風 (Editorial Serif & Luxury Gold)",
+        title: "05. 典雅金色雜誌風 (Editorial Serif & Luxury Gold)",
         desc: "採用典雅襯線字體、琥珀金裝飾線與雙欄卡片佈局，呈現歐洲精品與設計雜誌般的典雅氣質。",
         items: [
           "<strong>代表色彩</strong>：羊皮紙淺底 (#fdfcf9)、深墨藍 (#1a252f)、琥珀金 (#d97706)。",
@@ -953,7 +778,7 @@
       },
       brutalism: {
         title: "06. 新粗獷主義潮流風 (Neo-Brutalism Retro Pop)",
-        desc: "大膽純黑 3px 硬邊框、零羽化硬陰影（Hard Shadow）、高飽和對比色（檸檬黃、蜜桃粉、青綠）與幾何貼紙標籤，展現極高辨識度與玩味潮流感。",
+        desc: "大膽純黑 3.5px 硬邊框、零羽化硬陰影（Hard Shadow）、高飽和對比色（檸檬黃、蜜桃粉）與幾何貼紙標籤。",
         items: [
           "<strong>代表色彩</strong>：純黑線條 (#121212)、蜜桃粉 (#fda4af)、檸檬黃 (#fde047)、亮青色 (#bae6fd)。",
           "<strong>字體排版</strong>：Archivo Black / Plus Jakarta Sans 粗黑字體 + 傾斜貼紙標籤。",
@@ -962,7 +787,7 @@
       },
       neumorph: {
         title: "07. 新擬物立體風 (Soft Neumorphism 3D)",
-        desc: "精準控制同色系的雙向高光與投影，營造出如真實實體塑膠/鋁合金面板平滑擠壓成形的柔軟浮雕觸感。",
+        desc: "精準控制同色系的雙向高光與投影，營造出如真實實體面板平滑擠壓成形的柔軟浮雕觸感。",
         items: [
           "<strong>代表色彩</strong>：柔灰藍底 (#e6ecf4)、高光白 (#ffffff)、陰影灰 (#c4c9cf)。",
           "<strong>字體排版</strong>：Outfit 圓潤幾何無襯線字體，搭配按壓凹陷與外凸狀態。",
@@ -971,7 +796,7 @@
       },
       nordic: {
         title: "08. 北歐極簡冷調風 (Nordic Frost & Slate)",
-        desc: "以北歐冰霜藍灰、深板岩灰與冷調毛玻璃建構，展現理性、克制、高度結構化的斯堪地那維亞現代工程美學。",
+        desc: "以北歐冰霜藍灰、深板岩灰與冷調毛玻璃建構，展現理性、克制、高度結構化的現代工程美學。",
         items: [
           "<strong>代表色彩</strong>：深板岩藍 (#0f172a)、冷霧灰 (#94a3b8)、冰晶青藍 (#38bdf8)。",
           "<strong>字體排版</strong>：Inter 乾淨幾何字體，結構緊密，著重功能性與資訊層級。",
@@ -980,16 +805,16 @@
       },
       aurora: {
         title: "09. 夢幻極光炫彩微光風 (Aurora Holographic Glow)",
-        desc: "流動多光源極光高斯模糊散景（Aurora Mesh），搭配粉紫與青藍交織的全息發光邊框，呈現夢幻炫彩的視覺饗宴。",
+        desc: "流動多光源極光高斯模糊散景，搭配粉紫與青藍交織的全息發光邊框，呈現夢幻炫彩的視覺饗宴。",
         items: [
           "<strong>代表色彩</strong>：暗夜紫藍 (#17172b)、極光粉紅 (#ec4899)、炫彩紫 (#8b5cf6)、冰晶藍 (#38bdf8)。",
-          "<strong>字體排版</strong>：Outfit / Plus Jakarta Sans 搭配全息彩色光暈外框。",
+          "<strong>字體排版</strong>：Outfit 搭配全息彩色光暈外框。",
           "<strong>適用對象</strong>：追求浪漫夢幻、藝術感強烈、前衛創新科技應用。"
         ]
       },
       pixel: {
         title: "10. 復古 8-Bit 像素街機風 (Retro 8-Bit Pixel Arcade)",
-        desc: "致敬經典 80 年代紅白機、街機與 GameBoy 綠幕，具備 CRT 映像管光柵掃描線與點陣像素字體，懷舊 Geek 靈魂拉滿！",
+        desc: "致敬經典 80 年代紅白機與街機，CRT 映像管光柵掃描線與點陣像素字體，懷舊 Geek 靈魂拉滿！",
         items: [
           "<strong>代表色彩</strong>：純黑底 (#000000)、街機螢光綠 (#22c55e)、金幣黃 (#facc15)。",
           "<strong>字體排版</strong>：Press Start 2P 像素點陣字體 + JetBrains Mono 代碼字體。",
@@ -1001,13 +826,13 @@
         desc: "宣紙米黃底色融合濃淡松煙水墨與朱砂印章紅，散發文人雅士的深邃詩意與東方古典意境。",
         items: [
           "<strong>代表色彩</strong>：宣紙米黃 (#f4efe6)、松煙墨黑 (#1c1917)、朱砂印章紅 (#9e2a2b)。",
-          "<strong>字體排版</strong>：Noto Serif TC 古典宋體 / 楷體襯線字體，行距寬舒留白。",
+          "<strong>字體排版</strong>：Noto Serif TC 古典宋體，行距寬舒留白。",
           "<strong>適用對象</strong>：東方文化主題、歷史古籍、書法藝術或文藝個人履歷展示。"
         ]
       },
       vaporwave: {
         title: "12. 蒸汽波 80s 浪漫復古風 (Vaporwave Synthwave Sunset)",
-        desc: "80 年代落日霓虹、Synthwave 電子合成波桃粉與天藍漸層，搭配復古線框透視網格，充滿微醺浪漫情懷。",
+        desc: "80 年代落日霓虹、Synthwave 電子合成波桃粉與天藍漸層，搭配復古線框透視網格，浪漫微醺。",
         items: [
           "<strong>代表色彩</strong>：深紫夜空 (#1b0a33)、霓虹桃粉 (#ff71ce)、青空天藍 (#01cdfe)。",
           "<strong>字體排版</strong>：Space Grotesk / 寬字距大寫，強烈漸層標題與發光邊框。",
@@ -1016,7 +841,7 @@
       },
       bauhaus: {
         title: "13. 包浩斯幾何現代主義 (Bauhaus Geometric Modern)",
-        desc: "致敬現代設計之母包浩斯，紅、黃、藍三原色碰撞圓形、方形、三角形純粹幾何構圖，形式服從功能。",
+        desc: "致敬現代設計之母包浩斯，紅、黃、藍三原色碰撞圓形、方形、三角形幾何構圖，形式服從功能。",
         items: [
           "<strong>代表色彩</strong>：原色紅 (#ef4444)、原色藍 (#2563eb)、原色黃 (#f59e0b)、純黑線條 (#111827)。",
           "<strong>字體排版</strong>：Space Grotesk 幾何粗黑字體，非對稱結構與色塊碰撞。",
@@ -1038,7 +863,7 @@
         items: [
           "<strong>代表色彩</strong>：鼠尾草綠 (#52796f)、奶油杏白 (#f4f7f4)、森林墨綠 (#2f3e46)。",
           "<strong>字體排版</strong>：Noto Sans TC 搭配圓角有機形狀與綠葉裝飾標籤。",
-          "<strong>適用對象</strong>：生活風格、手作工坊、健康飲食（如披薩食譜/營養師專案）、療癒部落格。"
+          "<strong>適用對象</strong>：生活風格、健康飲食（如披薩食譜/營養師專案）、療癒隨筆。"
         ]
       },
       crystal: {
@@ -1054,9 +879,9 @@
         title: "17. 多巴胺多彩糖果甜心風 (Dopamine Y2K Candy Pop)",
         desc: "充滿快樂正能量的多巴胺果凍配色，草莓粉、薄荷綠與檸檬黃搭配澎澎 3D 泡泡感圓角，活潑甜美。",
         items: [
-          "<strong>代表色彩</strong>：草莓粉 (#ff49db / #ec4899)、薄荷綠 (#ccfbf1)、檸檬黃 (#fef9c3)、葡萄紫 (#8b5cf6)。",
+          "<strong>代表色彩</strong>：草莓粉 (#ff49db)、薄荷綠 (#ccfbf1)、檸檬黃 (#fef9c3)、葡萄紫 (#8b5cf6)。",
           "<strong>字體排版</strong>：Fredoka 圓滾滾字體 + 糖果漸層按鈕 + 旋轉微動效。",
-          "<strong>適用對象</strong>：甜點烘焙（如甜點披薩/飲料點單）、寵物生活、二次元、女性或青少年社群工具。"
+          "<strong>適用對象</strong>：甜點美食（如披薩/飲料點單）、寵物生活、二次元社群工具。"
         ]
       },
       industrial: {
