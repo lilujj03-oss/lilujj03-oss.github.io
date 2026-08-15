@@ -46,7 +46,8 @@ button { font:inherit; cursor:pointer; }
 .rank { display:inline-grid; place-items:center; width:35px; height:35px; color:#fff; background:var(--blue); border-radius:50%; font:900 12px "Archivo Black"; }
 .result-card:first-child .rank { background:var(--red); }
 .result-card h3 { margin:22px 0 9px; font-size:21px; }
-.result-card p { min-height:70px; margin:0; color:#756e65; line-height:1.7; font-size:14px; }
+.result-card p { margin:0; color:#756e65; line-height:1.7; font-size:14px; }
+.result-card .reason { min-height:78px; margin-top:13px; padding-top:12px; color:var(--ink); border-top:1px dashed var(--line); font-size:13px; font-weight:700; }
 .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:18px; }
 .tags span { padding:4px 9px; color:var(--blue); background:#e9f5fb; border-radius:99px; font-size:11px; font-weight:700; }
 .order-actions { display:flex; justify-content:center; align-items:center; gap:25px; margin-top:38px; }

@@ -12,6 +12,8 @@ const pizzas = [
   { name: '極致干貝海鮮', flavor: 'seafood', moods: ['special'], spicy: false, desc: '干貝與海鮮的升級選擇，適合想吃得有儀式感。', tags: ['干貝', '海鮮', '豪華'] },
   { name: '招牌海鮮四喜', flavor: 'seafood', moods: ['classic'], spicy: false, desc: '一次集合多種海鮮風味，聚餐時比較容易照顧不同喜好。', tags: ['海鮮', '四喜'] },
   { name: '日式奶油鮭魚披薩', flavor: 'seafood', moods: ['special', 'cheese'], spicy: false, desc: '奶油與鮭魚的日式風味，濃郁但有海鮮的鮮味。', tags: ['鮭魚', '奶油', '日式'] },
+  { name: '招牌海鮮四喜奶香火山', flavor: 'seafood', moods: ['cheese'], spicy: false, desc: '四種海鮮風味搭配奶香火山，中心濃郁起司讓每一片都能沾著吃。', tags: ['海鮮', '四喜', '奶香火山', '起司'] },
+  { name: '極致干貝海鮮奶香火山', flavor: 'seafood', moods: ['cheese', 'special'], spicy: false, desc: '干貝海鮮搭配奶香起司火山，是海鮮派追求濃厚起司感的豪華選擇。', tags: ['干貝', '海鮮', '奶香火山', '起司'] },
   { name: '照燒花枝', flavor: 'seafood', moods: ['special'], spicy: false, desc: '照燒甜鹹配上花枝口感，適合喜歡日式風味的人。', tags: ['花枝', '照燒', '日式'] },
   { name: '海陸金沙起司火山', flavor: 'surprise', moods: ['cheese', 'special'], spicy: false, desc: '海陸配料、金沙與起司火山，是想要澎湃感時的選擇。', tags: ['海陸', '金沙', '起司'] }
 ];
@@ -25,18 +27,35 @@ function pick(formData, random = false) {
   const flavor = formData.get('flavor');
   const spicy = formData.get('spicy');
   const mood = formData.get('mood');
-  const ranked = pizzas.map((pizza) => {
+  let candidates = pizzas;
+  if (!random && mood === 'cheese') {
+    candidates = pizzas.filter((pizza) => pizza.moods.includes('cheese'));
+  }
+  const ranked = candidates.map((pizza) => {
     let score = Math.random() * (random ? 10 : 1);
     if (!random && (flavor === 'surprise' || pizza.flavor === flavor)) score += 5;
-    if (!random && pizza.moods.includes(mood)) score += 3;
+    if (!random && pizza.moods.includes(mood)) score += mood === 'cheese' ? 7 : 3;
     if (!random && spicy === 'yes' && pizza.spicy) score += 2;
     if (!random && spicy === 'no' && pizza.spicy) score -= 8;
     return { ...pizza, score };
   }).sort((a, b) => b.score - a.score).slice(0, 3);
-  render(ranked, formData.get('people'));
+  render(ranked, formData.get('people'), { flavor, spicy, mood, random });
 }
 
-function render(items, people) {
+function recommendationReason(pizza, choices) {
+  if (choices.random) return '命運選中了它，今天就勇敢試試這一款。';
+  const reasons = [];
+  const flavorNames = { meat: '肉肉派', seafood: '海鮮派', fresh: '清爽派' };
+  if (choices.flavor !== 'surprise' && pizza.flavor === choices.flavor) reasons.push(`符合你選的「${flavorNames[choices.flavor]}」`);
+  if (choices.mood === 'cheese' && pizza.moods.includes('cheese')) reasons.push('有明顯的奶香或起司特色');
+  if (choices.mood === 'special' && pizza.moods.includes('special')) reasons.push('口味較有特色');
+  if (choices.mood === 'classic' && pizza.moods.includes('classic')) reasons.push('是接受度高的經典選擇');
+  if (choices.spicy === 'yes' && pizza.spicy) reasons.push('也能滿足你想來點辣的偏好');
+  if (choices.spicy === 'no' && !pizza.spicy) reasons.push('而且不是辣味品項');
+  return reasons.length ? `推薦原因：${reasons.join('，')}。` : '推薦原因：它是最接近你目前條件的候選。';
+}
+
+function render(items, people, choices) {
   const tips = { solo: '1 人建議先查看小披薩或個人優惠，份量與價格以官方頁面為準。', pair: '2–3 人可從 1 個大披薩搭配副食開始考慮。', party: '4 人以上建議選不同口味，並依食量搭配多個披薩與副食。' };
   servingTip.textContent = tips[people];
   grid.innerHTML = items.map((pizza, index) => `
@@ -44,6 +63,7 @@ function render(items, people) {
       <span class="rank">${index + 1}</span>
       <h3>${pizza.name}</h3>
       <p>${pizza.desc}</p>
+      <p class="reason">${recommendationReason(pizza, choices)}</p>
       <div class="tags">${pizza.tags.map(tag => `<span>${tag}</span>`).join('')}</div>
     </article>`).join('');
   results.hidden = false;
