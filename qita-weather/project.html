@@ -20,8 +20,8 @@
       </a>
       <nav aria-label="專案導覽">
         <a href="./index.html">互動 Demo</a>
-        <a href="#features">功能</a>
-        <a href="#architecture">架構</a>
+        <a href="#dashboard-preview">儀表板截圖</a>
+        <a href="https://github.com/lilujj03-oss/lilujj03-oss.github.io/blob/main/qita-weather/README.md" target="_blank" rel="noreferrer">專案 README</a>
         <a href="./CONVERSATION-HIGHLIGHTS.md">對話紀錄</a>
         <a class="back-link" href="../index.html#portfolio">← 返回作品集</a>
       </nav>
@@ -77,70 +77,11 @@
         </div>
       </section>
 
-      <section class="features" id="features">
-        <div class="section-heading">
-          <span>02 · CORE FEATURES</span>
-          <h2>從即時資料到旅行決策</h2>
-        </div>
-        <div class="feature-grid">
-          <article><i>⌖</i><h3>全台氣象測站地圖</h3><p>以 Leaflet 呈現 876 個測站，標記顏色隨溫度變化，支援搜尋與「縣市 → 行政區」雙層篩選。</p></article>
-          <article><i>◐</i><h3>即時天氣資訊卡</h3><p>顯示所選測站的溫度、濕度、風向風速、氣壓與最近 1 小時雨量，並清楚標示觀測時間。</p></article>
-          <article><i>⌁</i><h3>歷史趨勢圖</h3><p>使用 Plotly 呈現氣溫、濕度、雨量與風速；每小時雨量保留最近 8 個整點，圖軸固定 0–50 mm。</p></article>
-          <article><i>✦</i><h3>AI 趨勢預測</h3><p>後端依最近觀測值產生短期趨勢分析；若歷史來源過期，系統會暫停預測以避免誤導。</p></article>
-          <article><i>↻</i><h3>更新觀測資料</h3><p>後端可在背景執行爬蟲並重載最新資料；線上版也支援定時公開快照與手動略過快取同步。</p></article>
-          <article><i>☼</i><h3>未來一週預報</h3><p>由 crawler.py 解析 F-D0047-091，提供各縣市溫度、天氣現象與降雨機率，過期預報不再顯示。</p></article>
-        </div>
-      </section>
-
-      <section class="architecture" id="architecture">
-        <div class="section-heading">
-          <span>03 · SYSTEM FLOW</span>
-          <h2>完整全端資料流程</h2>
-        </div>
-        <div class="flow" role="list" aria-label="系統資料流程">
-          <article role="listitem"><small>SOURCE</small><b>中央氣象署 API</b><p>觀測與預報開放資料</p></article>
-          <i>→</i>
-          <article role="listitem"><small>PIPELINE</small><b>Python + Pandas</b><p>下載、清理與解析資料</p></article>
-          <i>→</i>
-          <article role="listitem"><small>STORAGE</small><b>CSV + SQLite</b><p>累積歷史資料與索引</p></article>
-          <i>→</i>
-          <article role="listitem"><small>SERVICE</small><b>FastAPI</b><p>REST API、查詢與更新</p></article>
-          <i>→</i>
-          <article role="listitem"><small>VIEW</small><b>Leaflet + Plotly</b><p>互動地圖、資訊卡與圖表</p></article>
-        </div>
-      </section>
-
-      <section class="data-notes">
-        <article>
-          <span>DATASETS</span>
-          <h2>兩組核心資料＋雨量擴充</h2>
-          <ul>
-            <li><b>O-A0001-001</b><em>氣象測站逐時觀測</em></li>
-            <li><b>F-D0047-091</b><em>各縣市一週預報</em></li>
-            <li><b>O-A0002-001</b><em>七逃趣擴充：過去 1 小時雨量</em></li>
-          </ul>
-        </article>
-        <article class="security-card">
-          <span>SECURITY BY DESIGN</span>
-          <h2>API Key 不進前端</h2>
-          <p>本機授權碼只放在後端 `.env`；GitHub 排程只讀取 Repository Secret `CWA_API_KEY`。金鑰不會進入 HTML、JavaScript、JSON 或 Git commit，錯誤訊息也會自動遮蔽敏感字串。</p>
-          <a href="./README.md">閱讀專案說明 →</a>
-        </article>
-      </section>
-
-      <section class="conversation">
-        <div>
-          <span>04 · BUILDING IN CONVERSATION</span>
-          <h2>從一句需求，逐步長成作品</h2>
-        </div>
-        <blockquote>「從氣象署資料爬取、資料庫、FastAPI，到能篩選縣市與行政區的互動地圖。」</blockquote>
-        <a href="https://github.com/lilujj03-oss/lilujj03-oss.github.io/blob/main/qita-weather/CONVERSATION-HIGHLIGHTS.md" target="_blank" rel="noreferrer">閱讀完整重點紀錄 ↗</a>
-      </section>
     </main>
 
     <footer>
       <div><img src="./assets/qita-logo.jpg" alt="" /><span><b>七逃趣</b><small>看天氣 · 去七逃 · 安心出發</small></span></div>
-      <p>Portfolio by lilujj03-oss · Data from Taiwan CWA · Structure reference: <a href="https://github.com/panzisusu/cwa-weather" target="_blank" rel="noreferrer">panzisusu/cwa-weather</a></p>
+      <p>Portfolio project by lilujj03-oss · Data from Taiwan CWA</p>
     </footer>
   </body>
 </html>
