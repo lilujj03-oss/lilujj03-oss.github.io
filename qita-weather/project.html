@@ -30,16 +30,16 @@
     <main>
       <section class="hero">
         <div class="hero-copy">
-          <span class="eyebrow"><i></i> NEW PROJECT · 2026/08/23</span>
+          <span class="eyebrow"><i></i> UPDATED · 2026/08/24</span>
           <h1>看天氣，<br /><em>放心去七逃。</em></h1>
-          <p>把中央氣象署即時觀測、每小時雨量和一週預報放進同一張台灣地圖。從資料下載、SQLite 歷史保存、FastAPI 到 Leaflet／Plotly 前端，完成一套可每小時自動更新的全端氣象系統。</p>
+          <p>整合中央氣象署逐時觀測與未來一週預報，提供自動化爬取、CSV／SQLite 儲存、FastAPI REST API 與 Leaflet／Plotly 互動儀表板；七逃趣版本另加入每小時雨量與「縣市 → 行政區」雙層篩選。</p>
           <div class="hero-actions">
             <a class="primary" href="https://lilujj03-oss-github-io.vercel.app/qita-weather/index.html" target="_blank" rel="noreferrer">開啟互動 Demo ↗</a>
             <a href="https://github.com/lilujj03-oss/lilujj03-oss.github.io/tree/main/qita-weather/source" target="_blank" rel="noreferrer">查看原始碼</a>
             <a href="https://github.com/lilujj03-oss/lilujj03-oss.github.io/blob/main/qita-weather/CONVERSATION-HIGHLIGHTS.md" target="_blank" rel="noreferrer">AI 對話紀錄</a>
           </div>
           <ul class="tech-list" aria-label="使用技術">
-            <li>FastAPI</li><li>SQLite</li><li>Leaflet</li><li>Plotly</li><li>CWA Open Data</li>
+            <li>Python + Pandas</li><li>FastAPI</li><li>CSV + SQLite</li><li>Leaflet</li><li>Plotly</li><li>CWA Open Data</li>
           </ul>
         </div>
         <div class="hero-mark" aria-hidden="true">
@@ -60,7 +60,7 @@
         <div class="section-heading">
           <span>01 · LIVE DASHBOARD</span>
           <h2>台灣氣象，一頁看懂</h2>
-          <p>實測畫面已顯示最近 1 小時雨量與完整 0–50 mm 圖軸；歷史資料會隨服務每小時持續累積。</p>
+          <p>實測畫面展示「臺北市 → 大安區」雙層篩選、最新觀測時間、最近 1 小時雨量與完整 0–50 mm 圖軸。</p>
         </div>
         <div class="interactive-preview">
           <div class="preview-toolbar">
@@ -83,12 +83,12 @@
           <h2>從即時資料到旅行決策</h2>
         </div>
         <div class="feature-grid">
-          <article><i>⌖</i><h3>全台測站地圖</h3><p>以 Leaflet 呈現台灣氣象測站，支援縣市、測站代碼與關鍵字搜尋。</p></article>
-          <article><i>☂</i><h3>真實每小時雨量</h3><p>改用 O-A0002-001 的 Past1hr 雨量，保存最近 8 個整點時段。</p></article>
-          <article><i>↻</i><h3>自動與手動更新</h3><p>每 60 分鐘同步三組資料；資料過期時，服務啟動後會自動補抓。</p></article>
-          <article><i>↝</i><h3>最近雨量站配對</h3><p>若氣象站沒有相同代碼，後端依 WGS84 座標自動選擇最近雨量站。</p></article>
-          <article><i>⌁</i><h3>互動趨勢圖</h3><p>Plotly 顯示雨量、氣溫、濕度與風速，雨量縱軸固定 0–50 mm。</p></article>
-          <article><i>☼</i><h3>一週旅行預報</h3><p>整合縣市一週預報，快速查看溫度、天氣現象與降雨機率。</p></article>
+          <article><i>⌖</i><h3>全台氣象測站地圖</h3><p>以 Leaflet 呈現 876 個測站，標記顏色隨溫度變化，支援搜尋與「縣市 → 行政區」雙層篩選。</p></article>
+          <article><i>◐</i><h3>即時天氣資訊卡</h3><p>顯示所選測站的溫度、濕度、風向風速、氣壓與最近 1 小時雨量，並清楚標示觀測時間。</p></article>
+          <article><i>⌁</i><h3>歷史趨勢圖</h3><p>使用 Plotly 呈現氣溫、濕度、雨量與風速；每小時雨量保留最近 8 個整點，圖軸固定 0–50 mm。</p></article>
+          <article><i>✦</i><h3>AI 趨勢預測</h3><p>後端依最近觀測值產生短期趨勢分析；若歷史來源過期，系統會暫停預測以避免誤導。</p></article>
+          <article><i>↻</i><h3>更新觀測資料</h3><p>後端可在背景執行爬蟲並重載最新資料；線上版也支援定時公開快照與手動略過快取同步。</p></article>
+          <article><i>☼</i><h3>未來一週預報</h3><p>由 crawler.py 解析 F-D0047-091，提供各縣市溫度、天氣現象與降雨機率，過期預報不再顯示。</p></article>
         </div>
       </section>
 
@@ -98,32 +98,32 @@
           <h2>完整全端資料流程</h2>
         </div>
         <div class="flow" role="list" aria-label="系統資料流程">
-          <article role="listitem"><small>SOURCE</small><b>中央氣象署 API</b><p>三組官方開放資料</p></article>
+          <article role="listitem"><small>SOURCE</small><b>中央氣象署 API</b><p>觀測與預報開放資料</p></article>
           <i>→</i>
-          <article role="listitem"><small>PIPELINE</small><b>Python Parser</b><p>清理、整點分桶、配對</p></article>
+          <article role="listitem"><small>PIPELINE</small><b>Python + Pandas</b><p>下載、清理與解析資料</p></article>
           <i>→</i>
-          <article role="listitem"><small>STORAGE</small><b>SQLite</b><p>歷史保存與索引</p></article>
+          <article role="listitem"><small>STORAGE</small><b>CSV + SQLite</b><p>累積歷史資料與索引</p></article>
           <i>→</i>
-          <article role="listitem"><small>SERVICE</small><b>FastAPI</b><p>REST API 與排程</p></article>
+          <article role="listitem"><small>SERVICE</small><b>FastAPI</b><p>REST API、查詢與更新</p></article>
           <i>→</i>
-          <article role="listitem"><small>VIEW</small><b>Leaflet + Plotly</b><p>地圖與互動圖表</p></article>
+          <article role="listitem"><small>VIEW</small><b>Leaflet + Plotly</b><p>互動地圖、資訊卡與圖表</p></article>
         </div>
       </section>
 
       <section class="data-notes">
         <article>
           <span>DATASETS</span>
-          <h2>三組官方資料</h2>
+          <h2>兩組核心資料＋雨量擴充</h2>
           <ul>
             <li><b>O-A0001-001</b><em>氣象測站逐時觀測</em></li>
-            <li><b>O-A0002-001</b><em>過去 1 小時雨量</em></li>
             <li><b>F-D0047-091</b><em>各縣市一週預報</em></li>
+            <li><b>O-A0002-001</b><em>七逃趣擴充：過去 1 小時雨量</em></li>
           </ul>
         </article>
         <article class="security-card">
           <span>SECURITY BY DESIGN</span>
           <h2>API Key 不進前端</h2>
-          <p>授權碼只放在後端 `.env`，且不提交到 GitHub。瀏覽器透過本專案 API 讀取資料，錯誤訊息也會自動遮蔽敏感字串。</p>
+          <p>本機授權碼只放在後端 `.env`；GitHub 排程只讀取 Repository Secret `CWA_API_KEY`。金鑰不會進入 HTML、JavaScript、JSON 或 Git commit，錯誤訊息也會自動遮蔽敏感字串。</p>
           <a href="./README.md">閱讀專案說明 →</a>
         </article>
       </section>
@@ -133,14 +133,14 @@
           <span>04 · BUILDING IN CONVERSATION</span>
           <h2>從一句需求，逐步長成作品</h2>
         </div>
-        <blockquote>「雨量每小時偵測一次，抓 8 小時，單位一律改成 0～50 mm。」</blockquote>
+        <blockquote>「從氣象署資料爬取、資料庫、FastAPI，到能篩選縣市與行政區的互動地圖。」</blockquote>
         <a href="https://github.com/lilujj03-oss/lilujj03-oss.github.io/blob/main/qita-weather/CONVERSATION-HIGHLIGHTS.md" target="_blank" rel="noreferrer">閱讀完整重點紀錄 ↗</a>
       </section>
     </main>
 
     <footer>
       <div><img src="./assets/qita-logo.jpg" alt="" /><span><b>七逃趣</b><small>看天氣 · 去七逃 · 安心出發</small></span></div>
-      <p>Portfolio project by lilujj03-oss · Data from Taiwan CWA</p>
+      <p>Portfolio by lilujj03-oss · Data from Taiwan CWA · Structure reference: <a href="https://github.com/panzisusu/cwa-weather" target="_blank" rel="noreferrer">panzisusu/cwa-weather</a></p>
     </footer>
   </body>
 </html>
