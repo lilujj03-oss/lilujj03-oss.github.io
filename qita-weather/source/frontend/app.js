@@ -116,13 +116,23 @@ function fitTaiwan(animate = true) {
   state.map?.fitBounds(TAIWAN_BOUNDS, { padding: [18, 18], animate });
 }
 
+function showAllTaiwan() {
+  $("#station-search").value = "";
+  $("#county-select").value = "";
+  populateTowns({ preserve: false });
+  renderMarkers();
+  fitTaiwan(true);
+}
+
 function filteredStations() {
   const query = $("#station-search").value.trim().toLowerCase();
   const county = $("#county-select").value;
+  const town = $("#town-select").value;
   return state.stations.filter((station) => {
     const countyMatch = !county || station.county === county;
+    const townMatch = !town || station.town === town;
     const searchText = `${station.station_name} ${station.station_id} ${station.county} ${station.town}`.toLowerCase();
-    return countyMatch && (!query || searchText.includes(query));
+    return countyMatch && townMatch && (!query || searchText.includes(query));
   });
 }
 
@@ -151,11 +161,11 @@ function renderMarkers({ fit = false } = {}) {
   });
 
   $("#visible-count").textContent = visible.length.toLocaleString("zh-TW");
-  $("#map-empty").classList.toggle("hidden", state.stations.length > 0);
+  $("#map-empty").classList.toggle("hidden", visible.length > 0);
 
   if (fit && visible.length && state.map) {
     const bounds = L.latLngBounds(visible.map((station) => [station.latitude, station.longitude]));
-    state.map.fitBounds(bounds, { padding: [35, 35], maxZoom: 10 });
+    state.map.fitBounds(bounds, { padding: [35, 35], maxZoom: $("#town-select").value ? 12 : 10 });
   }
 }
 
@@ -165,6 +175,30 @@ function populateCounties() {
   const counties = [...new Set(state.stations.map((station) => station.county).filter(Boolean))].sort((a, b) => a.localeCompare(b, "zh-Hant"));
   select.innerHTML = `<option value="">全部縣市</option>${counties.map((county) => `<option value="${escapeHtml(county)}">${escapeHtml(county)}</option>`).join("")}`;
   if (counties.includes(current)) select.value = current;
+  populateTowns();
+}
+
+function populateTowns({ preserve = true } = {}) {
+  const townSelect = $("#town-select");
+  const county = $("#county-select").value;
+  const current = preserve ? townSelect.value : "";
+  const towns = county
+    ? [...new Set(state.stations
+      .filter((station) => station.county === county)
+      .map((station) => station.town)
+      .filter(Boolean))].sort((a, b) => a.localeCompare(b, "zh-Hant"))
+    : [];
+  townSelect.innerHTML = `<option value="">全部行政區</option>${towns.map((town) => `<option value="${escapeHtml(town)}">${escapeHtml(town)}</option>`).join("")}`;
+  townSelect.disabled = !county;
+  townSelect.value = towns.includes(current) ? current : "";
+}
+
+async function applyLocationFilter() {
+  const visible = filteredStations();
+  renderMarkers({ fit: true });
+  if (visible.length && !visible.some((station) => station.station_id === state.selectedStationId)) {
+    await selectStation(visible[0].station_id);
+  }
 }
 
 function setConnection(label, error = false) {
@@ -439,7 +473,7 @@ function showToast(message) {
 
 function bindEvents() {
   $("#update-button").addEventListener("click", triggerUpdate);
-  $("#fit-taiwan").addEventListener("click", () => fitTaiwan(true));
+  $("#fit-taiwan").addEventListener("click", showAllTaiwan);
   $("#station-search").addEventListener("input", () => renderMarkers());
   $("#station-search").addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
@@ -447,7 +481,11 @@ function bindEvents() {
       if (first) selectStation(first.station_id);
     }
   });
-  $("#county-select").addEventListener("change", () => renderMarkers({ fit: true }));
+  $("#county-select").addEventListener("change", () => {
+    populateTowns({ preserve: false });
+    applyLocationFilter();
+  });
+  $("#town-select").addEventListener("change", applyLocationFilter);
   $("#ai-button").addEventListener("click", runPrediction);
   $("#close-prediction").addEventListener("click", () => $("#prediction-card").classList.add("hidden"));
   $("#dismiss-alert").addEventListener("click", () => $("#setup-alert").classList.add("hidden"));
