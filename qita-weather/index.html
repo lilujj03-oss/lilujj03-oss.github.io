@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fff6bf" />
+    <meta name="description" content="七逃行｜整合中央氣象署即時觀測、每小時雨量與一週預報的全端氣象作品。" />
+    <title>七逃行｜台灣即時氣象作品</title>
+    <link rel="icon" href="./assets/qita-logo.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="../index.html#portfolio">
+        <img src="./assets/qita-logo.svg" alt="七張表情人臉組成腳趾的七逃行腳印 Logo" />
+        <span><b>七逃行</b><small>WEATHER PROJECT</small></span>
+      </a>
+      <nav aria-label="專案導覽">
+        <a href="#features">功能</a>
+        <a href="#architecture">架構</a>
+        <a href="./CONVERSATION-HIGHLIGHTS.md">對話紀錄</a>
+        <a class="back-link" href="../index.html#portfolio">← 返回作品集</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow"><i></i> NEW PROJECT · 2026/08/23</span>
+          <h1>看天氣，<br /><em>放心去七逃。</em></h1>
+          <p>把中央氣象署即時觀測、每小時雨量和一週預報放進同一張台灣地圖。從資料下載、SQLite 歷史保存、FastAPI 到 Leaflet／Plotly 前端，完成一套可每小時自動更新的全端氣象系統。</p>
+          <div class="hero-actions">
+            <a class="primary" href="https://cwa-weather.vercel.app/" target="_blank" rel="noreferrer">開啟線上 Demo ↗</a>
+            <a href="https://github.com/lilujj03-oss/lilujj03-oss.github.io/tree/main/qita-weather/source" target="_blank" rel="noreferrer">查看原始碼</a>
+            <a href="https://github.com/lilujj03-oss/lilujj03-oss.github.io/blob/main/qita-weather/CONVERSATION-HIGHLIGHTS.md" target="_blank" rel="noreferrer">AI 對話紀錄</a>
+          </div>
+          <ul class="tech-list" aria-label="使用技術">
+            <li>FastAPI</li><li>SQLite</li><li>Leaflet</li><li>Plotly</li><li>CWA Open Data</li>
+          </ul>
+        </div>
+        <div class="hero-mark" aria-hidden="true">
+          <span class="orbit orbit-a"></span><span class="orbit orbit-b"></span>
+          <img src="./assets/qita-logo.svg" alt="" />
+          <p>七張臉<br /><b>一起出發</b></p>
+        </div>
+      </section>
+
+      <section class="rain-spec" aria-label="雨量規格">
+        <article><small>DETECTION</small><b>60</b><span>分鐘自動偵測</span></article>
+        <article><small>HISTORY</small><b>8</b><span>小時雨量序列</span></article>
+        <article><small>CHART RANGE</small><b>0–50</b><span>mm 固定圖軸</span></article>
+        <article><small>RAIN STATIONS</small><b>1,326</b><span>首次同步測站</span></article>
+      </section>
+
+      <section class="showcase">
+        <div class="section-heading">
+          <span>01 · LIVE DASHBOARD</span>
+          <h2>台灣氣象，一頁看懂</h2>
+          <p>實測畫面已顯示最近 1 小時雨量與完整 0–50 mm 圖軸；歷史資料會隨服務每小時持續累積。</p>
+        </div>
+        <figure>
+          <img src="./assets/dashboard-rainfall.png" alt="七逃行氣象儀表板實測畫面，包含台灣測站地圖、即時資訊、每小時雨量與一週預報" />
+          <figcaption><span>實際瀏覽器測試</span><time datetime="2026-08-23">2026/08/23</time></figcaption>
+        </figure>
+      </section>
+
+      <section class="features" id="features">
+        <div class="section-heading">
+          <span>02 · CORE FEATURES</span>
+          <h2>從即時資料到旅行決策</h2>
+        </div>
+        <div class="feature-grid">
+          <article><i>⌖</i><h3>全台測站地圖</h3><p>以 Leaflet 呈現台灣氣象測站，支援縣市、測站代碼與關鍵字搜尋。</p></article>
+          <article><i>☂</i><h3>真實每小時雨量</h3><p>改用 O-A0002-001 的 Past1hr 雨量，保存最近 8 個整點時段。</p></article>
+          <article><i>↻</i><h3>自動與手動更新</h3><p>每 60 分鐘同步三組資料；資料過期時，服務啟動後會自動補抓。</p></article>
+          <article><i>↝</i><h3>最近雨量站配對</h3><p>若氣象站沒有相同代碼，後端依 WGS84 座標自動選擇最近雨量站。</p></article>
+          <article><i>⌁</i><h3>互動趨勢圖</h3><p>Plotly 顯示雨量、氣溫、濕度與風速，雨量縱軸固定 0–50 mm。</p></article>
+          <article><i>☼</i><h3>一週旅行預報</h3><p>整合縣市一週預報，快速查看溫度、天氣現象與降雨機率。</p></article>
+        </div>
+      </section>
+
+      <section class="architecture" id="architecture">
+        <div class="section-heading">
+          <span>03 · SYSTEM FLOW</span>
+          <h2>完整全端資料流程</h2>
+        </div>
+        <div class="flow" role="list" aria-label="系統資料流程">
+          <article role="listitem"><small>SOURCE</small><b>中央氣象署 API</b><p>三組官方開放資料</p></article>
+          <i>→</i>
+          <article role="listitem"><small>PIPELINE</small><b>Python Parser</b><p>清理、整點分桶、配對</p></article>
+          <i>→</i>
+          <article role="listitem"><small>STORAGE</small><b>SQLite</b><p>歷史保存與索引</p></article>
+          <i>→</i>
+          <article role="listitem"><small>SERVICE</small><b>FastAPI</b><p>REST API 與排程</p></article>
+          <i>→</i>
+          <article role="listitem"><small>VIEW</small><b>Leaflet + Plotly</b><p>地圖與互動圖表</p></article>
+        </div>
+      </section>
+
+      <section class="data-notes">
+        <article>
+          <span>DATASETS</span>
+          <h2>三組官方資料</h2>
+          <ul>
+            <li><b>O-A0001-001</b><em>氣象測站逐時觀測</em></li>
+            <li><b>O-A0002-001</b><em>過去 1 小時雨量</em></li>
+            <li><b>F-D0047-091</b><em>各縣市一週預報</em></li>
+          </ul>
+        </article>
+        <article class="security-card">
+          <span>SECURITY BY DESIGN</span>
+          <h2>API Key 不進前端</h2>
+          <p>授權碼只放在後端 `.env`，且不提交到 GitHub。瀏覽器透過本專案 API 讀取資料，錯誤訊息也會自動遮蔽敏感字串。</p>
+          <a href="./README.md">閱讀專案說明 →</a>
+        </article>
+      </section>
+
+      <section class="conversation">
+        <div>
+          <span>04 · BUILDING IN CONVERSATION</span>
+          <h2>從一句需求，逐步長成作品</h2>
+        </div>
+        <blockquote>「雨量每小時偵測一次，抓 8 小時，單位一律改成 0～50 mm。」</blockquote>
+        <a href="https://github.com/lilujj03-oss/lilujj03-oss.github.io/blob/main/qita-weather/CONVERSATION-HIGHLIGHTS.md" target="_blank" rel="noreferrer">閱讀完整重點紀錄 ↗</a>
+      </section>
+    </main>
+
+    <footer>
+      <div><img src="./assets/qita-logo.svg" alt="" /><span><b>七逃行</b><small>看天氣 · 去七逃 · 安心出發</small></span></div>
+      <p>Portfolio project by lilujj03-oss · Data from Taiwan CWA</p>
+    </footer>
+  </body>
+</html>

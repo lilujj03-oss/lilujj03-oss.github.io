@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 190" role="img" aria-labelledby="logo-title logo-desc">
+  <title id="logo-title">七逃行 Logo</title>
+  <desc id="logo-desc">青綠色空心腳印，上方七個圓形腳趾是七張不同表情的人臉</desc>
+  <defs>
+    <filter id="logo-shadow" x="-25%" y="-20%" width="160%" height="155%">
+      <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#66541f" flood-opacity=".22" />
+    </filter>
+  </defs>
+
+  <g filter="url(#logo-shadow)">
+    <!-- Hollow footprint inspired by the rounded outline in the reference image. -->
+    <path
+      transform="translate(35 0)"
+      d="M57 58C82 49 120 52 137 69c14 14 9 31-5 47-12 14-16 23-8 34 9 13 3 24-9 29-17 7-35-1-43-15-8-13-5-28-12-42-8-15-20-26-22-41-2-12 4-20 19-23Z"
+      fill="#fff9d8"
+      stroke="#18aea5"
+      stroke-width="11"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+
+    <!-- Seven round face-toes following one circular arc. -->
+    <g fill="#fff9d8" stroke="#18aea5" stroke-width="6.5">
+      <circle cx="17" cy="61" r="14" />
+      <circle cx="43" cy="39" r="15.5" />
+      <circle cx="72" cy="24" r="17" />
+      <circle cx="103" cy="17" r="18.5" />
+      <circle cx="136" cy="22" r="20" />
+      <circle cx="169" cy="36" r="21.5" />
+      <circle cx="192" cy="58" r="22.5" />
+    </g>
+  </g>
+
+  <!-- 1: happy -->
+  <g fill="none" stroke="#17636a" stroke-width="3.3" stroke-linecap="round">
+    <circle cx="12" cy="58" r="2" fill="#17636a" stroke="none" />
+    <circle cx="22" cy="58" r="2" fill="#17636a" stroke="none" />
+    <path d="M10 65c4 4 10 4 14 0" />
+  </g>
+
+  <!-- 2: wink -->
+  <g fill="none" stroke="#17636a" stroke-width="3.4" stroke-linecap="round">
+    <path d="M35 36h6" />
+    <circle cx="50" cy="35.5" r="2" fill="#17636a" stroke="none" />
+    <path d="M34 44c5 4 12 4 17 0" />
+  </g>
+
+  <!-- 3: surprised -->
+  <g fill="#17636a">
+    <circle cx="66" cy="20" r="2.2" />
+    <circle cx="78" cy="20" r="2.2" />
+    <circle cx="72" cy="30" r="3.8" />
+  </g>
+
+  <!-- 4: laughing -->
+  <g fill="none" stroke="#17636a" stroke-width="3.4" stroke-linecap="round">
+    <path d="M94 13c2-2.2 4.5-2.2 6.5 0M106 13c2-2.2 4.5-2.2 6.5 0" />
+    <path d="M94 21c5 7 13 7 18 0Z" fill="#17636a" stroke-linejoin="round" />
+  </g>
+
+  <!-- 5: playful tongue -->
+  <g fill="none" stroke="#17636a" stroke-width="3.5" stroke-linecap="round">
+    <circle cx="129" cy="18" r="2.3" fill="#17636a" stroke="none" />
+    <path d="M140 17l6 3M126 27c6 5 14 5 20 0" />
+    <path d="M135 29v6" stroke="#e27b35" stroke-width="4" />
+  </g>
+
+  <!-- 6: calm -->
+  <g fill="none" stroke="#17636a" stroke-width="3.6" stroke-linecap="round">
+    <path d="M158 31h7M173 31h7M158 42c7 3 15 3 22 0" />
+  </g>
+
+  <!-- 7: cheeky grin -->
+  <g fill="none" stroke="#17636a" stroke-width="3.7" stroke-linecap="round">
+    <path d="M178 51l7-3M198 48l7 3" />
+    <circle cx="183" cy="57" r="2.5" fill="#17636a" stroke="none" />
+    <circle cx="201" cy="57" r="2.5" fill="#17636a" stroke="none" />
+    <path d="M179 66c7 6 16 6 23-1" />
+  </g>
+</svg>

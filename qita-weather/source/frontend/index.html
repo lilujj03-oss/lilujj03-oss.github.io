@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fff7cc" />
+    <meta name="description" content="七逃行｜中央氣象署即時觀測、每小時雨量與一週預報整合儀表板" />
+    <title>七逃行｜台灣即時氣象觀測</title>
+    <link rel="icon" href="/assets/qita-logo.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="/assets/style.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-a"></div>
+    <div class="ambient ambient-b"></div>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="七逃行首頁">
+          <img class="brand-logo" src="/assets/qita-logo.svg" alt="七逃行：長出七張不同表情人臉的腳印" />
+          <span class="brand-copy">
+            <strong>七逃行 <em>WEATHER</em></strong>
+            <small>看天氣 · 去七逃 · 安心出發</small>
+          </span>
+        </a>
+
+        <nav class="topnav" aria-label="主要導覽">
+          <a class="active" href="#dashboard">測站地圖</a>
+          <a href="#history-section">歷史趨勢</a>
+          <a href="#forecast-section">一週預報</a>
+          <a href="/docs" target="_blank" rel="noreferrer">API 文件 ↗</a>
+        </nav>
+
+        <div class="top-actions">
+          <button class="update-button" id="update-button" type="button">
+            <span class="update-icon" aria-hidden="true">↻</span>
+            <span>更新觀測資料</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="setup-alert hidden" id="setup-alert" role="alert">
+        <span class="alert-icon">!</span>
+        <div><b>尚未設定中央氣象署 API 授權碼</b><p>請在專案根目錄的 <code>.env</code> 填入 <code>CWA_API_KEY</code>，再按「更新觀測資料」。</p></div>
+        <button id="dismiss-alert" type="button" aria-label="關閉提示">×</button>
+      </div>
+
+      <main id="dashboard">
+        <section class="intro-row">
+          <div>
+            <span class="eyebrow"><i></i> CENTRAL WEATHER ADMINISTRATION DATA</span>
+            <h1>全台氣象與雨量<br /><em>即時觀測儀表板</em></h1>
+          </div>
+          <div class="system-stats">
+            <div><span>測站數</span><b id="station-total">--</b><small>STATIONS</small></div>
+            <i></i>
+            <div><span>觀測時次</span><b id="observation-total">--</b><small>SNAPSHOTS</small></div>
+            <i></i>
+            <div><span>預報筆數</span><b id="forecast-total">--</b><small>FORECASTS</small></div>
+          </div>
+        </section>
+
+        <section class="dashboard-grid">
+          <article class="panel map-panel">
+            <div class="panel-header map-header">
+              <div>
+                <span class="panel-number">01</span>
+                <span><small>LIVE STATION MAP</small><h2>全台氣象測站地圖</h2></span>
+              </div>
+              <div class="map-links">
+                <a href="https://www.windy.com/" target="_blank" rel="noreferrer">Windy ↗</a>
+                <a href="https://earth.google.com/" target="_blank" rel="noreferrer">Google Earth ↗</a>
+              </div>
+            </div>
+
+            <div class="map-toolbar">
+              <label class="search-control"><span>⌕</span><input id="station-search" type="search" placeholder="搜尋測站、代碼或縣市…" aria-label="搜尋測站" /></label>
+              <label class="select-control"><span>地區</span><select id="county-select" aria-label="選擇縣市"><option value="">全部縣市</option></select></label>
+              <button class="location-button" id="fit-taiwan" type="button"><span>⌖</span> 顯示全台</button>
+              <span class="visible-count">顯示 <b id="visible-count">0</b> 個測站</span>
+            </div>
+
+            <div class="map-wrap">
+              <div id="station-map" aria-label="中央氣象署全台測站地圖"></div>
+              <div class="map-empty hidden" id="map-empty">
+                <span>◎</span><b>尚無測站資料</b><p>設定 API 金鑰後按右上角更新按鈕</p>
+              </div>
+              <div class="temperature-legend">
+                <span>測站溫度 °C</span>
+                <div class="temperature-scale"></div>
+                <div><i>≤15</i><i>20</i><i>25</i><i>30</i><i>≥35</i></div>
+              </div>
+              <span class="map-attribution-note">資料：中央氣象署 O-A0001-001</span>
+            </div>
+          </article>
+
+          <aside class="panel detail-panel">
+            <div class="station-placeholder" id="station-placeholder">
+              <div class="placeholder-radar"><i></i><i></i><i></i><b>⌖</b></div>
+              <h2>請選擇觀測站</h2>
+              <p>在左側地圖點選測站，或使用搜尋與縣市篩選，即可查看即時數據、歷史趨勢及 AI 分析。</p>
+            </div>
+
+            <div class="station-content hidden" id="station-content">
+              <div class="station-heading">
+                <div>
+                  <span class="station-id" id="station-id">------</span>
+                  <h2 id="station-name">測站名稱</h2>
+                  <p id="station-location">縣市 · 鄉鎮 · 海拔</p>
+                </div>
+                <button class="ai-button" id="ai-button" type="button"><span>✦</span> AI 趨勢預測</button>
+              </div>
+
+              <div class="observation-time"><span><i></i>最新觀測</span><time id="station-observed-at">----</time></div>
+
+              <div class="metric-grid">
+                <article class="metric-card temperature-card"><span class="metric-symbol">℃</span><small>氣溫</small><strong id="metric-temperature">--</strong><i>°C</i><p>今日 <b id="metric-range">-- / --°</b></p></article>
+                <article class="metric-card humidity-card"><span class="metric-symbol">◒</span><small>相對濕度</small><strong id="metric-humidity">--</strong><i>%</i><p id="humidity-note">濕度讀取中</p></article>
+                <article class="metric-card rain-card"><span class="metric-symbol">☂</span><small>近 1 小時雨量</small><strong id="metric-rain">--</strong><i>mm</i><p id="rain-note">O-A0002-001 · 每小時更新</p></article>
+                <article class="metric-card wind-card"><span class="metric-symbol">↝</span><small>平均風速／風向</small><strong id="metric-wind">--</strong><i>m/s</i><p id="wind-direction">風向 --</p></article>
+              </div>
+
+              <div class="weather-summary">
+                <span class="summary-icon">◌</span>
+                <div><small>現況摘要</small><b id="weather-summary">目前無天氣現象描述</b></div>
+                <div><small>測站氣壓</small><b id="metric-pressure">-- hPa</b></div>
+              </div>
+
+              <div class="prediction-card hidden" id="prediction-card">
+                <div class="prediction-header"><span><i>✦</i> AI 趨勢預測結果</span><button id="close-prediction" type="button">×</button></div>
+                <p>依據最近 3 筆觀測進行短期線性趨勢外推，預估下一小時：</p>
+                <div class="prediction-values">
+                  <div><small>氣溫</small><b id="predict-temperature">--°</b></div>
+                  <div><small>濕度</small><b id="predict-humidity">--%</b></div>
+                  <div><small>雨量</small><b id="predict-rain">-- mm</b></div>
+                  <div><small>風速</small><b id="predict-wind">-- m/s</b></div>
+                </div>
+                <span class="prediction-notice" id="prediction-notice">非中央氣象署官方預報</span>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section class="lower-grid">
+          <article class="panel history-panel" id="history-section">
+            <div class="panel-header history-header">
+              <div><span class="panel-number">02</span><span><small id="history-period-label">PAST 8 HOURS</small><h2 id="history-title">每小時雨量（近 8 小時）</h2></span></div>
+              <div class="history-actions">
+                <span class="history-count" id="history-count">等待選站</span>
+                <div class="chart-tabs" role="group" aria-label="圖表資料類型">
+                  <button class="chart-tab" data-metric="temperature" type="button">氣溫</button>
+                  <button class="chart-tab" data-metric="humidity" type="button">濕度</button>
+                  <button class="chart-tab active" data-metric="precipitation" type="button">雨量</button>
+                  <button class="chart-tab" data-metric="wind_speed" type="button">風速</button>
+                </div>
+              </div>
+            </div>
+            <div class="chart-wrap">
+              <div id="history-chart"></div>
+              <div class="chart-placeholder" id="chart-placeholder"><span>⌁</span><strong id="chart-placeholder-title">尚未選擇測站</strong><p id="chart-placeholder-copy">選擇測站後顯示最近 8 小時的每小時雨量</p></div>
+            </div>
+          </article>
+
+          <article class="panel forecast-panel" id="forecast-section">
+            <div class="panel-header forecast-header">
+              <div><span class="panel-number">03</span><span><small>7-DAY FORECAST</small><h2><span id="forecast-county">縣市</span>一週預報</h2></span></div>
+              <span class="dataset-badge">F-D0047-091</span>
+            </div>
+            <div class="forecast-list" id="forecast-list">
+              <div class="forecast-placeholder"><span>☼</span><p>選擇測站後顯示所屬縣市預報</p></div>
+            </div>
+          </article>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div><b>七逃行</b><span>台灣即時氣象與旅行觀測系統</span></div>
+        <p>資料來源：中央氣象署氣象資料開放平臺 · O-A0001-001 / O-A0002-001 / F-D0047-091</p>
+        <p>AI 趨勢分析僅供技術展示與日常參考，災害性天氣請依中央氣象署正式公告。</p>
+      </footer>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <script src="/assets/app.js"></script>
+  </body>
+</html>

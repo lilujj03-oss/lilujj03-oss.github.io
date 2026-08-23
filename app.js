@@ -8,6 +8,23 @@ createApp({
             selectedLanguage: 'zh',
             projects: [
                 {
+                    id: 'qita-weather',
+                    name: 'Qita Weather · Taiwan Live Weather Dashboard',
+                    nameZh: '🌦 七逃行｜台灣即時氣象',
+                    badge: 'New Data App',
+                    badgeZh: '最新資料應用',
+                    description: 'A full-stack Taiwan weather dashboard integrating official CWA observations, hourly rainfall, an 8-hour 0–50 mm rain chart, weekly forecasts, and automatic updates.',
+                    descriptionZh: '整合中央氣象署即時觀測、過去 1 小時雨量與一週預報的全端儀表板。支援全台測站地圖、每小時自動更新、最近 8 小時雨量及固定 0–50 mm 圖軸。',
+                    icon: 'fa-cloud-sun-rain',
+                    link: './qita-weather/index.html',
+                    demo: 'https://cwa-weather.vercel.app/',
+                    github: 'https://github.com/lilujj03-oss/lilujj03-oss.github.io/tree/main/qita-weather',
+                    color: '#0f766e',
+                    bgStyle: {
+                        background: 'linear-gradient(135deg, #0f766e 0%, #0284c7 58%, #eabf3c 100%)'
+                    }
+                },
+                {
                     id: 'personal-18-styles',
                     name: '18 Personal Page Styles Matrix (Emory Jan)',
                     nameZh: '💎 18 款個人風格矩陣 (Emory Jan)',
