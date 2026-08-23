@@ -6,12 +6,12 @@
     <meta name="theme-color" content="#fff7cc" />
     <meta name="description" content="七逃趣｜中央氣象署即時觀測、每小時雨量與一週預報整合儀表板" />
     <title>七逃趣｜台灣即時氣象觀測</title>
-    <link rel="icon" href="/assets/qita-logo.jpg" type="image/jpeg" />
+    <link rel="icon" href="../assets/qita-logo.jpg" type="image/jpeg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <link rel="stylesheet" href="/assets/style.css" />
+    <link rel="stylesheet" href="./style.css?v=20260823" />
   </head>
   <body>
     <div class="ambient ambient-a"></div>
@@ -19,8 +19,8 @@
 
     <div class="app-shell">
       <header class="topbar">
-        <a class="brand" href="/" aria-label="七逃趣首頁">
-          <img class="brand-logo" src="/assets/qita-logo.jpg" alt="七逃趣旅遊 Logo" />
+        <a class="brand" href="../index.html" aria-label="七逃趣氣象儀表板首頁">
+          <img class="brand-logo" src="../assets/qita-logo.jpg" alt="七逃趣旅遊 Logo" />
           <span class="brand-copy">
             <strong>七逃趣 <em>WEATHER</em></strong>
             <small>看天氣 · 去七逃 · 安心出發</small>
@@ -31,7 +31,7 @@
           <a class="active" href="#dashboard">測站地圖</a>
           <a href="#history-section">歷史趨勢</a>
           <a href="#forecast-section">一週預報</a>
-          <a href="/docs" target="_blank" rel="noreferrer">API 文件 ↗</a>
+          <a href="https://cwa-weather.vercel.app/docs" target="_blank" rel="noreferrer">API 文件 ↗</a>
         </nav>
 
         <div class="top-actions">
@@ -187,6 +187,6 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
-    <script src="/assets/app.js"></script>
+    <script src="./app.js?v=20260823"></script>
   </body>
 </html>

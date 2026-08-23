@@ -1,8 +1,10 @@
-# 七逃行｜台灣即時氣象與每小時雨量
+# 七逃趣｜台灣即時氣象與每小時雨量
 
-「七逃行」整合中央氣象署三組開放資料，提供全台測站地圖、即時氣象卡、最近 8 小時雨量、一週預報與自動更新功能。
+「七逃趣」整合中央氣象署三組開放資料，提供全台測站地圖、即時氣象卡、最近 8 小時雨量、一週預報與自動更新功能。
 
 線上互動 Demo：<https://lilujj03-oss-github-io.vercel.app/qita-weather/index.html>
+
+作品介紹／截圖頁：<https://lilujj03-oss-github-io.vercel.app/qita-weather/project.html>
 
 ## 資料來源
 
@@ -20,7 +22,7 @@
 - 過去 24 小時氣象趨勢與各縣市一週預報。
 - FastAPI REST API、SQLite 歷史資料與 CSV 匯出。
 - 每 60 分鐘自動同步，並支援手動更新。
-- 「七張臉腳印」Logo、淺黃色介面與響應式版面。
+- 使用指定的「七逃趣」旅遊 Logo、淺黃色介面與響應式版面。
 
 ## 專案結構
 
@@ -31,13 +33,14 @@ HW 10 netwarm-rain/
 │   ├── common.py              # 共用設定、CWA API 與資料清理
 │   ├── download_weather.py    # O-A0001-001 下載
 │   ├── parser.py              # 氣象觀測解析與儲存
+│   ├── export_snapshot.py     # 匯出線上 Demo 備援測站快照
 │   └── rainfall.py            # O-A0002-001 每小時雨量解析與儲存
 ├── database/                  # SQLite、CSV 與原始資料（執行後產生）
 ├── frontend/
 │   ├── index.html
 │   ├── style.css
 │   ├── app.js
-│   └── qita-logo.svg
+│   └── qita-logo.jpg
 ├── crawler.py                 # F-D0047-091 一週預報
 ├── requirements.txt
 ├── CONVERSATION-HIGHLIGHTS.md # AI 協作開發重點紀錄
@@ -100,7 +103,7 @@ AUTO_UPDATE_MINUTES=60
 
 ## 部署提醒
 
-本專案需要安全保存 CWA API Key、執行 Python 後端與持久化資料庫，因此不能只靠 GitHub Pages 執行完整功能。GitHub Pages 適合放作品介紹；完整 Demo 應部署到可執行 FastAPI 且支援持久化資料的主機。
+GitHub Pages 可直接顯示已匯出的 876 站備援快照；Vercel 版本另以同網域 rewrite 轉接既有 FastAPI 服務，取得即時測站、歷史、預報、AI 趨勢與手動更新資料。CWA API Key 仍只保留在後端，不會寫進前端或 GitHub。
 
 ## 安全
 

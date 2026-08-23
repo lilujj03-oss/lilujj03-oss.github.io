@@ -45,7 +45,7 @@ def _auto_update_minutes() -> int:
 AUTO_UPDATE_MINUTES = _auto_update_minutes()
 
 app = FastAPI(
-    title="七逃行｜台灣即時氣象資料系統",
+    title="七逃趣｜台灣即時氣象資料系統",
     description="O-A0001-001 即時觀測與 F-D0047-091 一週預報 REST API",
     version="1.0.0",
 )

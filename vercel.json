@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/qita-weather/api/:path*",
+      "destination": "https://cwa-weather.vercel.app/api/:path*"
+    }
+  ]
+}
