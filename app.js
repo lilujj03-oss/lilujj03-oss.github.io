@@ -17,7 +17,7 @@ createApp({
                     descriptionZh: '整合中央氣象署即時觀測、過去 1 小時雨量與一週預報的全端儀表板。支援全台測站地圖、每小時自動更新、最近 8 小時雨量及固定 0–50 mm 圖軸。',
                     icon: 'fa-cloud-sun-rain',
                     link: './qita-weather/index.html',
-                    demo: 'https://cwa-weather.vercel.app/',
+                    demo: 'https://lilujj03-oss-github-io.vercel.app/qita-weather/index.html',
                     github: 'https://github.com/lilujj03-oss/lilujj03-oss.github.io/tree/main/qita-weather',
                     color: '#0f766e',
                     bgStyle: {

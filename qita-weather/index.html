@@ -19,6 +19,7 @@
         <span><b>七逃行</b><small>WEATHER PROJECT</small></span>
       </a>
       <nav aria-label="專案導覽">
+        <a href="#live-map">互動地圖</a>
         <a href="#features">功能</a>
         <a href="#architecture">架構</a>
         <a href="./CONVERSATION-HIGHLIGHTS.md">對話紀錄</a>
@@ -33,7 +34,7 @@
           <h1>看天氣，<br /><em>放心去七逃。</em></h1>
           <p>把中央氣象署即時觀測、每小時雨量和一週預報放進同一張台灣地圖。從資料下載、SQLite 歷史保存、FastAPI 到 Leaflet／Plotly 前端，完成一套可每小時自動更新的全端氣象系統。</p>
           <div class="hero-actions">
-            <a class="primary" href="https://cwa-weather.vercel.app/" target="_blank" rel="noreferrer">開啟線上 Demo ↗</a>
+            <a class="primary" href="#live-map">操作互動 Demo ↓</a>
             <a href="https://github.com/lilujj03-oss/lilujj03-oss.github.io/tree/main/qita-weather/source" target="_blank" rel="noreferrer">查看原始碼</a>
             <a href="https://github.com/lilujj03-oss/lilujj03-oss.github.io/blob/main/qita-weather/CONVERSATION-HIGHLIGHTS.md" target="_blank" rel="noreferrer">AI 對話紀錄</a>
           </div>
@@ -55,16 +56,36 @@
         <article><small>RAIN STATIONS</small><b>1,326</b><span>首次同步測站</span></article>
       </section>
 
-      <section class="showcase">
+      <section class="showcase" id="live-map">
         <div class="section-heading">
           <span>01 · LIVE DASHBOARD</span>
           <h2>台灣氣象，一頁看懂</h2>
           <p>實測畫面已顯示最近 1 小時雨量與完整 0–50 mm 圖軸；歷史資料會隨服務每小時持續累積。</p>
         </div>
-        <figure>
-          <img src="./assets/dashboard-rainfall.png" alt="七逃行氣象儀表板實測畫面，包含台灣測站地圖、即時資訊、每小時雨量與一週預報" />
-          <figcaption><span>實際瀏覽器測試</span><time datetime="2026-08-23">2026/08/23</time></figcaption>
-        </figure>
+        <div class="interactive-preview">
+          <div class="preview-toolbar">
+            <span><i></i> LIVE INTERACTIVE MAP</span>
+            <p>地圖可使用 ＋／−、滑鼠滾輪或雙指手勢縮放</p>
+            <button id="map-fullscreen" type="button">全螢幕操作 ⛶</button>
+          </div>
+          <div class="iframe-shell">
+            <iframe
+              src="https://cwa-weather.vercel.app/"
+              title="台灣中央氣象署互動氣象地圖"
+              loading="eager"
+              allow="geolocation"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+          <details class="screen-capture">
+            <summary>查看本次「七逃行」雨量版本實測截圖</summary>
+            <a href="./assets/dashboard-rainfall.png" target="_blank" title="在新分頁開啟原尺寸截圖">
+              <img src="./assets/dashboard-rainfall.png" alt="七逃行氣象儀表板實測畫面，包含台灣測站地圖、即時資訊、每小時雨量與一週預報" />
+            </a>
+            <p><span>實際瀏覽器測試</span><time datetime="2026-08-23">2026/08/23</time></p>
+          </details>
+        </div>
       </section>
 
       <section class="features" id="features">
@@ -132,5 +153,27 @@
       <div><img src="./assets/qita-logo.svg" alt="" /><span><b>七逃行</b><small>看天氣 · 去七逃 · 安心出發</small></span></div>
       <p>Portfolio project by lilujj03-oss · Data from Taiwan CWA</p>
     </footer>
+    <script>
+      const fullscreenButton = document.querySelector("#map-fullscreen");
+      const iframeShell = document.querySelector(".iframe-shell");
+
+      fullscreenButton?.addEventListener("click", async () => {
+        try {
+          if (document.fullscreenElement) {
+            await document.exitFullscreen();
+          } else {
+            await iframeShell.requestFullscreen();
+          }
+        } catch (_) {
+          document.querySelector("#live-map")?.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+
+      document.addEventListener("fullscreenchange", () => {
+        if (fullscreenButton) {
+          fullscreenButton.textContent = document.fullscreenElement ? "離開全螢幕 ×" : "全螢幕操作 ⛶";
+        }
+      });
+    </script>
   </body>
 </html>
