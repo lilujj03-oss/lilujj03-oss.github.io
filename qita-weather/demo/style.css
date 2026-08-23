@@ -78,7 +78,7 @@ body {
 .ambient-b { background: #f3cf66; }
 .app-shell { width: min(1580px, calc(100% - 54px)); }
 .topbar { min-height: 92px; background: rgba(255, 252, 226, .90); }
-.brand-logo { width: 130px; height: 108px; object-fit: contain; filter: drop-shadow(0 4px 7px rgba(105,70,35,.14)); }
+.brand-logo { width: 108px; height: 108px; flex: 0 0 108px; object-fit: cover; border-radius: 50%; background: #000; filter: drop-shadow(0 4px 7px rgba(105,70,35,.14)); }
 .brand-copy strong { color: var(--text); font-size: 18px; }
 .brand-copy small { color: var(--muted); font-size: 11px; }
 .brand-mark { border-color: rgba(36,127,197,.32); background: linear-gradient(145deg,#e6f5ff,#d8edf9); }
@@ -210,7 +210,7 @@ body {
 }
 @media (max-width: 650px) {
   .top-actions .sync-time { display: none; }
-  .brand-logo { width: 96px; height: 82px; }
+  .brand-logo { width: 82px; height: 82px; flex-basis: 82px; }
   .map-update-card { top: 12px; left: 12px; width: calc(100% - 72px); padding: 13px; }
   .map-update-card .sync-time { display: flex; }
   .map-summary-grid { display: none; }
