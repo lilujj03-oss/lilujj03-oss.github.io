@@ -169,9 +169,12 @@ function populateCounties() {
 
 function setConnection(label, error = false) {
   const button = $("#update-button");
+  const dot = $("#sync-dot");
   button.title = label;
   button.setAttribute("aria-label", label);
   button.classList.toggle("error", error);
+  dot?.classList.toggle("error", error);
+  if ($("#data-status")) $("#data-status").textContent = label;
 }
 
 async function loadHealth() {
@@ -181,7 +184,11 @@ async function loadHealth() {
     $("#observation-total").textContent = formatInteger(health.observation_snapshots);
     $("#forecast-total").textContent = formatInteger(health.forecast_records);
     $("#setup-alert").classList.toggle("hidden", health.api_key_configured);
-    setConnection(health.update?.running ? "資料更新中" : "系統已連線");
+    setConnection(health.update?.running ? "資料更新中" : `最新觀測 ${formatDateTime(health.latest_observation, true)}`);
+    const syncTime = $("#sync-time");
+    const updatedAt = health.database_updated_at || health.server_time;
+    syncTime.textContent = `資料更新 ${formatDateTime(updatedAt, true)}`;
+    if (updatedAt) syncTime.dateTime = updatedAt;
     return health;
   } catch (error) {
     setConnection("後端連線失敗", true);
@@ -206,7 +213,9 @@ function renderStation(station) {
   $("#station-id").textContent = station.station_id;
   $("#station-name").textContent = station.station_name;
   $("#station-location").textContent = `${station.county || "--"} · ${station.town || "--"} · 海拔 ${formatNumber(station.altitude)} m`;
-  $("#station-observed-at").textContent = formatDateTime(station.observed_at, true);
+  const observedAt = $("#station-observed-at");
+  observedAt.textContent = formatDateTime(station.observed_at, true);
+  if (station.observed_at) observedAt.dateTime = station.observed_at;
   $("#metric-temperature").textContent = formatNumber(station.temperature);
   $("#metric-humidity").textContent = formatNumber(station.humidity, 0);
   $("#metric-rain").textContent = "--";
@@ -395,8 +404,10 @@ async function pollUpdate() {
 
 async function triggerUpdate() {
   const button = $("#update-button");
+  const label = $("#update-label");
   button.disabled = true;
   button.classList.add("loading");
+  if (label) label.textContent = "同步中…";
   try {
     const result = await request("/update", { method: "POST" });
     showToast(result.message);
@@ -414,6 +425,7 @@ async function triggerUpdate() {
   } finally {
     button.disabled = false;
     button.classList.remove("loading");
+    if (label) label.textContent = "同步最新資料";
   }
 }
 

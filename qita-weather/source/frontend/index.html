@@ -35,9 +35,13 @@
         </nav>
 
         <div class="top-actions">
+          <div class="sync-time" id="sync-status" aria-live="polite">
+            <span><i id="sync-dot"></i><b id="data-status">正在同步資料</b></span>
+            <time id="sync-time">同步時間 --</time>
+          </div>
           <button class="update-button" id="update-button" type="button">
             <span class="update-icon" aria-hidden="true">↻</span>
-            <span>更新觀測資料</span>
+            <span id="update-label">同步最新資料</span>
           </button>
         </div>
       </header>

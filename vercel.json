@@ -5,5 +5,16 @@
       "source": "/qita-weather/api/:path*",
       "destination": "https://cwa-weather.vercel.app/api/:path*"
     }
+  ],
+  "headers": [
+    {
+      "source": "/qita-weather/assets/current-stations.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=60, must-revalidate"
+        }
+      ]
+    }
   ]
 }

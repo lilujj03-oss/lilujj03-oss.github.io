@@ -87,6 +87,12 @@ body {
 .topnav a { color: #637988; font-size: 13px; }
 .topnav a:hover, .topnav a.active { color: #163a52; }
 .top-actions { margin-left: auto; }
+.top-actions .sync-time { display: flex; min-width: 245px; }
+.top-actions .sync-time > span { color: #36566a; font-size: 12px; }
+.top-actions .sync-time b { font-weight: 700; }
+.top-actions .sync-time time { color: #718594; font-size: 10px; }
+.top-actions .sync-time i.stale { background: var(--orange); box-shadow: 0 0 9px rgba(223,121,40,.55); }
+.top-actions .sync-time i.error { background: var(--red); box-shadow: 0 0 9px rgba(217,79,92,.55); }
 .update-button { padding: 11px 16px; border-color: #247fc5; border-radius: 10px; background: linear-gradient(135deg,#318ed2,#2478b8); font-size: 13px; }
 .setup-alert { background: #fff0bd; }
 .setup-alert b { color: #75491f; font-size: 13px; }
@@ -199,9 +205,11 @@ body {
 .toast { color: #18364a; border-color: rgba(104,81,25,.21); background: rgba(255,252,222,.98); box-shadow: 0 12px 35px rgba(94,71,18,.18); font-size: 13px; }
 
 @media (max-width: 900px) {
+  .top-actions .sync-time { min-width: 205px; }
   .history-actions { flex-wrap: wrap; justify-content: flex-end; }
 }
 @media (max-width: 650px) {
+  .top-actions .sync-time { display: none; }
   .brand-logo { width: 96px; height: 82px; }
   .map-update-card { top: 12px; left: 12px; width: calc(100% - 72px); padding: 13px; }
   .map-update-card .sync-time { display: flex; }

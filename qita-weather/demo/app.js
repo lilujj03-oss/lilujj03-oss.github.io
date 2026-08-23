@@ -17,6 +17,12 @@ const state = {
   dataMode: "live",
   forecastCount: 0,
   snapshotStations: null,
+  snapshotForecast: [],
+  snapshotGeneratedAt: null,
+  liveLatestAt: null,
+  latestObservationAt: null,
+  lastSyncedAt: null,
+  sourceStale: false,
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -111,6 +117,18 @@ function formatDateTime(value, withSeconds = false) {
     ...(withSeconds ? { second: "2-digit" } : {}),
     hour12: false,
   }).format(date);
+}
+
+function timeValue(value) {
+  const milliseconds = value ? new Date(value).getTime() : Number.NaN;
+  return Number.isNaN(milliseconds) ? Number.NEGATIVE_INFINITY : milliseconds;
+}
+
+function newestObservedAt(rows) {
+  return rows.reduce(
+    (latest, row) => timeValue(row.observed_at) > timeValue(latest) ? row.observed_at : latest,
+    null,
+  );
 }
 
 function shortForecastTime(value) {
@@ -223,45 +241,72 @@ function populateCounties() {
   if (counties.includes(current)) select.value = current;
 }
 
-function setConnection(label, error = false) {
+function setConnection(label, level = "ok") {
+  const normalizedLevel = level === true ? "error" : level;
   const button = $("#update-button");
+  const dot = $("#sync-dot");
   button.title = label;
   button.setAttribute("aria-label", label);
-  button.classList.toggle("error", error);
+  button.classList.toggle("error", normalizedLevel === "error");
+  dot?.classList.toggle("error", normalizedLevel === "error");
+  dot?.classList.toggle("stale", normalizedLevel === "stale");
+  if ($("#data-status")) $("#data-status").textContent = label;
+}
+
+function renderSyncStatus() {
+  const observed = state.latestObservationAt ? formatDateTime(state.latestObservationAt, true) : "--";
+  const synced = state.lastSyncedAt ? formatDateTime(state.lastSyncedAt, true) : "--";
+  const level = state.dataMode === "error" ? "error" : state.sourceStale ? "stale" : "ok";
+  const source = state.sourceStale ? "官方快照" : state.dataMode === "live" ? "即時 API" : "官方快照";
+  setConnection(`最新觀測 ${observed} · ${source}`, level);
+  const syncTime = $("#sync-time");
+  if (syncTime) {
+    syncTime.textContent = `本次同步 ${synced}`;
+    if (state.lastSyncedAt) syncTime.dateTime = state.lastSyncedAt;
+  }
 }
 
 async function loadHealth() {
   $("#setup-alert").classList.add("hidden");
-  setConnection(state.dataMode === "live" ? "中央氣象署即時資料已連線" : "顯示最新備援快照", state.dataMode !== "live");
+  renderSyncStatus();
   return { status: "ok", mode: state.dataMode };
 }
 
-async function loadStations({ keepSelection = true } = {}) {
-  if (!state.snapshotStations) {
-    try {
-      const response = await fetch(FALLBACK_SNAPSHOT, { cache: "force-cache" });
-      if (response.ok) {
-        state.snapshotStations = payloadRows(await response.json()).map(normalizeStation);
-      }
-    } catch (_) {
-      state.snapshotStations = [];
+async function loadStations({ keepSelection = true, force = false } = {}) {
+  try {
+    const response = await fetch(FALLBACK_SNAPSHOT, { cache: force ? "reload" : "no-cache" });
+    if (response.ok) {
+      const snapshotPayload = await response.json();
+      state.snapshotStations = payloadRows(snapshotPayload).map(normalizeStation);
+      state.snapshotForecast = Array.isArray(snapshotPayload.forecast) ? snapshotPayload.forecast : [];
+      state.snapshotGeneratedAt = snapshotPayload.generated_at ?? null;
     }
+  } catch (_) {
+    if (!state.snapshotStations) state.snapshotStations = [];
   }
 
   let liveStations = [];
   try {
     liveStations = payloadRows(await request("/current")).map(normalizeStation);
-    state.dataMode = "live";
   } catch (liveError) {
     if (!state.snapshotStations?.length) throw liveError;
-    state.dataMode = "snapshot";
   }
+
+  const snapshotLatest = newestObservedAt(state.snapshotStations || []);
+  const liveLatest = newestObservedAt(liveStations);
+  state.liveLatestAt = liveLatest;
+  state.sourceStale = Boolean(
+    state.snapshotStations?.length
+    && liveStations.length
+    && timeValue(liveLatest) < timeValue(snapshotLatest),
+  );
 
   if (state.snapshotStations?.length && liveStations.length) {
     const currentById = new Map(liveStations.map((station) => [station.station_id, station]));
     state.stations = state.snapshotStations.map((snapshot) => {
       const current = currentById.get(snapshot.station_id);
       if (!current) return snapshot;
+      if (timeValue(current.observed_at) < timeValue(snapshot.observed_at)) return snapshot;
       const available = Object.fromEntries(Object.entries(current).filter(([, value]) => value !== null && value !== undefined && value !== ""));
       return { ...snapshot, ...available };
     });
@@ -270,6 +315,9 @@ async function loadStations({ keepSelection = true } = {}) {
   }
   state.stations = state.stations
     .filter((station) => station.station_id && Number.isFinite(Number(station.latitude)) && Number.isFinite(Number(station.longitude)));
+  state.dataMode = liveStations.length && !state.sourceStale ? "live" : "snapshot";
+  state.latestObservationAt = newestObservedAt(state.stations);
+  state.lastSyncedAt = new Date().toISOString();
   $("#station-total").textContent = formatInteger(state.stations.length);
   $("#observation-total").textContent = state.stations.length ? "1" : "--";
   $("#forecast-total").textContent = state.forecastCount ? formatInteger(state.forecastCount) : "--";
@@ -288,7 +336,9 @@ function renderStation(station) {
   $("#station-id").textContent = station.station_id;
   $("#station-name").textContent = station.station_name;
   $("#station-location").textContent = `${station.county || "--"} · ${station.town || "--"} · 海拔 ${formatNumber(station.altitude)} m`;
-  $("#station-observed-at").textContent = formatDateTime(station.observed_at, true);
+  const observedAt = $("#station-observed-at");
+  observedAt.textContent = formatDateTime(station.observed_at, true);
+  if (station.observed_at) observedAt.dateTime = station.observed_at;
   $("#metric-temperature").textContent = formatNumber(station.temperature);
   $("#metric-humidity").textContent = formatNumber(station.humidity, 0);
   $("#metric-rain").textContent = formatNumber(station.hourly_rainfall);
@@ -333,9 +383,19 @@ async function selectStation(stationId) {
   ]);
   if (token !== state.selectionToken) return;
 
-  state.history = historyResult.status === "fulfilled"
+  const candidateHistory = historyResult.status === "fulfilled"
     ? payloadRows(historyResult.value).map(normalizeHistory)
     : [];
+  const stationTime = timeValue(station.observed_at);
+  const historyCutoff = stationTime - 26 * 60 * 60 * 1000;
+  state.history = candidateHistory.filter((row) => {
+    const rowTime = timeValue(row.observed_at);
+    return rowTime >= historyCutoff && rowTime <= stationTime + 10 * 60 * 1000;
+  });
+  if (!state.history.some((row) => timeValue(row.observed_at) === stationTime)) {
+    state.history.push(normalizeHistory(station));
+  }
+  state.history.sort((a, b) => timeValue(a.observed_at) - timeValue(b.observed_at));
   state.rainfall = state.history
     .filter((row) => Number.isFinite(Number(row.hourly_rainfall)))
     .slice(-8);
@@ -349,9 +409,24 @@ async function selectStation(stationId) {
     observations: state.rainfall,
   });
   renderHistoryChart();
-  const forecasts = forecastResult.status === "fulfilled"
+  const candidateForecasts = forecastResult.status === "fulfilled"
     ? (Array.isArray(forecastResult.value?.forecast) ? forecastResult.value.forecast : payloadRows(forecastResult.value))
     : [];
+  const normalizedCounty = String(station.county || "").replaceAll("台", "臺");
+  const snapshotForecasts = state.snapshotForecast.filter(
+    (row) => String(row.location_name || row.county || "").replaceAll("台", "臺") === normalizedCounty,
+  );
+  const forecastCutoff = Date.now() - 12 * 60 * 60 * 1000;
+  const seenForecasts = new Set();
+  const forecasts = [...snapshotForecasts, ...candidateForecasts]
+    .filter((row) => timeValue(row.start_time ?? row.time) >= forecastCutoff)
+    .filter((row) => {
+      const key = `${row.start_time ?? row.time}|${row.end_time ?? ""}|${row.weather ?? row.weather_type ?? row.wx_desc ?? ""}`;
+      if (seenForecasts.has(key)) return false;
+      seenForecasts.add(key);
+      return true;
+    })
+    .sort((a, b) => timeValue(a.start_time ?? a.time) - timeValue(b.start_time ?? b.time));
   state.forecastCount = forecasts.length;
   $("#forecast-total").textContent = forecasts.length ? formatInteger(forecasts.length) : "--";
   renderForecast(forecasts);
@@ -439,7 +514,7 @@ function renderHistoryChart() {
 function renderForecast(rows) {
   const list = $("#forecast-list");
   if (!Array.isArray(rows) || !rows.length) {
-    list.innerHTML = `<div class="forecast-placeholder"><span>☼</span><p>尚無此縣市的一週預報，請先更新資料</p></div>`;
+    list.innerHTML = `<div class="forecast-placeholder"><span>☼</span><p>預報來源尚未同步至今天，已停止顯示過期預報</p></div>`;
     return;
   }
   list.innerHTML = rows.map((row) => {
@@ -455,6 +530,10 @@ function renderForecast(rows) {
 
 async function runPrediction() {
   if (!state.selectedStationId) return;
+  if (state.sourceStale) {
+    showToast("AI 歷史來源仍是舊資料，為避免誤導已暫停預測");
+    return;
+  }
   const button = $("#ai-button");
   button.disabled = true;
   button.innerHTML = `<span>✦</span> 分析中…`;
@@ -477,37 +556,29 @@ async function runPrediction() {
   }
 }
 
-function wait(milliseconds) {
-  return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
-}
-
-async function pollUpdate() {
-  setConnection("後端正在整理最新觀測資料");
-  await wait(6000);
-  return { running: false };
-}
-
 async function triggerUpdate() {
   const button = $("#update-button");
+  const label = $("#update-label");
   button.disabled = true;
   button.classList.add("loading");
+  if (label) label.textContent = "同步中…";
+  setConnection("正在同步最新官方資料");
   try {
-    const result = await request("/update", { method: "POST" });
-    showToast(result.message || "已要求後端更新中央氣象署資料");
-    await pollUpdate();
-    await loadStations({ keepSelection: true });
+    await loadStations({ keepSelection: true, force: true });
     if (state.selectedStationId) {
       await selectStation(state.selectedStationId);
     } else if (state.stations.length) {
       await selectStation(preferredStation().station_id);
     }
-    showToast("已重新載入中央氣象署最新觀測資料");
+    showToast(`同步完成｜最新觀測 ${formatDateTime(state.latestObservationAt, true)}`);
   } catch (error) {
     showToast(error.message);
-    setConnection("資料更新失敗", true);
+    state.dataMode = "error";
+    setConnection("資料同步失敗", "error");
   } finally {
     button.disabled = false;
     button.classList.remove("loading");
+    if (label) label.textContent = "同步最新資料";
   }
 }
 

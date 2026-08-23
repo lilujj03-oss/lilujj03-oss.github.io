@@ -10,10 +10,24 @@ from typing import Any
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from backend.common import WEATHER_DB_PATH
+from backend.common import FORECAST_DB_PATH, WEATHER_DB_PATH
 
 
 TAIPEI_TZ = timezone(timedelta(hours=8))
+
+
+def _forecast_snapshot() -> list[dict[str, Any]]:
+    if not FORECAST_DB_PATH.exists():
+        return []
+    try:
+        with sqlite3.connect(FORECAST_DB_PATH, timeout=30) as connection:
+            connection.row_factory = sqlite3.Row
+            rows = connection.execute(
+                "SELECT * FROM forecast ORDER BY location_name, start_time"
+            ).fetchall()
+    except sqlite3.Error:
+        return []
+    return [dict(row) for row in rows]
 
 
 def export_snapshot(output_path: Path) -> int:
@@ -79,6 +93,7 @@ def export_snapshot(output_path: Path) -> int:
         "generated_at": datetime.now(TAIPEI_TZ).isoformat(timespec="seconds"),
         "source": "Local SQLite fallback snapshot",
         "data": data,
+        "forecast": _forecast_snapshot(),
     }
     output_path.parent.mkdir(parents=True, exist_ok=True)
     temporary_path = output_path.with_suffix(output_path.suffix + ".tmp")

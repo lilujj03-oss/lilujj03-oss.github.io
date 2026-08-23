@@ -23,6 +23,8 @@
 - FastAPI REST API、SQLite 歷史資料與 CSV 匯出。
 - 每 60 分鐘自動同步，並支援手動更新。
 - 使用指定的「七逃趣」旅遊 Logo、淺黃色介面與響應式版面。
+- 分開顯示「中央氣象署最新觀測時間」與「瀏覽器本次同步時間」。
+- 比較每筆時間戳，禁止較舊 API 資料覆蓋較新的官方快照。
 
 ## 專案結構
 
@@ -104,6 +106,17 @@ AUTO_UPDATE_MINUTES=60
 ## 部署提醒
 
 GitHub Pages 可直接顯示已匯出的 876 站備援快照；Vercel 版本另以同網域 rewrite 轉接既有 FastAPI 服務，取得即時測站、歷史、預報、AI 趨勢與手動更新資料。CWA API Key 仍只保留在後端，不會寫進前端或 GitHub。
+
+### GitHub 每小時自動同步
+
+`.github/workflows/update-qita-weather.yml` 會在每小時第 12 分自動下載 CWA 的 O-A0001-001、O-A0002-001 與 F-D0047-091，更新 `assets/current-stations.json` 後提交。請在 GitHub 專案的 `Settings → Secrets and variables → Actions` 新增 Repository secret：
+
+```text
+Name: CWA_API_KEY
+Value: 中央氣象署 API 授權碼
+```
+
+授權碼只存在 GitHub Secret，不得寫入 HTML、JavaScript、JSON 或 Git commit。也可從 Actions 頁面手動執行 `Update Qita Weather Data` 立即同步。
 
 ## 安全
 
