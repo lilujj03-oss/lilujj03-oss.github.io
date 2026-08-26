@@ -26,7 +26,7 @@
   <!-- 全域載入動畫 -->
   <div id="global-loader" class="global-loader" style="display: none;">
     <div class="spinner"></div>
-    <div>正在同步中央氣象署 (CWA O-A0003-001) 即時氣象觀測站資料...</div>
+    <div>正在透過安全氣象 API 同步中央氣象署 (CWA O-A0003-001) 觀測資料...</div>
   </div>
 
   <!-- 頂部導航欄 (Navbar) -->
@@ -47,10 +47,10 @@
           <i class="fa-solid fa-arrows-rotate"></i>
           <span>即時更新</span>
         </button>
-        <button id="btn-api-key-modal" class="btn-nav" title="設定中央氣象署 API Key">
-          <i class="fa-solid fa-key"></i>
-          <span>CWA 金鑰設定</span>
-        </button>
+        <span class="btn-nav api-secure-badge" title="CWA 授權碼由 Vercel Python API 安全保管">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>安全氣象 API</span>
+        </span>
         <button id="btn-theme-toggle" class="btn-nav" title="切換深色/淺色主題">
           <i class="fa-solid fa-moon"></i>
           <span>深色模式</span>
@@ -277,42 +277,6 @@
     </div>
 
   </main>
-
-  <!-- CWA API Key 設定彈出視窗 (Modal) -->
-  <div class="modal-backdrop" id="api-key-modal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <div class="modal-title-box">
-          <i class="fa-solid fa-shield-halved"></i>
-          <h3>中央氣象署 (CWA) API 設定</h3>
-        </div>
-        <button class="btn-close-modal close-modal-btn"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="modal-body">
-        <p>
-          本平台支援直接介接交通部中央氣象署「<strong>O-A0003-001 自動氣象站-氣象觀測資料</strong>」開放資料 API。
-        </p>
-        <div>
-          <label for="cwa-api-key-input" style="font-weight: 700; color: var(--text-main); display: block; margin-bottom: 0.4rem;">
-            CWA API 授權碼 (Authorization Key):
-          </label>
-          <input type="text" id="cwa-api-key-input" placeholder="例如: CWA-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX">
-        </div>
-        <div id="api-key-status-msg"></div>
-        <div class="modal-help-text">
-          <strong><i class="fa-solid fa-circle-question"></i> 如何取得 CWA 授權碼？</strong><br>
-          1. 前往 <a href="https://opendata.cwa.gov.tw/" target="_blank" rel="noopener noreferrer">中央氣象署氣象資料開放平臺</a> 註冊會員（免費）。<br>
-          2. 登入後至「會員專區」複製您的「API 授權碼」。<br>
-          3. 貼上至上方欄位並點選儲存。金鑰儲存於您的本機瀏覽器（LocalStorage）。
-        </div>
-      </div>
-      <div class="modal-actions">
-        <button id="btn-clear-api-key" class="btn-nav"><i class="fa-solid fa-trash-can"></i> 清除金鑰</button>
-        <button id="btn-test-api-key" class="btn-nav"><i class="fa-solid fa-vial"></i> 測試連線</button>
-        <button id="btn-save-api-key" class="btn-nav primary"><i class="fa-solid fa-floppy-disk"></i> 儲存並同步</button>
-      </div>
-    </div>
-  </div>
 
   <!-- 頁尾 (Footer) -->
   <footer class="footer">

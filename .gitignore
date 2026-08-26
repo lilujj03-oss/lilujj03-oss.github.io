@@ -1,0 +1,15 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.db
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Local generated data
+qita-weather/source/database/
+qita-weather/source/F-D0047-091_parsed.db

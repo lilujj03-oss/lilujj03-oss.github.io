@@ -5,6 +5,8 @@
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)](https://developer.mozilla.org/zh-TW/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)](https://developer.mozilla.org/zh-TW/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript)
+[![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Vercel](https://img.shields.io/badge/Vercel-Functions-000000?style=flat-square&logo=vercel)](https://vercel.com/docs/functions/runtimes/python)
 [![Leaflet](https://img.shields.io/badge/Leaflet-1.9.4-199900?style=flat-square&logo=leaflet&logoColor=white)](https://leafletjs.com/)
 [![CWA API](https://img.shields.io/badge/CWA_OpenData-O--A0003--001-008080?style=flat-square)](https://opendata.cwa.gov.tw/)
 
@@ -19,7 +21,9 @@
   - 提供多維度篩選功能：地區（北/中/南/東/離島）、縣市選單、主題分類（山林芬多精、人文古蹟、蔚藍海岸、親子同樂）與即時關鍵字模糊搜尋。
 
 - 🌤️ **中央氣象署 (CWA) 即時觀測資料整合**
-  - 介接中央氣象署 `O-A0003-001` 自動氣象站即時觀測 API。
+  - 由 Vercel Python Function 安全介接中央氣象署 `O-A0003-001` 自動氣象站即時觀測 API。
+  - CWA 授權碼只保存在伺服器環境變數，不會傳送至瀏覽器或寫入前端原始碼。
+  - Python 統一清理座標、氣溫、雨量、風速、紫外線及觀測時間；API 異常時自動切換備援資料。
   - 內建 **Haversine Formula 測站智能距離演算法**，精確計算並匹配各路線站點最近之氣象觀測站。
   - 即時呈現氣溫、體感溫度、天氣現象、累積雨量、相對濕度、紫外線指標 (UV) 及風速。
 
@@ -44,34 +48,42 @@
 | 領域 | 技術 / 工具 | 說明 |
 | :--- | :--- | :--- |
 | **前端架構** | HTML5, CSS3, Vanilla JavaScript (ES6+) | 輕量化純原生架構，無需依賴繁重框架，載入極速 |
+| **安全氣象 API** | Python 3.12, FastAPI, Vercel Functions | 伺服器端保護 CWA 金鑰、清理資料並回傳統一 JSON |
 | **樣式與動效** | Custom CSS3, Glassmorphism, CSS Grid/Flexbox | 現代質感深淺主題、平滑微動畫與全響應式版面 |
 | **地圖模組** | Leaflet.js (v1.9.4), OpenStreetMap Tiles | 輕量高效率之互動式地圖圖層與自訂標記系統 |
 | **資料來源** | 交通部中央氣象署開放資料平臺 API (`O-A0003-001`) | 即時自動氣象觀測站資料介接與本地備援資料集 |
 | **字體與圖標** | Google Fonts (Noto Sans TC, Outfit), FontAwesome 6 | 精緻排版與高識別度向量圖示庫 |
-| **部署發布** | GitHub Pages | 免費、安全且高可用性之靜態網站代管服務 |
+| **部署發布** | Vercel + GitHub Pages | Vercel 提供即時 API；GitHub Pages 保留可操作的靜態備援展示 |
 
 ---
 
 ## 📁 目錄結構 (Project Structure)
 
 ```text
-├── index.html              # 應用程式主頁面 (語意化 HTML 結構與 SEO 標籤)
-├── css/
-│   └── style.css           # 全域樣式、設計系統變數 (Design Tokens) 與響應式設定
-├── js/
-│   ├── app.js              # 主控制器：UI 互動、搜尋篩選、收藏與主題管理
-│   ├── weather-api.js      # 中央氣象署 API 串接、快取管理與 Haversine 距離配對模組
-│   ├── map.js              # Leaflet 互動地圖控制器與標記圖層管理
-│   └── routes-data.js      # 台灣好行全臺路線、停靠站與坐標資料集
-├── .gitignore              # Git 版本控制忽略檔
-└── README.md               # 專案作品集說明文件
+portfolio-github/
+├── api/
+│   ├── index.py            # /api/trip-weather 與健康檢查路由
+│   └── _trip_weather.py    # CWA 連線、驗證及欄位正規化
+├── tests/
+│   └── test_trip_weather.py
+├── taiwan-trip-weather/
+│   ├── index.html          # 應用程式主頁面
+│   ├── css/style.css       # 設計系統與響應式樣式
+│   └── js/
+│       ├── app.js          # UI、搜尋、收藏與主題管理
+│       ├── weather-api.js  # 安全 API、快取、備援與最近測站配對
+│       ├── map.js          # Leaflet 地圖控制器
+│       └── routes-data.js  # 台灣好行路線及站點座標
+├── requirements.txt
+├── .env.example
+└── vercel.json
 ```
 
 ---
 
 ## 🚀 本地端預覽與執行 (Local Development)
 
-本專案為純前端靜態網站，無需安裝額外依賴套件，直接啟動本機伺服器即可預覽：
+完整即時氣象功能需透過 Vercel 開發伺服器執行；一般靜態伺服器仍可預覽並自動使用備援資料。
 
 1. **複製 (Clone) 專案至本機：**
    ```bash
@@ -79,22 +91,34 @@
    cd <your-repo-name>
    ```
 
-2. **啟動本機伺服器（任選一種方式）：**
-   - **使用 VS Code Live Server 擴充套件：** 於 `index.html` 右鍵點擊 `Open with Live Server`。
-   - **使用 Python 內建伺服器：**
-     ```bash
-     python -m http.server 8000
-     ```
-   - **使用 Node.js `serve` / `http-server`：**
-     ```bash
-     npx serve .
-     ```
+2. **設定本機環境變數：**
+   ```bash
+   copy .env.example .env
+   # 將 .env 內的 CWA_API_KEY 換成新金鑰
+   ```
 
-3. 開啟瀏覽器造訪 `http://localhost:8000` 即可檢視完整功能。
+3. **安裝依賴並啟動：**
+   ```bash
+   python -m pip install -r requirements.txt
+   vercel dev
+   ```
+
+4. 開啟 `http://localhost:3000/taiwan-trip-weather/`。API 健康檢查位於 `/api/trip-weather/health`，互動文件位於 `/api/trip-weather/docs`。
 
 ---
 
-## 🌐 GitHub Pages 發布步驟 (GitHub Pages Deployment)
+## 🌐 Vercel 與 GitHub Pages 發布
+
+### Vercel 即時版本
+
+1. 在 Vercel Project Settings → Environment Variables 新增 `CWA_API_KEY`。
+2. 將環境變數套用到 Production、Preview 與 Development。
+3. 部署後檢查 `/api/trip-weather/health`，`cwaKeyConfigured` 應為 `true`。
+4. 確認瀏覽器只呼叫同站 `/api/trip-weather`，不會直接傳送授權碼到中央氣象署。
+
+> 舊版金鑰曾出現在公開 JavaScript 與 Git 歷史中，必須先於中央氣象署會員專區撤銷並建立新金鑰。
+
+### GitHub Pages 備援版本
 
 1. 在 GitHub 建立一個公開儲存庫 (Public Repository)。
 2. 將本機代碼推送到該儲存庫的主分支 (`main`)：
@@ -110,7 +134,7 @@
    - 點擊 **Settings** (設定) ➔ 左側選單選擇 **Pages**。
    - 在 **Build and deployment** 下方的 **Source** 選擇 **Deploy from a branch**。
    - 分支選擇 **`main`**，資料夾選擇 **`/(root)`**，點擊 **Save**。
-4. 等待 1~2 分鐘，即可透過 `https://<your-username>.github.io/<your-repo-name>/` 瀏覽線上作品集！
+4. GitHub Pages 無法執行 Python，因此會自動切換內建氣象展示資料；路線、地圖、篩選與穿搭建議仍可操作。
 
 ---
 

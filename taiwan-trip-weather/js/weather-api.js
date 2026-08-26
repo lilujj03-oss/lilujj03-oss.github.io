@@ -5,30 +5,14 @@
 
 class CWAWeatherService {
   constructor() {
-    this.API_BASE_URL = "https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0003-001";
-    this.storageKey = "cwa_api_key";
-    this.cacheKey = "cwa_weather_cache";
+    this.API_BASE_URL = "/api/trip-weather";
+    this.cacheKey = "taiwan_trip_weather_cache_v2";
     this.cacheExpiry = 5 * 60 * 1000; // 5 分鐘快取
-    this.defaultApiKey = "CWA-C39CE115-0240-44DD-AC16-B2DB973EFC8F";
     this.stations = [];
     this.lastFetched = null;
     this.lastSource = "none";
-  }
-
-  getApiKey() {
-    const key = localStorage.getItem(this.storageKey);
-    if (key !== null) {
-      return key.trim();
-    }
-    return this.defaultApiKey;
-  }
-
-  setApiKey(key) {
-    if (key && key.trim()) {
-      localStorage.setItem(this.storageKey, key.trim());
-    } else {
-      localStorage.setItem(this.storageKey, "");
-    }
+    // 舊版曾將使用者金鑰存於瀏覽器；升級後立即移除，不再由前端管理密鑰。
+    localStorage.removeItem("cwa_api_key");
   }
 
   /**
@@ -49,12 +33,10 @@ class CWAWeatherService {
   }
 
   /**
-   * 取得天氣數據 (優先調用 CWA API，若無金鑰或連線受阻則使用備援資料庫)
+   * 取得天氣數據（優先呼叫同站 Python API，失敗時使用備援資料）
    */
   async fetchWeatherData(forceRefresh = false) {
-    const apiKey = this.getApiKey();
-
-    // 檢查快取
+    // 檢查瀏覽器快取
     if (!forceRefresh) {
       const cached = this.getCachedData();
       if (cached && cached.stations && cached.stations.length > 0) {
@@ -69,39 +51,45 @@ class CWAWeatherService {
       }
     }
 
-    if (apiKey) {
-      try {
-        const url = `${this.API_BASE_URL}?Authorization=${encodeURIComponent(apiKey)}&format=JSON`;
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`CWA API 回應錯誤: HTTP ${response.status}`);
-        }
-        const data = await response.json();
-        
-        if (data && data.records && data.records.Station && data.records.Station.length > 0) {
-          const parsed = this.parseCWAResponse(data.records.Station);
-          this.stations = parsed;
-          this.lastFetched = new Date();
-          this.lastSource = "cwa-live";
-          this.saveCache(parsed, "cwa-live");
-          return {
-            source: "cwa-live",
-            timestamp: this.lastFetched,
-            stations: this.stations
-          };
-        } else {
-          throw new Error("CWA API 回傳格式無 Station 列表");
-        }
-      } catch (err) {
-        console.warn("CWA API 連線失敗，切換至備援測站資料庫:", err);
+    try {
+      const response = await fetch(this.API_BASE_URL, {
+        cache: forceRefresh ? "reload" : "default",
+        headers: { Accept: "application/json" }
+      });
+      if (!response.ok) {
+        throw new Error(`氣象服務回應錯誤: HTTP ${response.status}`);
       }
+
+      const data = await response.json();
+      if (!data || data.success !== true || !Array.isArray(data.stations) || data.stations.length === 0) {
+        throw new Error("氣象服務沒有可用的測站資料");
+      }
+
+      const parsed = data.stations
+        .map(station => this.normalizeProxyStation(station))
+        .filter(Boolean);
+      if (!parsed.length) {
+        throw new Error("氣象服務測站格式無法使用");
+      }
+
+      this.stations = parsed;
+      this.lastFetched = data.updatedAt ? new Date(data.updatedAt) : new Date();
+      this.lastSource = data.source || "cwa-live";
+      this.saveCache(parsed, this.lastSource);
+      return {
+        source: this.lastSource,
+        timestamp: this.lastFetched,
+        stations: this.stations
+      };
+    } catch (err) {
+      console.warn("安全氣象 API 連線失敗，切換至備援測站資料:", err);
     }
 
-    // 備援資料集
+    // GitHub Pages 或 API 暫時不可用時的展示備援資料
     const fallbackStations = this.generateFallbackStations();
     this.stations = fallbackStations;
     this.lastFetched = new Date();
-    this.lastSource = apiKey ? "fallback-error" : "demo-dataset";
+    this.lastSource = "fallback-error";
     this.saveCache(fallbackStations, this.lastSource);
 
     return {
@@ -139,126 +127,56 @@ class CWAWeatherService {
   }
 
   /**
-   * 解析 CWA 官方 O-A0003-001 測站資料結構
+   * 將 Python API 的正規化資料補上前端顯示欄位
    */
-  parseCWAResponse(rawStations) {
-    return rawStations.map(st => {
-      const geo = st.GeoInfo || {};
-      let lat = 0;
-      let lng = 0;
+  normalizeProxyStation(station) {
+    const toOptionalNumber = value => {
+      if (value === null || value === undefined || value === "") return null;
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : null;
+    };
+    const lat = toOptionalNumber(station.latitude);
+    const lng = toOptionalNumber(station.longitude);
+    const temp = toOptionalNumber(station.temperature);
+    if (!station.stationId || !station.stationName || lat === null || lng === null || temp === null) {
+      return null;
+    }
 
-      if (geo.Coordinates && Array.isArray(geo.Coordinates) && geo.Coordinates.length > 0) {
-        const wgs84 = geo.Coordinates.find(c => c.CoordinateName === "WGS84") || geo.Coordinates[0];
-        lat = parseFloat(wgs84.StationLatitude) || 0;
-        lng = parseFloat(wgs84.StationLongitude) || 0;
-      } else {
-        lat = parseFloat(st.StationLatitude) || 0;
-        lng = parseFloat(st.StationLongitude) || 0;
-      }
+    const humidity = toOptionalNumber(station.humidity) ?? 75;
+    const precipitation = toOptionalNumber(station.precipitation) ?? 0;
+    const windSpeed = toOptionalNumber(station.windSpeed) ?? 0;
+    const windDirection = toOptionalNumber(station.windDirection) ?? 0;
+    const pressure = toOptionalNumber(station.pressure) ?? 0;
+    const weatherText = station.weatherText || this.inferWeatherDescription(temp, precipitation, humidity);
+    const uvValue = toOptionalNumber(station.uvIndex);
+    const uvIndex = uvValue !== null
+      ? this.formatUV(uvValue)
+      : this.estimateUV(temp, precipitation);
+    const dailyHigh = toOptionalNumber(station.dailyHigh);
+    const dailyLow = toOptionalNumber(station.dailyLow);
+    const observedAt = station.observedAt ? new Date(station.observedAt) : new Date();
 
-      const county = geo.CountyName || st.CountyName || "";
-      const town = geo.TownName || st.TownName || "";
-      
-      const we = st.WeatherElement || {};
-      
-      // 氣溫解析 (過濾無效值 -99)
-      let temp = parseFloat(we.AirTemperature);
-      if (isNaN(temp) || temp <= -90) {
-        temp = 26.5;
-      }
-
-      // 相對濕度
-      let hum = parseFloat(we.RelativeHumidity);
-      if (isNaN(hum) || hum <= 0) {
-        hum = 75;
-      }
-
-      // 雨量解析 (Now.Precipitation)
-      let rain = 0;
-      if (we.Now && we.Now.Precipitation !== undefined) {
-        const rVal = parseFloat(we.Now.Precipitation);
-        rain = isNaN(rVal) || rVal < 0 ? 0 : rVal;
-      } else if (we.Precipitation !== undefined) {
-        const rVal = parseFloat(we.Precipitation);
-        rain = isNaN(rVal) || rVal < 0 ? 0 : rVal;
-      }
-
-      // 風速
-      let windSpeed = parseFloat(we.WindSpeed);
-      if (isNaN(windSpeed) || windSpeed < 0) {
-        windSpeed = 2.0;
-      }
-
-      // 風向
-      let windDir = parseFloat(we.WindDirection);
-      if (isNaN(windDir)) windDir = 0;
-
-      // 氣壓
-      let pressure = parseFloat(we.AirPressure);
-      if (isNaN(pressure) || pressure <= 0) {
-        pressure = 1012;
-      }
-
-      // 天氣描述
-      let weatherText = we.Weather || "";
-      if (!weatherText || weatherText === "-99" || weatherText.trim() === "") {
-        weatherText = this.inferWeatherDescription(temp, rain, hum);
-      }
-
-      // 紫外線
-      let uvVal = we.UVIndex !== undefined ? parseFloat(we.UVIndex) : -1;
-      let uvObj;
-      if (!isNaN(uvVal) && uvVal >= 0) {
-        uvObj = this.formatUV(uvVal);
-      } else {
-        uvObj = this.estimateUV(temp, rain);
-      }
-
-      // 極端溫度 (今日最高溫 / 最低溫)
-      let dailyHigh = "--";
-      let dailyLow = "--";
-      if (we.DailyExtreme) {
-        if (we.DailyExtreme.DailyHigh && we.DailyExtreme.DailyHigh.TemperatureInfo) {
-          const val = parseFloat(we.DailyExtreme.DailyHigh.TemperatureInfo.AirTemperature);
-          if (!isNaN(val) && val > -50) dailyHigh = `${val}°C`;
-        }
-        if (we.DailyExtreme.DailyLow && we.DailyExtreme.DailyLow.TemperatureInfo) {
-          const val = parseFloat(we.DailyExtreme.DailyLow.TemperatureInfo.AirTemperature);
-          if (!isNaN(val) && val > -50) dailyLow = `${val}°C`;
-        }
-      }
-
-      // 觀測時間
-      let obsTimeFormatted = "";
-      if (st.ObsTime && st.ObsTime.DateTime) {
-        const dt = new Date(st.ObsTime.DateTime);
-        obsTimeFormatted = dt.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
-      } else {
-        obsTimeFormatted = new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
-      }
-
-      return {
-        stationId: st.StationId || "C0X00",
-        stationName: st.StationName || "氣象觀測站",
-        lat: lat,
-        lng: lng,
-        county: county,
-        town: town,
-        temp: Math.round(temp * 10) / 10,
-        feelsLike: this.calculateFeelsLike(temp, hum, windSpeed),
-        humidity: Math.round(hum),
-        precipitation: Math.round(rain * 10) / 10,
-        windSpeed: Math.round(windSpeed * 10) / 10,
-        windDirection: Math.round(windDir),
-        pressure: Math.round(pressure * 10) / 10,
-        weatherText: weatherText,
-        icon: this.getWeatherIcon(weatherText, rain, temp),
-        uvIndex: uvObj,
-        dailyHigh: dailyHigh,
-        dailyLow: dailyLow,
-        obsTime: obsTimeFormatted
-      };
-    });
+    return {
+      stationId: station.stationId,
+      stationName: station.stationName,
+      lat,
+      lng,
+      county: station.county || "",
+      town: station.town || "",
+      temp,
+      feelsLike: this.calculateFeelsLike(temp, humidity, windSpeed),
+      humidity,
+      precipitation,
+      windSpeed,
+      windDirection,
+      pressure,
+      weatherText,
+      icon: this.getWeatherIcon(weatherText, precipitation, temp),
+      uvIndex,
+      dailyHigh: dailyHigh !== null ? `${dailyHigh}°C` : "--",
+      dailyLow: dailyLow !== null ? `${dailyLow}°C` : "--",
+      obsTime: observedAt.toLocaleTimeString("zh-TW", { hour: "2-digit", minute: "2-digit" })
+    };
   }
 
   /**

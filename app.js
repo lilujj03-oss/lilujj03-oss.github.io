@@ -17,7 +17,7 @@ createApp({
                     descriptionZh: '結合全臺台灣好行觀光公車路線與中央氣象署 O-A0003-001 自動測站即時觀測 API。支援智慧測站距離配對、互動地圖軌跡、即時天候指標與出遊穿搭建議。',
                     icon: 'fa-bus-simple',
                     link: './taiwan-trip-weather/index.html',
-                    demo: 'https://lilujj03-oss.github.io/taiwan-trip-weather/index.html',
+                    demo: 'https://lilujj03-oss-github-io.vercel.app/taiwan-trip-weather/index.html',
                     github: 'https://github.com/lilujj03-oss/lilujj03-oss.github.io/tree/main/taiwan-trip-weather',
                     color: '#0284c7',
                     bgStyle: {

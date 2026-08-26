@@ -64,16 +64,8 @@ class TaiwanTripWeatherApp {
     this.adviceTips = document.getElementById("advice-tips");
     this.stopsTimeline = document.getElementById("stops-timeline");
 
-    // 按鈕與對話框
+    // 操作按鈕
     this.btnRefreshWeather = document.getElementById("btn-refresh-weather");
-    this.btnApiKeyModal = document.getElementById("btn-api-key-modal");
-    this.apiKeyModal = document.getElementById("api-key-modal");
-    this.apiKeyInput = document.getElementById("cwa-api-key-input");
-    this.btnSaveApiKey = document.getElementById("btn-save-api-key");
-    this.btnClearApiKey = document.getElementById("btn-clear-api-key");
-    this.btnTestApiKey = document.getElementById("btn-test-api-key");
-    this.apiKeyStatus = document.getElementById("api-key-status-msg");
-    this.closeModalBtns = document.querySelectorAll(".close-modal-btn");
     this.themeToggleBtn = document.getElementById("btn-theme-toggle");
   }
 
@@ -162,83 +154,6 @@ class TaiwanTripWeatherApp {
       setTimeout(() => {
         this.btnRefreshWeather.classList.remove("spinning");
       }, 600);
-    });
-
-    // API Key Modal
-    this.btnApiKeyModal.addEventListener("click", () => {
-      this.apiKeyInput.value = weatherService.getApiKey();
-      this.apiKeyStatus.innerHTML = "";
-      this.apiKeyModal.classList.add("active");
-    });
-
-    this.closeModalBtns.forEach(btn => {
-      btn.addEventListener("click", () => {
-        this.apiKeyModal.classList.remove("active");
-      });
-    });
-
-    this.apiKeyModal.addEventListener("click", (e) => {
-      if (e.target === this.apiKeyModal) {
-        this.apiKeyModal.classList.remove("active");
-      }
-    });
-
-    // 儲存 API Key
-    this.btnSaveApiKey.addEventListener("click", async () => {
-      const key = this.apiKeyInput.value.trim();
-      weatherService.setApiKey(key);
-      this.apiKeyStatus.innerHTML = `<span class="text-success"><i class="fa-solid fa-circle-check"></i> API Key 已儲存！正在同步中央氣象署最新觀測資料...</span>`;
-      this.showGlobalLoading(true);
-      await weatherService.fetchWeatherData(true);
-      this.showGlobalLoading(false);
-      if (this.currentRoute) {
-        this.updateRouteWeatherView(this.currentRoute);
-      }
-      this.renderRouteCards(false);
-      setTimeout(() => {
-        this.apiKeyModal.classList.remove("active");
-      }, 800);
-    });
-
-    // 清除 API Key (還原示範模式)
-    this.btnClearApiKey.addEventListener("click", async () => {
-      weatherService.setApiKey("");
-      this.apiKeyInput.value = "";
-      this.apiKeyStatus.innerHTML = `<span class="text-info"><i class="fa-solid fa-circle-info"></i> 已清除金鑰，已切換至示範備援觀測站資料集。</span>`;
-      await weatherService.fetchWeatherData(true);
-      if (this.currentRoute) {
-        this.updateRouteWeatherView(this.currentRoute);
-      }
-      this.renderRouteCards(false);
-    });
-
-    // 測試 API Key 連線
-    this.btnTestApiKey.addEventListener("click", async () => {
-      const key = this.apiKeyInput.value.trim();
-      if (!key) {
-        this.apiKeyStatus.innerHTML = `<span class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i> 請先輸入 API 授權碼</span>`;
-        return;
-      }
-      this.btnTestApiKey.disabled = true;
-      this.apiKeyStatus.innerHTML = `<span class="text-muted"><i class="fa-solid fa-spinner fa-spin"></i> 正在連線 CWA API 驗證...</span>`;
-      try {
-        const testUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=${encodeURIComponent(key)}&limit=2&format=JSON`;
-        const res = await fetch(testUrl);
-        if (res.ok) {
-          const json = await res.json();
-          if (json.success === "true" || (json.records && json.records.Station)) {
-            this.apiKeyStatus.innerHTML = `<span class="text-success"><i class="fa-solid fa-check"></i> 連線成功！授權碼有效 (O-A0003-001 正常)</span>`;
-          } else {
-            this.apiKeyStatus.innerHTML = `<span class="text-warning"><i class="fa-solid fa-triangle-exclamation"></i> API 回傳異常: ${json.message || '格式錯誤'}</span>`;
-          }
-        } else {
-          this.apiKeyStatus.innerHTML = `<span class="text-danger"><i class="fa-solid fa-circle-xmark"></i> 驗證失敗: HTTP ${res.status} (請確認授權碼是否正確)</span>`;
-        }
-      } catch (e) {
-        this.apiKeyStatus.innerHTML = `<span class="text-danger"><i class="fa-solid fa-circle-xmark"></i> 連線失敗: ${e.message}</span>`;
-      } finally {
-        this.btnTestApiKey.disabled = false;
-      }
     });
 
     // 收藏當前詳情路線
@@ -453,12 +368,13 @@ class TaiwanTripWeatherApp {
         this.wDailyExtremes.innerHTML = `<span style="color: #ef4444">${primeStation.dailyHigh}</span> / <span style="color: #0284c7">${primeStation.dailyLow}</span>`;
       }
 
-      this.wStationInfo.textContent = `觀測來源：${primeStation.stationName} 測站 (${primeStation.stationId}) · 觀測時間 ${primeStation.obsTime}`;
-      
       const isLive = weatherService.lastSource === "cwa-live";
+      this.wStationInfo.textContent = isLive
+        ? `觀測來源：${primeStation.stationName} 測站 (${primeStation.stationId}) · 觀測時間 ${primeStation.obsTime}`
+        : `展示資料：${primeStation.stationName} (${primeStation.stationId}) · 非即時觀測`;
       this.wDataSourceBadge.innerHTML = isLive
         ? `<i class="fa-solid fa-tower-broadcast" style="color: #10b981;"></i> CWA 氣象署即時同步中`
-        : `<i class="fa-solid fa-database"></i> 氣象署觀測集`;
+        : `<i class="fa-solid fa-database"></i> 備援展示資料（非即時）`;
 
       // 產生專屬智慧旅遊穿著與備品建議 (傳入 route 與 primeStation)
       const advice = weatherService.generateTravelAdvice(primeStation, route);
