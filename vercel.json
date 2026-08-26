@@ -1,12 +1,20 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "api/index.py": {
+    "api/trip_weather*.py": {
       "maxDuration": 30,
       "excludeFiles": "{tests/**,qita-weather/**,taiwan-trip-weather/**,personal_page_18_styles/**,pizza-bot/**,version-1/**,version-3/**,AboutMe/**}"
     }
   },
   "rewrites": [
+    {
+      "source": "/api/trip-weather/health",
+      "destination": "/api/trip_weather_health"
+    },
+    {
+      "source": "/api/trip-weather",
+      "destination": "/api/trip_weather"
+    },
     {
       "source": "/qita-weather/api/:path*",
       "destination": "https://cwa-weather.vercel.app/api/:path*"

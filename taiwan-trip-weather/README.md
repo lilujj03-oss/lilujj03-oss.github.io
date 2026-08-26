@@ -48,7 +48,7 @@
 | 領域 | 技術 / 工具 | 說明 |
 | :--- | :--- | :--- |
 | **前端架構** | HTML5, CSS3, Vanilla JavaScript (ES6+) | 輕量化純原生架構，無需依賴繁重框架，載入極速 |
-| **安全氣象 API** | Python 3.12, FastAPI, Vercel Functions | 伺服器端保護 CWA 金鑰、清理資料並回傳統一 JSON |
+| **安全氣象 API** | Python 3.12, Vercel Functions | 伺服器端保護 CWA 金鑰、清理資料並回傳統一 JSON |
 | **樣式與動效** | Custom CSS3, Glassmorphism, CSS Grid/Flexbox | 現代質感深淺主題、平滑微動畫與全響應式版面 |
 | **地圖模組** | Leaflet.js (v1.9.4), OpenStreetMap Tiles | 輕量高效率之互動式地圖圖層與自訂標記系統 |
 | **資料來源** | 交通部中央氣象署開放資料平臺 API (`O-A0003-001`) | 即時自動氣象觀測站資料介接與本地備援資料集 |
@@ -62,8 +62,9 @@
 ```text
 portfolio-github/
 ├── api/
-│   ├── index.py            # /api/trip-weather 與健康檢查路由
-│   └── _trip_weather.py    # CWA 連線、驗證及欄位正規化
+│   ├── trip_weather.py        # /api/trip-weather Function
+│   ├── trip_weather_health.py # 健康檢查 Function
+│   └── _trip_weather.py       # CWA 連線、驗證及欄位正規化
 ├── tests/
 │   └── test_trip_weather.py
 ├── taiwan-trip-weather/
@@ -74,7 +75,6 @@ portfolio-github/
 │       ├── weather-api.js  # 安全 API、快取、備援與最近測站配對
 │       ├── map.js          # Leaflet 地圖控制器
 │       └── routes-data.js  # 台灣好行路線及站點座標
-├── requirements.txt
 ├── .env.example
 └── vercel.json
 ```
@@ -97,13 +97,12 @@ portfolio-github/
    # 將 .env 內的 CWA_API_KEY 換成新金鑰
    ```
 
-3. **安裝依賴並啟動：**
+3. **啟動 Vercel 本機開發環境：**
    ```bash
-   python -m pip install -r requirements.txt
    vercel dev
    ```
 
-4. 開啟 `http://localhost:3000/taiwan-trip-weather/`。API 健康檢查位於 `/api/trip-weather/health`，互動文件位於 `/api/trip-weather/docs`。
+4. 開啟 `http://localhost:3000/taiwan-trip-weather/`。API 健康檢查位於 `/api/trip-weather/health`。
 
 ---
 
