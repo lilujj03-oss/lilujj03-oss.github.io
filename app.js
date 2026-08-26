@@ -8,6 +8,23 @@ createApp({
             selectedLanguage: 'zh',
             projects: [
                 {
+                    id: 'taiwan-trip-weather',
+                    name: 'Taiwan Tourist Shuttle & CWA Weather Hub',
+                    nameZh: '🚌 台灣好行 ✕ 中央氣象署 即時天氣旅遊網',
+                    badge: 'Featured Data App',
+                    badgeZh: '精選氣象觀光',
+                    description: 'A responsive Taiwan travel & weather web app integrating Taiwan Tourist Shuttle routes with official CWA O-A0003-001 real-time weather observations, station distance matching, interactive Leaflet maps, and smart outfit advice.',
+                    descriptionZh: '結合全臺台灣好行觀光公車路線與中央氣象署 O-A0003-001 自動測站即時觀測 API。支援智慧測站距離配對、互動地圖軌跡、即時天候指標與出遊穿搭建議。',
+                    icon: 'fa-bus-simple',
+                    link: './taiwan-trip-weather/index.html',
+                    demo: 'https://lilujj03-oss.github.io/taiwan-trip-weather/index.html',
+                    github: 'https://github.com/lilujj03-oss/lilujj03-oss.github.io/tree/main/taiwan-trip-weather',
+                    color: '#0284c7',
+                    bgStyle: {
+                        background: 'linear-gradient(135deg, #0284c7 0%, #0d9488 50%, #1e293b 100%)'
+                    }
+                },
+                {
                     id: 'qita-weather',
                     name: 'Qita Weather · Taiwan Live Weather Dashboard',
                     nameZh: '🌦 七逃趣｜台灣即時氣象',

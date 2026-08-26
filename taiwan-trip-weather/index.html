@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>台灣好行 ✕ 中央氣象署 即時天氣旅遊網 | Taiwan Tourist Shuttle & CWA Real-time Weather</title>
+  <meta name="description" content="結合台灣好行全臺觀光接駁公車路線與交通部中央氣象署 O-A0003-001 自動氣象站即時觀測資料，提供路線沿途即時氣溫、降雨、濕度、紫外線與專屬出遊穿著裝備建議。">
+  <meta name="keywords" content="台灣好行, 氣象署, CWA, 即時天氣, 觀光公車, 旅遊路線, O-A0003-001, 日月潭, 阿里山, 墾丁快線, 太魯閣">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 全域載入動畫 -->
+  <div id="global-loader" class="global-loader" style="display: none;">
+    <div class="spinner"></div>
+    <div>正在同步中央氣象署 (CWA O-A0003-001) 即時氣象觀測站資料...</div>
+  </div>
+
+  <!-- 頂部導航欄 (Navbar) -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand-logo" id="brand-logo-link">
+        <div class="brand-icon-box">
+          <i class="fa-solid fa-bus-simple"></i>
+        </div>
+        <div class="brand-text">
+          <h1>台灣好行 ✕ 即時天氣觀光網</h1>
+          <div class="brand-badge">Taiwan Trip & CWA O-A0003-001 Weather Hub</div>
+        </div>
+      </a>
+
+      <div class="nav-actions">
+        <button id="btn-refresh-weather" class="btn-nav" title="重新整理最新氣象數據">
+          <i class="fa-solid fa-arrows-rotate"></i>
+          <span>即時更新</span>
+        </button>
+        <button id="btn-api-key-modal" class="btn-nav" title="設定中央氣象署 API Key">
+          <i class="fa-solid fa-key"></i>
+          <span>CWA 金鑰設定</span>
+        </button>
+        <button id="btn-theme-toggle" class="btn-nav" title="切換深色/淺色主題">
+          <i class="fa-solid fa-moon"></i>
+          <span>深色模式</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主頁面容器 (Main Wrapper) -->
+  <main class="main-wrapper">
+
+    <!-- 篩選與搜尋工具列 (Filter Section) -->
+    <section class="filter-section" aria-label="路線篩選與搜尋">
+      <div class="filter-row-top">
+        <div class="region-tabs" id="region-tabs-container">
+          <button class="region-tab active" data-region="all"><i class="fa-solid fa-earth-asia"></i> 全臺路線</button>
+          <button class="region-tab" data-region="north">北部地區</button>
+          <button class="region-tab" data-region="central">中部地區</button>
+          <button class="region-tab" data-region="south">南部地區</button>
+          <button class="region-tab" data-region="east">東部地區</button>
+          <button class="region-tab" data-region="islands">離島地區</button>
+        </div>
+
+        <div class="search-and-county">
+          <div class="county-select-box">
+            <select id="county-select" aria-label="選擇縣市">
+              <option value="all">全部縣市</option>
+            </select>
+          </div>
+
+          <div class="search-input-wrap">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="route-search-input" placeholder="搜尋路線名、公車編號或景點 (如 日月潭, 阿里山, 墾丁, 九份)..." aria-label="搜尋路線">
+            <button id="clear-search-btn" class="btn-clear-search" title="清除搜尋"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+
+          <button id="filter-favorite-btn" class="btn-fav-filter" title="僅查看已收藏路線">
+            <i class="fa-solid fa-heart"></i>
+            <span>我的收藏</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-row-bottom">
+        <div class="category-pills">
+          <button class="category-pill active" data-category="all"><i class="fa-solid fa-layer-group"></i> 全部類型</button>
+          <button class="category-pill" data-category="nature"><i class="fa-solid fa-mountain-sun"></i> 山林芬多精</button>
+          <button class="category-pill" data-category="coast"><i class="fa-solid fa-water"></i> 海岸浪花</button>
+          <button class="category-pill" data-category="culture"><i class="fa-solid fa-landmark"></i> 歷史老街古蹟</button>
+          <button class="category-pill" data-category="hotspring"><i class="fa-solid fa-hot-tub-person"></i> 美人湯溫泉</button>
+        </div>
+
+        <div class="routes-stats">
+          共篩選出 <strong id="routes-count">0 條</strong> 好行觀光路線
+        </div>
+      </div>
+    </section>
+
+    <!-- 內容雙欄網格 (Content Grid) -->
+    <div class="app-content-grid">
+
+      <!-- 左側：路線清單列表 (Catalog Pane) -->
+      <aside class="routes-catalog-pane" aria-label="路線目錄">
+        <div class="catalog-header">
+          <h2><i class="fa-solid fa-list-check"></i> 台灣好行路線清單</h2>
+        </div>
+        <div class="routes-grid" id="routes-grid">
+          <!-- 動態由 JavaScript 渲染 -->
+        </div>
+      </aside>
+
+      <!-- 右側：當前選中路線之詳情、氣象與地圖 (Detail Pane) -->
+      <section class="route-detail-pane" id="route-detail-panel" aria-label="路線氣象詳情">
+
+        <!-- 路線概況 Hero 卡片 -->
+        <div class="route-hero-card">
+          <div class="hero-header">
+            <div class="hero-title-group">
+              <div class="hero-badges">
+                <span class="hero-route-code" id="detail-route-code">6669</span>
+                <span class="badge-county" id="detail-route-county">南投縣</span>
+                <span class="badge-tag" id="detail-route-tag">高山湖泊</span>
+              </div>
+              <h2 id="detail-route-title">日月潭線</h2>
+            </div>
+            <div class="hero-actions">
+              <button id="detail-favorite-btn" class="btn-detail-fav">
+                <i class="fa-regular fa-heart"></i>
+                <span>收藏此路線</span>
+              </button>
+              <a id="detail-route-official-link" href="https://www.taiwantrip.com.tw/" target="_blank" rel="noopener noreferrer" class="btn-official-link">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                <span>官網時刻票價</span>
+              </a>
+            </div>
+          </div>
+
+          <p class="card-summary" id="detail-route-summary" style="-webkit-line-clamp: unset; line-clamp: unset; font-size: 0.95rem;">
+            從高鐵台中站暢通國際知名景點日月潭、水社碼頭、向山遊客中心與九族文化村。
+          </p>
+
+          <div class="hero-meta-bar">
+            <div class="hero-meta-item">
+              <i class="fa-solid fa-bus"></i>
+              <span>營運客運：<strong id="detail-route-operator">南投客運</strong></span>
+            </div>
+            <div class="hero-meta-item">
+              <i class="fa-solid fa-ticket"></i>
+              <span>計費方式：<strong id="detail-route-fare">里程計費 / 支援電子票證</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 即時氣象儀表板 (CWA Real-time Weather Dashboard) -->
+        <div class="weather-dashboard-card">
+          <div class="weather-header">
+            <div class="weather-header-title">
+              <i class="fa-solid fa-cloud-sun-rain"></i>
+              <span>路線即時天候觀測 (CWA O-A0003-001)</span>
+            </div>
+            <span class="weather-source-badge" id="w-data-source-badge">
+              <i class="fa-solid fa-tower-broadcast"></i> 自動氣象站 10 分鐘即時觀測
+            </span>
+          </div>
+
+          <div class="weather-hero-row">
+            <div class="weather-primary-box">
+              <i id="w-overall-icon" class="fa-solid fa-sun weather-hero-icon"></i>
+              <div>
+                <div class="weather-temp-main" id="w-overall-temp">25<span class="unit">°C</span></div>
+                <div class="weather-status-text" id="w-overall-status">晴時多雲</div>
+              </div>
+            </div>
+
+            <div class="weather-metrics-grid">
+              <div class="metric-card">
+                <div class="metric-label"><i class="fa-solid fa-temperature-half"></i> 體感溫度</div>
+                <div class="metric-value" id="w-feels-like">26.2°C</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label"><i class="fa-solid fa-cloud-rain"></i> 1hr累積雨量</div>
+                <div class="metric-value" id="w-rain">0.0 mm</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label"><i class="fa-solid fa-droplet"></i> 相對濕度</div>
+                <div class="metric-value" id="w-humidity">72%</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label"><i class="fa-solid fa-wind"></i> 風向風速</div>
+                <div class="metric-value" id="w-wind">2.1 m/s</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label"><i class="fa-solid fa-sun-plant-wilt"></i> 紫外線指數</div>
+                <div class="metric-value" id="w-uv">6 (高量級)</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label"><i class="fa-solid fa-chart-line"></i> 今日極端溫</div>
+                <div class="metric-value" id="w-daily-extremes" style="font-size: 0.95rem;">-- / --</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="weather-footer-info">
+            <span id="w-station-info">觀測來源：日月潭 測站 (467650) · 觀測時間 10:20</span>
+            <span><i class="fa-solid fa-circle-info"></i> 依據沿途停靠站經緯度自動計算最鄰近測站</span>
+          </div>
+        </div>
+
+        <!-- 智慧旅遊穿著與出遊指引 (Travel Advice Card) -->
+        <div class="travel-advice-card">
+          <div class="advice-card-title">
+            <i class="fa-solid fa-person-hiking"></i>
+            <span>即時天氣出遊與裝備指引</span>
+          </div>
+
+          <div class="advice-groups-grid">
+            <div class="advice-group">
+              <div class="advice-group-label"><i class="fa-solid fa-shirt"></i> 推薦衣著穿搭</div>
+              <div class="advice-chips-wrap" id="advice-outfits">
+                <!-- 動態注入 -->
+              </div>
+            </div>
+            <div class="advice-group">
+              <div class="advice-group-label"><i class="fa-solid fa-suitcase-rolling"></i> 建議隨身裝備</div>
+              <div class="advice-chips-wrap" id="advice-items">
+                <!-- 動態注入 -->
+              </div>
+            </div>
+          </div>
+
+          <ul class="advice-tips-list" id="advice-tips">
+            <!-- 動態注入注意事項 -->
+          </ul>
+        </div>
+
+        <!-- 互動地圖與停靠站氣象時間軸 (Map & Timeline Grid) -->
+        <div class="map-and-stops-grid">
+
+          <!-- 互動地圖 -->
+          <div class="map-container-box">
+            <div class="map-header-bar">
+              <h3><i class="fa-solid fa-map-location-dot"></i> 路線站點與氣象地圖</h3>
+              <div class="map-legend">
+                <span><i class="fa-solid fa-location-pin" style="color: var(--primary);"></i> 點擊站牌查看即時氣候</span>
+              </div>
+            </div>
+            <div id="map-view" class="map-view-canvas"></div>
+          </div>
+
+          <!-- 停靠站時間軸 -->
+          <div class="stops-container-box">
+            <div class="stops-header">
+              <h3><i class="fa-solid fa-route"></i> 沿線停靠站即時觀測</h3>
+            </div>
+            <div class="stops-timeline" id="stops-timeline">
+              <!-- 動態由 JavaScript 渲染 -->
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- CWA API Key 設定彈出視窗 (Modal) -->
+  <div class="modal-backdrop" id="api-key-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <i class="fa-solid fa-shield-halved"></i>
+          <h3>中央氣象署 (CWA) API 設定</h3>
+        </div>
+        <button class="btn-close-modal close-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          本平台支援直接介接交通部中央氣象署「<strong>O-A0003-001 自動氣象站-氣象觀測資料</strong>」開放資料 API。
+        </p>
+        <div>
+          <label for="cwa-api-key-input" style="font-weight: 700; color: var(--text-main); display: block; margin-bottom: 0.4rem;">
+            CWA API 授權碼 (Authorization Key):
+          </label>
+          <input type="text" id="cwa-api-key-input" placeholder="例如: CWA-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX">
+        </div>
+        <div id="api-key-status-msg"></div>
+        <div class="modal-help-text">
+          <strong><i class="fa-solid fa-circle-question"></i> 如何取得 CWA 授權碼？</strong><br>
+          1. 前往 <a href="https://opendata.cwa.gov.tw/" target="_blank" rel="noopener noreferrer">中央氣象署氣象資料開放平臺</a> 註冊會員（免費）。<br>
+          2. 登入後至「會員專區」複製您的「API 授權碼」。<br>
+          3. 貼上至上方欄位並點選儲存。金鑰儲存於您的本機瀏覽器（LocalStorage）。
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="btn-clear-api-key" class="btn-nav"><i class="fa-solid fa-trash-can"></i> 清除金鑰</button>
+        <button id="btn-test-api-key" class="btn-nav"><i class="fa-solid fa-vial"></i> 測試連線</button>
+        <button id="btn-save-api-key" class="btn-nav primary"><i class="fa-solid fa-floppy-disk"></i> 儲存並同步</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 頁尾 (Footer) -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div>
+        <strong>台灣好行 ✕ 即時天氣觀光網</strong> · 結合觀光署台灣好行路線與氣象署 CWA O-A0003-001 即時氣象觀測資料
+      </div>
+      <div>
+        資料來源：<a href="https://www.taiwantrip.com.tw/" target="_blank" rel="noopener noreferrer">台灣好行旅遊服務網</a> ＆ <a href="https://opendata.cwa.gov.tw/" target="_blank" rel="noopener noreferrer">交通部中央氣象署開放資料平臺</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- App Scripts -->
+  <script src="js/routes-data.js"></script>
+  <script src="js/weather-api.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
