@@ -8,6 +8,23 @@ createApp({
             selectedLanguage: 'zh',
             projects: [
                 {
+                    id: 'taiwan-hotel-occupancy',
+                    name: 'Taiwan Hotel Occupancy · Analysis & Forecast',
+                    nameZh: '🏨 台灣觀光旅館住房率分析與預測',
+                    badge: 'Data Science / ML',
+                    badgeZh: '資料科學 · 機器學習',
+                    description: 'A Streamlit analytics dashboard built on Taiwan Tourism Administration monthly hotel operating statistics (2023-01 to 2026-06): occupancy / ADR / RevPAR trends, star-rating and urban-vs-resort cluster comparisons, guest-nationality structure, and a Gradient Boosting monthly occupancy model validated out-of-time on 2026 H1 (MAE 6.08 pp). Python, pandas, scikit-learn, Plotly.',
+                    descriptionZh: '以交通部觀光署觀光旅館營運統計（2023-01～2026-06）打造的 Streamlit 分析儀表板：住房率／ADR／RevPAR 趨勢、星級與都會／度假聚落比較、住客國籍結構，並以 Gradient Boosting 建立月度住房率預測，用完全未參與訓練的 2026 上半年做時間外驗證（MAE 6.08 個百分點）。技術：Python、pandas、scikit-learn、Plotly。',
+                    icon: 'fa-hotel',
+                    link: 'https://github.com/lilujj03-oss/taiwan-hotel-occupancy',
+                    demo: 'https://taiwan-hotel-occupancy.streamlit.app',
+                    github: 'https://github.com/lilujj03-oss/taiwan-hotel-occupancy',
+                    color: '#0f3460',
+                    bgStyle: {
+                        background: 'linear-gradient(135deg, #0f3460 0%, #16213e 55%, #0f172a 100%)'
+                    }
+                },
+                {
                     id: 'taiwan-trip-weather',
                     name: 'Taiwan Tourist Shuttle & CWA Weather Hub',
                     nameZh: '🚌 台灣好行 ✕ 中央氣象署 即時天氣旅遊網',
