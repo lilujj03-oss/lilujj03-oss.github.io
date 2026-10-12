@@ -59,6 +59,23 @@ createApp({
                     }
                 },
                 {
+                    id: 'oil-recall-lookup',
+                    name: 'Contaminated Oil Recall Lookup Tool',
+                    nameZh: '🛢️ 中聯油品強制下架查詢工具',
+                    badge: 'Just Launched',
+                    badgeZh: '最新上架',
+                    description: 'A public-data lookup tool for a real food-safety recall: instant batch-number lookup, affected-product guidance steps, and a filterable dashboard across 3 manufacturers and thousands of downstream vendors nationwide.',
+                    descriptionZh: '針對真實食安下架事件打造的公開資料查詢工具。支援批號秒查是否受影響、退換貨處理指引，並可依公司、油品類型、縣市等多條件篩選瀏覽三家廠商與全台下游業者清單。',
+                    icon: 'fa-oil-can',
+                    link: './oil-recall-lookup/index.html',
+                    demo: './oil-recall-lookup/index.html',
+                    github: 'https://github.com/lilujj03-oss/lilujj03-oss.github.io/tree/main/oil-recall-lookup',
+                    color: '#b91c1c',
+                    bgStyle: {
+                        background: 'linear-gradient(135deg, #991b1b 0%, #7c2d12 55%, #0f172a 100%)'
+                    }
+                },
+                {
                     id: 'personal-18-styles',
                     name: '18 Personal Page Styles Matrix (Emory Jan)',
                     nameZh: '💎 18 款個人風格矩陣 (Emory Jan)',

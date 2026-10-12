@@ -1,0 +1,218 @@
+/* 閱讀優先的固定淺色主題：不受作業系統深色模式影響。 */
+:root,
+:root:not([data-theme="light"]),
+:root[data-theme="dark"] {
+  color-scheme: light only;
+  --bg: #fff7e8;
+  --panel: #fffdf8;
+  --ink: #18120f;
+  --muted: #3c302a;
+  --line: #c4a68e;
+  --accent: #a83220;
+  --accent-soft: #ffe9dc;
+  --chip: #f2dfc6;
+  --action: #f6c453;
+  --shadow: 0 2px 9px rgba(92, 48, 25, 0.13);
+}
+
+html {
+  color-scheme: light only;
+  background: var(--bg);
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+h1,
+h2,
+.brand,
+.card .n,
+th,
+td,
+label {
+  color: var(--ink);
+}
+
+.sub,
+header p,
+.card .l,
+.chart h2,
+.row .k,
+.rowb .k,
+.foot {
+  color: var(--muted);
+}
+
+.top,
+.card,
+.chart,
+.tablewrap,
+input[type="search"],
+select,
+button,
+.more {
+  background: var(--panel);
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.card,
+.chart,
+.tablewrap {
+  border-width: 1px;
+  box-shadow: var(--shadow);
+}
+
+.card {
+  border-top: 3px solid #d86b38;
+}
+
+.chart {
+  border-top: 3px solid #e6a33b;
+}
+
+nav a {
+  color: #242424;
+  font-size: 14px;
+}
+
+nav a.on,
+.bar button.primary,
+button.primary {
+  background: var(--action);
+  border-color: #7b5700;
+  color: #000000;
+  font-weight: 700;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+}
+
+input[type="search"],
+select,
+button,
+.more {
+  border-width: 1px;
+}
+
+input::placeholder {
+  color: #505050;
+  opacity: 1;
+}
+
+input[type="search"]:focus-visible,
+select:focus-visible,
+button:focus-visible,
+a:focus-visible,
+.row:focus-visible,
+.rowb:focus-visible {
+  outline: 3px solid #005fcc;
+  outline-offset: 2px;
+}
+
+table {
+  color: var(--ink);
+  font-size: 14px;
+}
+
+th,
+td {
+  padding: 11px 13px;
+  border-bottom-color: #b8c0ba;
+}
+
+th {
+  background: #f3dfc7;
+  border-bottom: 2px solid #8b6c57;
+}
+
+tbody tr:nth-child(even) {
+  background: #fff8ee;
+}
+
+tbody tr:hover {
+  background: var(--accent-soft);
+}
+
+mark {
+  background: #ffe16b;
+  color: #000000;
+  font-weight: 700;
+}
+
+.row .track,
+.rowb .track {
+  background: var(--chip);
+  outline: 1px solid #d7bfa6;
+}
+
+.tablewrap {
+  scroll-margin-top: 84px;
+}
+
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin: 18px 0 6px;
+}
+
+.pager .page-status {
+  width: 100%;
+  color: var(--muted);
+  font-weight: 700;
+  text-align: center;
+}
+
+.pager button {
+  min-width: 42px;
+  min-height: 40px;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.pager button.current {
+  background: var(--action);
+  border-color: #7b5700;
+  color: #000000;
+  font-weight: 800;
+}
+
+.pager button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.pager .dots {
+  padding: 0 3px;
+  color: var(--muted);
+}
+
+/* 本版本固定使用淺色高對比主題，因此不顯示主題切換按鈕。 */
+#theme {
+  display: none !important;
+}
+
+@media (max-width: 560px) {
+  body {
+    font-size: 16px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+}
