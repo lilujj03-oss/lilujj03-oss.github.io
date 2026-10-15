@@ -9,8 +9,8 @@ createApp({
             projects: [
                 {
                     id: 'taiwan-hotel-occupancy',
-                    name: 'Taiwan Hotel Occupancy · Analysis & Forecast',
-                    nameZh: '🏨 台灣觀光旅館住房率分析與預測',
+                    name: 'Taiwan Hotel Occupancy · Analysis & Forecast (Trained 2023–2025)',
+                    nameZh: '🏨 台灣觀光旅館住房率分析與預測（2023~2025 訓練）',
                     badge: 'Data Science / ML',
                     badgeZh: '資料科學 · 機器學習',
                     description: 'A Streamlit analytics dashboard built on Taiwan Tourism Administration monthly hotel operating statistics (2023-01 to 2026-06): occupancy / ADR / RevPAR trends, star-rating and urban-vs-resort cluster comparisons, guest-nationality structure, and a Gradient Boosting monthly occupancy model validated out-of-time on 2026 H1 (MAE 6.08 pp). Python, pandas, scikit-learn, Plotly.',
@@ -22,6 +22,23 @@ createApp({
                     color: '#0f3460',
                     bgStyle: {
                         background: 'linear-gradient(135deg, #0f3460 0%, #16213e 55%, #0f172a 100%)'
+                    }
+                },
+                {
+                    id: 'taiwan-hotel-occupancy-2024',
+                    name: 'Taiwan Hotel Occupancy · Three-Stage Forecast (Trained 2023–2024)',
+                    nameZh: '📈 台灣觀光旅館住房率分析與預測（2023~2024 訓練）',
+                    badge: 'Data Science / ML',
+                    badgeZh: '資料科學 · 機器學習',
+                    description: 'An upgraded Streamlit dashboard forecasting Taiwan hotel occupancy at yearly, monthly and daily granularity. Uses a strict three-stage time split — train 2023–2024, model selection on 2025, blind test on 2026 H1 — fixing the earlier selection-on-test weakness. Next-month blind-test MAE 6.07 pp.',
+                    descriptionZh: '住房率分析升級版 Streamlit 儀表板，提供年度／月度／每日三種粒度的分析與預測。採三段式時間切分：2023–2024 訓練、2025 全年驗證選模、2026 上半年盲測（全程不碰盲測資料），修正舊版選模用到盲測集的弱點。次月住房率盲測 MAE 6.07 個百分點。',
+                    icon: 'fa-chart-line',
+                    link: 'https://github.com/lilujj03-oss/taiwan-hotel-occupancy-2024',
+                    demo: 'https://taiwan-hotel-occupancy-2024.streamlit.app',
+                    github: 'https://github.com/lilujj03-oss/taiwan-hotel-occupancy-2024',
+                    color: '#065f46',
+                    bgStyle: {
+                        background: 'linear-gradient(135deg, #065f46 0%, #0f3460 55%, #0f172a 100%)'
                     }
                 },
                 {
@@ -39,23 +56,6 @@ createApp({
                     color: '#0284c7',
                     bgStyle: {
                         background: 'linear-gradient(135deg, #0284c7 0%, #0d9488 50%, #1e293b 100%)'
-                    }
-                },
-                {
-                    id: 'qita-weather',
-                    name: 'Qita Weather · Taiwan Live Weather Dashboard',
-                    nameZh: '🌦 七逃趣｜台灣即時氣象',
-                    badge: 'New Data App',
-                    badgeZh: '最新資料應用',
-                    description: 'A full-stack Taiwan weather dashboard integrating official CWA observations, hourly rainfall, an 8-hour 0–50 mm rain chart, weekly forecasts, and automatic updates.',
-                    descriptionZh: '整合中央氣象署即時觀測、過去 1 小時雨量與一週預報的全端儀表板。支援全台測站地圖、每小時自動更新、最近 8 小時雨量及固定 0–50 mm 圖軸。',
-                    icon: 'fa-cloud-sun-rain',
-                    link: './qita-weather/project.html',
-                    demo: 'https://lilujj03-oss-github-io.vercel.app/qita-weather/index.html',
-                    github: 'https://github.com/lilujj03-oss/lilujj03-oss.github.io/tree/main/qita-weather',
-                    color: '#0f766e',
-                    bgStyle: {
-                        background: 'linear-gradient(135deg, #0f766e 0%, #0284c7 58%, #eabf3c 100%)'
                     }
                 },
                 {

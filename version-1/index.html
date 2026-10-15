@@ -16,6 +16,7 @@
     <nav aria-label="主要導覽">
       <a href="../index.html">作品集</a>
       <a href="#about">關於我</a>
+      <a href="#projects">作品</a>
       <a href="#skills">技能</a>
       <a href="#contact">聯絡</a>
     </nav>
@@ -30,9 +31,10 @@
       <div class="hero-copy">
         <p class="eyebrow">HELLO, WORLD!</p>
         <h1>嗨，我是 <span>lilujj03-oss</span></h1>
-        <p class="intro">喜歡動手實作、探索新技術，並把想法變成簡單好用的作品。</p>
+        <p class="intro">喜歡動手實作、探索新技術，從前端互動網頁一路延伸到 Python 資料分析與機器學習，把想法變成簡單好用的作品。</p>
         <div class="actions">
-          <a class="button primary" href="../pizza-bot/index.html">🍕 披薩推薦機器人 <span>→</span></a>
+          <a class="button primary" href="https://taiwan-hotel-occupancy.streamlit.app" target="_blank" rel="noreferrer">🏨 住房率分析與預測 <span>↗</span></a>
+          <a class="button secondary" href="../taiwan-trip-weather/index.html">🚌 台灣好行即時天氣</a>
           <a class="button secondary" href="https://github.com/lilujj03-oss" target="_blank" rel="noreferrer">GitHub <span>↗</span></a>
           <a class="button secondary" href="../index.html">作品集首頁</a>
         </div>
@@ -43,7 +45,7 @@
       <p class="section-kicker">01 / ABOUT</p>
       <h2>關於我</h2>
       <div class="about-grid">
-        <p class="about-lead">我是一位持續學習中的開發者，享受解決問題，也樂於分享每一次實作的成果。</p>
+        <p class="about-lead">我是一位持續學習中的開發者，享受解決問題，也樂於分享每一次實作的成果。最近專注在串接開放資料、資料視覺化與預測模型。</p>
         <div class="card">
           <div class="card-icon">&lt;/&gt;</div>
           <h3>持續創作</h3>
@@ -57,16 +59,53 @@
       </div>
     </section>
 
+    <section class="section" id="projects">
+      <p class="section-kicker">02 / PROJECTS</p>
+      <h2>最新作品</h2>
+      <div class="project-list">
+        <a class="project" href="https://taiwan-hotel-occupancy.streamlit.app" target="_blank" rel="noreferrer">
+          <span class="project-tag">Data Science · ML</span>
+          <h3>🏨 台灣觀光旅館住房率分析與預測（2023~2025 訓練）</h3>
+          <p>以觀光署 2023–2026 營運統計建立 Streamlit 儀表板，比較星級與地區、分析住客國籍，並用 Gradient Boosting 預測月度住房率（2026 上半年時間外驗證 MAE 6.08 個百分點）。</p>
+        </a>
+        <a class="project" href="https://taiwan-hotel-occupancy-2024.streamlit.app" target="_blank" rel="noreferrer">
+          <span class="project-tag">Data Science · ML</span>
+          <h3>📈 台灣觀光旅館住房率分析與預測（2023~2024 訓練）</h3>
+          <p>年度／月度／每日三種粒度預測，採三段式時間切分：2023–2024 訓練、2025 驗證選模、2026 上半年盲測，次月住房率盲測 MAE 6.07 個百分點。</p>
+        </a>
+        <a class="project" href="../taiwan-trip-weather/index.html">
+          <span class="project-tag">Open Data · Maps</span>
+          <h3>🚌 台灣好行 ✕ 中央氣象署即時天氣</h3>
+          <p>串接台灣好行路線與氣象署自動測站即時觀測 API，智慧配對最近測站，搭配 Leaflet 互動地圖與出遊穿搭建議。</p>
+        </a>
+        <a class="project" href="../oil-recall-lookup/index.html">
+          <span class="project-tag">Public Data · Food Safety</span>
+          <h3>🛢️ 中聯油品強制下架查詢工具</h3>
+          <p>批號秒查是否受影響、退換貨處理指引，並可依公司、油品類型、縣市篩選三家廠商與全台下游業者清單。</p>
+        </a>
+        <a class="project" href="../personal_page_18_styles/index.html">
+          <span class="project-tag">Frontend · Design</span>
+          <h3>💎 18 款個人風格矩陣</h3>
+          <p>18 種個人首頁視覺風格，支援桌機／平板／手機模擬舞台與一鍵換裝。</p>
+        </a>
+        <a class="project" href="../pizza-bot/index.html">
+          <span class="project-tag">Recommendation</span>
+          <h3>🍕 披薩智慧推薦機器人</h3>
+          <p>整合必勝客與達美樂菜單，依人數、口味與預算推薦最適合的披薩。</p>
+        </a>
+      </div>
+    </section>
+
     <section class="section" id="skills">
-      <p class="section-kicker">02 / SKILLS</p>
+      <p class="section-kicker">03 / SKILLS</p>
       <h2>目前關注</h2>
       <div class="skill-list" aria-label="技能列表">
-        <span>HTML</span><span>CSS</span><span>JavaScript</span><span>Git</span><span>GitHub</span><span>Open Source</span>
+        <span>Python</span><span>pandas</span><span>scikit-learn</span><span>Streamlit</span><span>Plotly</span><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Vue 3</span><span>Leaflet</span><span>REST API</span><span>Git</span><span>GitHub</span><span>Vercel</span>
       </div>
     </section>
 
     <section class="contact section" id="contact">
-      <p class="section-kicker">03 / CONTACT</p>
+      <p class="section-kicker">04 / CONTACT</p>
       <h2>一起交流吧</h2>
       <p>想看看我的專案，或有任何想法想交流，歡迎到 GitHub 找我。</p>
       <a class="button primary" href="https://github.com/lilujj03-oss" target="_blank" rel="noreferrer">github.com/lilujj03-oss <span>↗</span></a>

@@ -263,6 +263,7 @@
                     <li><a href="../index-zh.html">首頁</a></li>
                     <li><a href="../index-zh.html#portfolio">作品集</a></li>
                     <li><a href="../style-demos.html">🎨 18 大風格庫</a></li>
+                    <li><a href="../taiwan-trip-weather/index.html">🚌 好行天氣</a></li>
                     <li><a href="../pizza-bot/index.html">🍕 披薩推薦</a></li>
                     <li class="language-selector">
                         <select v-model="selectedLanguage" @change="changeLanguage">
@@ -290,17 +291,21 @@
                     
                     <div class="profile-info">
                         <h3>lilujj03-oss</h3>
-                        <p>Developer · Explorer</p>
+                        <p>Developer · Data Explorer</p>
                     </div>
 
                     <!-- Skills Showcase -->
                     <div class="skills-section">
                         <h4>核心技能與技術棧</h4>
                         <div class="skills-grid">
+                            <span class="skill-badge">Python 資料分析</span>
+                            <span class="skill-badge">pandas / scikit-learn</span>
+                            <span class="skill-badge">Streamlit / Plotly</span>
                             <span class="skill-badge">HTML5 / 語意化</span>
                             <span class="skill-badge">CSS3 / RWD 響應式</span>
                             <span class="skill-badge">JavaScript (ES6+)</span>
-                            <span class="skill-badge">Vue.js</span>
+                            <span class="skill-badge">Vue 3</span>
+                            <span class="skill-badge">Leaflet 地圖 / 開放資料 API</span>
                             <span class="skill-badge">Git / GitHub Pages</span>
                             <span class="skill-badge">前端互動工具開發</span>
                             <span class="skill-badge">智慧推薦演算法設計</span>
@@ -315,12 +320,25 @@
                     
                     <div class="bio-text">
                         <p>您好！我是 <strong>lilujj03-oss</strong>，歡迎來到我的個人自介與作品集導覽頁面。</p>
-                        <p>我熱衷於探索程式設計與前端網頁開發，喜歡從生活實例與實際需求出發，將創意想法一步步轉化成精巧實用的作品。對我而言，每次實作不僅僅是技術的展現，更是記錄成長、優化使用者體驗與解決問題的寶貴歷程。</p>
-                        <p>在作品集中，收錄了針對達美樂與必勝客官方菜單研發的<strong>「披薩智慧推薦機器人 (Pizza Bot)」</strong>，以及 3 種不同視覺體驗的個人自介演進版本，持續累積前端開發、版本控制與開源專案經驗。</p>
+                        <p>我熱衷於探索程式設計，從前端網頁開發一路延伸到 Python 資料分析與機器學習，喜歡從生活實例與實際需求出發，將創意想法一步步轉化成精巧實用的作品。對我而言，每次實作不僅僅是技術的展現，更是記錄成長、優化使用者體驗與解決問題的寶貴歷程。</p>
+                        <p>最新作品包含以觀光署營運統計打造的兩版<strong>「台灣觀光旅館住房率分析與預測」</strong>Streamlit 儀表板：<strong>2023~2025 訓練版</strong>（Gradient Boosting 月度預測，2026 上半年時間外驗證 MAE 6.08 個百分點）與 <strong>2023~2024 訓練版</strong>（三段式時間切分、年度／月度／每日預測，盲測 MAE 6.07 個百分點）；以及串接中央氣象署即時觀測 API 的<strong>「台灣好行 ✕ 即時天氣旅遊網」</strong>、針對食安下架事件的<strong>「中聯油品強制下架查詢工具」</strong>。</p>
+                        <p>此外還有 <strong>18 款個人風格矩陣</strong>、<strong>18 大視覺風格展示庫</strong>、針對達美樂與必勝客菜單研發的<strong>「披薩智慧推薦機器人」</strong>，以及 3 種不同視覺體驗的個人自介版本，持續累積資料應用、前端開發與版本控制經驗。</p>
                         
                         <div class="bio-contact-links">
                             <a href="https://github.com/lilujj03-oss" target="_blank" class="bio-contact-link" title="GitHub 專頁">
                                 <i class="fa-brands fa-github"></i> GitHub
+                            </a>
+                            <a href="https://taiwan-hotel-occupancy.streamlit.app" target="_blank" class="bio-contact-link" title="台灣觀光旅館住房率分析與預測">
+                                <i class="fa-solid fa-hotel"></i> 住房率預測（2023~2025 訓練）
+                            </a>
+                            <a href="https://taiwan-hotel-occupancy-2024.streamlit.app" target="_blank" class="bio-contact-link" title="台灣觀光旅館住房率分析與預測（2023~2024 訓練）">
+                                <i class="fa-solid fa-chart-line"></i> 住房率預測（2023~2024 訓練）
+                            </a>
+                            <a href="../oil-recall-lookup/index.html" class="bio-contact-link" title="中聯油品強制下架查詢工具">
+                                <i class="fa-solid fa-oil-can"></i> 油品下架查詢
+                            </a>
+                            <a href="../taiwan-trip-weather/index.html" class="bio-contact-link" title="台灣好行即時天氣旅遊網">
+                                <i class="fa-solid fa-bus-simple"></i> 台灣好行即時天氣
                             </a>
                             <a href="../pizza-bot/index.html" class="bio-contact-link" title="披薩點單推薦">
                                 <i class="fa-solid fa-pizza-slice"></i> 披薩推薦機器人

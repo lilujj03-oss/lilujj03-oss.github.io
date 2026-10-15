@@ -433,3 +433,5 @@ body {
     justify-content: center;
   }
 }
+
+.v3-project-card { display: block; color: inherit; text-decoration: none; }

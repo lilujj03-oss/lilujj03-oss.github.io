@@ -44,14 +44,20 @@
         <div class="v3-info">
           <p class="v3-eyebrow">DEVELOPER & CREATIVE EXPLORER</p>
           <h1 class="v3-name">lilujj03-oss</h1>
-          <p class="v3-title">前端開發探索者 · 喜歡動手實作與構思各類數位小工具</p>
+          <p class="v3-title">前端開發 × 資料分析探索者 · 喜歡動手實作與構思各類數位小工具</p>
           <p class="v3-bio">
-            熱衷於將生活中的點子轉化為具體可用的互動式網頁與推薦系統。透過持續自學、開源社群與版本控制，逐步累積開發與問題解決經驗。
+            熱衷於將生活中的點子轉化為具體可用的互動式網頁、資料儀表板與預測模型。從串接政府開放資料、Python 資料分析到機器學習預測，透過持續自學與版本控制，逐步累積開發與問題解決經驗。
           </p>
 
           <div class="v3-actions">
             <a href="https://github.com/lilujj03-oss?tab=repositories" target="_blank" class="v3-btn-primary">
               <i class="fa-solid fa-code-fork"></i> 探索 GitHub 專案
+            </a>
+            <a href="https://taiwan-hotel-occupancy.streamlit.app" target="_blank" class="v3-btn-secondary">
+              <i class="fa-solid fa-hotel"></i> 住房率預測（2023~2025 訓練）
+            </a>
+            <a href="../taiwan-trip-weather/index.html" class="v3-btn-secondary">
+              <i class="fa-solid fa-bus-simple"></i> 台灣好行即時天氣
             </a>
             <a href="../pizza-bot/index.html" class="v3-btn-secondary">
               <i class="fa-solid fa-pizza-slice"></i> 玩玩披薩推薦機器人
@@ -73,6 +79,9 @@
         <button class="v3-tab-btn active" data-tab="skills">
           <i class="fa-solid fa-laptop-code"></i> 技術棧與工具
         </button>
+        <button class="v3-tab-btn" data-tab="projects">
+          <i class="fa-solid fa-rocket"></i> 最新作品
+        </button>
         <button class="v3-tab-btn" data-tab="terminal">
           <i class="fa-solid fa-terminal"></i> 終端資訊 (Terminal)
         </button>
@@ -84,6 +93,22 @@
       <!-- Tab 1: Skills -->
       <div class="v3-tab-pane active" id="tab-skills">
         <div class="v3-skills-grid">
+          <div class="v3-skill-card">
+            <div class="v3-skill-header">
+              <i class="fa-brands fa-python v3-skill-icon"></i>
+              <span class="v3-skill-name">Python 資料分析 & ML</span>
+            </div>
+            <p class="v3-skill-desc">pandas 資料清理、scikit-learn 預測建模與時間外驗證，Streamlit / Plotly 互動儀表板。</p>
+          </div>
+
+          <div class="v3-skill-card">
+            <div class="v3-skill-header">
+              <i class="fa-solid fa-map-location-dot v3-skill-icon"></i>
+              <span class="v3-skill-name">開放資料 API & 地圖</span>
+            </div>
+            <p class="v3-skill-desc">串接中央氣象署等政府開放資料，Leaflet 互動地圖與測站距離配對。</p>
+          </div>
+
           <div class="v3-skill-card">
             <div class="v3-skill-header">
               <i class="fa-brands fa-html5 v3-skill-icon"></i>
@@ -105,7 +130,7 @@
               <i class="fa-brands fa-js v3-skill-icon"></i>
               <span class="v3-skill-name">JavaScript & DOM</span>
             </div>
-            <p class="v3-skill-desc">非同步 Fetch API、動態狀態過濾、事件驅動與前端模組邏輯實作。</p>
+            <p class="v3-skill-desc">非同步 Fetch API、Vue 3 響應式資料、動態狀態過濾與事件驅動邏輯實作。</p>
           </div>
 
           <div class="v3-skill-card">
@@ -113,12 +138,60 @@
               <i class="fa-brands fa-git-alt v3-skill-icon"></i>
               <span class="v3-skill-name">Git & GitHub</span>
             </div>
-            <p class="v3-skill-desc">版本控制分支管理、GitHub Pages 自動化部署與多版本作品管理。</p>
+            <p class="v3-skill-desc">版本控制分支管理、GitHub Pages／Vercel 自動化部署與多版本作品管理。</p>
           </div>
         </div>
       </div>
 
-      <!-- Tab 2: Terminal -->
+      <!-- Tab 2: Projects -->
+      <div class="v3-tab-pane" id="tab-projects">
+        <div class="v3-skills-grid">
+          <a class="v3-skill-card v3-project-card" href="https://taiwan-hotel-occupancy.streamlit.app" target="_blank">
+            <div class="v3-skill-header">
+              <i class="fa-solid fa-hotel v3-skill-icon"></i>
+              <span class="v3-skill-name">台灣觀光旅館住房率分析與預測（2023~2025 訓練）</span>
+            </div>
+            <p class="v3-skill-desc">觀光署 2023–2026 營運統計 Streamlit 儀表板，Gradient Boosting 月度住房率預測（時間外驗證 MAE 6.08 個百分點）。</p>
+          </a>
+          <a class="v3-skill-card v3-project-card" href="https://taiwan-hotel-occupancy-2024.streamlit.app" target="_blank">
+            <div class="v3-skill-header">
+              <i class="fa-solid fa-chart-line v3-skill-icon"></i>
+              <span class="v3-skill-name">台灣觀光旅館住房率分析與預測（2023~2024 訓練）</span>
+            </div>
+            <p class="v3-skill-desc">三段式時間切分（2023–2024 訓練／2025 驗證／2026 上半年盲測），年度／月度／每日預測，盲測 MAE 6.07 個百分點。</p>
+          </a>
+          <a class="v3-skill-card v3-project-card" href="../taiwan-trip-weather/index.html">
+            <div class="v3-skill-header">
+              <i class="fa-solid fa-bus-simple v3-skill-icon"></i>
+              <span class="v3-skill-name">台灣好行 ✕ 即時天氣旅遊網</span>
+            </div>
+            <p class="v3-skill-desc">台灣好行路線結合氣象署自動測站即時觀測，智慧測站配對、互動地圖與穿搭建議。</p>
+          </a>
+          <a class="v3-skill-card v3-project-card" href="../oil-recall-lookup/index.html">
+            <div class="v3-skill-header">
+              <i class="fa-solid fa-oil-can v3-skill-icon"></i>
+              <span class="v3-skill-name">中聯油品強制下架查詢工具</span>
+            </div>
+            <p class="v3-skill-desc">批號秒查、退換貨指引，多條件篩選三家廠商與全台下游業者清單。</p>
+          </a>
+          <a class="v3-skill-card v3-project-card" href="../personal_page_18_styles/index.html">
+            <div class="v3-skill-header">
+              <i class="fa-solid fa-cubes-stacked v3-skill-icon"></i>
+              <span class="v3-skill-name">18 款個人風格矩陣</span>
+            </div>
+            <p class="v3-skill-desc">18 種個人首頁風格，桌機／平板／手機模擬舞台與一鍵換裝。</p>
+          </a>
+          <a class="v3-skill-card v3-project-card" href="../pizza-bot/index.html">
+            <div class="v3-skill-header">
+              <i class="fa-solid fa-pizza-slice v3-skill-icon"></i>
+              <span class="v3-skill-name">披薩智慧推薦機器人</span>
+            </div>
+            <p class="v3-skill-desc">整合必勝客與達美樂菜單，依人數、口味與預算精準推薦。</p>
+          </a>
+        </div>
+      </div>
+
+      <!-- Tab 3: Terminal -->
       <div class="v3-tab-pane" id="tab-terminal">
         <div class="v3-terminal">
           <div class="v3-terminal-header">
@@ -131,15 +204,15 @@
           <p class="v3-terminal-line"><span class="val">&gt; "lilujj03-oss" | Frontend Developer &amp; Lifelong Learner</span></p>
           <p class="v3-terminal-line" style="margin-top: 8px;"><span class="cmd">$ cat current_status.json</span></p>
           <p class="v3-terminal-line"><span class="val">{</span></p>
-          <p class="v3-terminal-line">&nbsp;&nbsp;<span class="cmd">"interests"</span>: [<span class="val">"Web Dev"</span>, <span class="val">"Smart Recommendation"</span>, <span class="val">"UI/UX"</span>],</p>
-          <p class="v3-terminal-line">&nbsp;&nbsp;<span class="cmd">"latest_project"</span>: <span class="val">"Pizza Recommendation Bot 🍕"</span>,</p>
-          <p class="v3-terminal-line">&nbsp;&nbsp;<span class="cmd">"goal"</span>: <span class="val">"Build useful, elegant and joyful web tools"</span></p>
+          <p class="v3-terminal-line">&nbsp;&nbsp;<span class="cmd">"interests"</span>: [<span class="val">"Web Dev"</span>, <span class="val">"Data Analysis"</span>, <span class="val">"Machine Learning"</span>, <span class="val">"UI/UX"</span>],</p>
+          <p class="v3-terminal-line">&nbsp;&nbsp;<span class="cmd">"latest_project"</span>: <span class="val">"Taiwan Hotel Occupancy Forecast 🏨"</span>,</p>
+          <p class="v3-terminal-line">&nbsp;&nbsp;<span class="cmd">"goal"</span>: <span class="val">"Turn open data into useful, elegant tools"</span></p>
           <p class="v3-terminal-line"><span class="val">}</span></p>
           <p class="v3-terminal-line" style="margin-top: 8px;"><span class="comment">// Continuous exploration in progress...</span></p>
         </div>
       </div>
 
-      <!-- Tab 3: Philosophy -->
+      <!-- Tab 4: Philosophy -->
       <div class="v3-tab-pane" id="tab-philosophy">
         <div style="background: rgba(255,255,255,0.03); padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); line-height: 1.8;">
           <h3 style="color: var(--accent-cyan); margin-bottom: 12px;"><i class="fa-solid fa-compass"></i> 持續實作與探究本質</h3>
